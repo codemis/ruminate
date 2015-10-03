@@ -50,6 +50,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'HomeController'
       }
     }
+  })
+  
+  .state('tab.history', {
+    url: '/history',
+    views: {
+      'tab-history': {
+        templateUrl: 'templates/tab-history.html',
+        controller: 'HistoryController'
+      }
+    }
+  })
+  
+  .state('tab.settings', {
+    url: '/settings',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/tab-settings.html',
+        controller: 'SettingsController'
+      }
+    }
   });
 
   // if none of the above states are matched, use this as the fallback

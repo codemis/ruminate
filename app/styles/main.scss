@@ -1,4 +1,24 @@
 // Your application styles go here
+/**
+ * Logo
+ */
+.logo-watermark {
+    background: url(../images/logo-watermark.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 80%;
+    height: 400px;
+    margin: auto;
+    z-index: 2;
+    position: relative;
+    top: 50px;
+}
+
+.call-to-action {
+    width: 40%;
+    margin: 65px auto 0px auto;
+}
 
 .pad-reference {
 	position:relative;

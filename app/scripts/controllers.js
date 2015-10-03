@@ -102,8 +102,8 @@ angular.module('starter.controllers', [])
     // do something with $scope.answerModel
     // console.log(''' + $scope.answerModel + ''');
   };
-
-  $scope.toggleQuestion = function(question) {
+  
+    $scope.toggleQuestion = function(question) {
     question.open = !question.open;
   };
 
@@ -160,7 +160,49 @@ angular.module('starter.controllers', [])
   });
 
 })
-.controller('HistoryController', function($scope) {})
-.controller('SettingsController', function($scope) {});
 
+.controller('HistoryController', function($scope) {
+
+//Use parse to fetch the history
+
+//After that is done....place it in the $scope variable....
+
+$scope.historyView = [];
+
+//var date = new Date();
+
+//dateString = (date.getMonth() + 1).toString() + "-" + (date.getDate()).toString() + "-" + (date.getYear()).toString();
+
+var dateString = '10-03-2015';
+
+$scope.historyView.push({
+    id:1,
+    verse:'This is one test data',
+    date:dateString
+});
+$scope.historyView.push({
+    id:2,
+    verse:'This is another test data',
+    date:dateString
+});
+$scope.historyView.push({
+    id:3,
+    verse:'This is yet another test data',
+    date:dateString
+});
+$scope.historyView.push({
+    id:4,
+    verse:'This is yet one more test data',
+    date:dateString
+});
+
+//$scope.historyView.push(dateString + ' This is one test data');
+//$scope.historyView.push(dateString + ' This is another test data');
+//$scope.historyView.push(dateString + ' This is yet another test data');
+//$scope.historyView.push(dateString + ' This is yet one more test data');
+
+})
+.controller('SettingsController', function($scope) {});
 lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus ligula. Nullam turpis metus, sodales vehicula dignissim a, tincidunt convallis erat. Donec eu ligula quis mi fermentum blandit. Vestibulum egestas sapien eu turpis efficitur, id rutrum velit aliquam. Vivamus elementum quis neque semper tristique. Phasellus luctus et mauris id condimentum. Vestibulum vestibulum porttitor semper. Pellentesque molestie eros quis varius congue. In blandit risus non nulla viverra, eget porta ipsum porta. Vivamus molestie ut metus eu viverra. Curabitur rutrum risus quis elit feugiat ultricies. Ut non lacus lorem. Fusce aliquet laoreet lorem eget hendrerit. Sed eleifend ex urna, vitae porttitor ipsum tristique in.\n\nIn placerat faucibus efficitur. Vestibulum et vulputate erat, sit amet luctus lectus. Nam semper tempor pharetra. Mauris iaculis lacus vel est congue, in pharetra orci porta. Integer sollicitudin lacinia nisi, eu suscipit tortor congue sit amet. Duis interdum turpis non aliquet dignissim. Aliquam ullamcorper ligula ipsum, at luctus justo blandit et. Phasellus imperdiet fermentum ex, ut feugiat leo cursus elementum. Nulla venenatis feugiat accumsan. Nunc pulvinar, metus non ornare faucibus, leo lectus maximus arcu, id eleifend justo nunc in lacus.\n\nNulla ut tincidunt sapien, sit amet vestibulum ipsum. Mauris quam ante, accumsan et sodales et, dictum a ligula. Donec congue accumsan nunc. Donec quam elit, lacinia nec maximus ac, gravida et erat. Phasellus vitae nisl viverra, commodo velit et, tristique nibh. Nunc efficitur odio ac velit pulvinar, et commodo nunc aliquam. Fusce ultricies arcu erat, et suscipit felis ullamcorper at. Aenean non pulvinar nulla, non fermentum nisl.\n\nAenean et ipsum leo. Nullam tristique arcu sit amet dolor sodales rutrum. Suspendisse eget arcu arcu. Nunc condimentum nulla velit, et convallis ipsum maximus dignissim. Proin vehicula, odio nec ultricies bibendum, est nisl elementum orci, quis porta risus lacus non risus. Sed commodo purus sit amet lectus elementum blandit. Aenean quis fringilla diam. Etiam in ligula ut felis efficitur semper et vitae diam.\n\nMauris sit amet ante id libero tincidunt laoreet nec eget nulla. Vestibulum ac porttitor eros. Praesent nec congue urna, non feugiat orci. Nullam tristique suscipit lacus eget viverra. Etiam urna turpis, tempus eu consequat a, sodales id ligula. Etiam fermentum, nisl ac egestas luctus, ligula eros tincidunt lacus, id auctor tortor elit eget urna. Donec nec lobortis tellus. Nulla sagittis, justo eu pulvinar molestie, metus mi condimentum augue, eget rhoncus mauris nisi ut arcu. Nunc pulvinar porta dolor ut tristique. In hac habitasse platea dictumst. Sed gravida, lectus a semper maximus, mauris diam pellentesque arcu, nec imperdiet enim magna ac lacus. Sed pellentesque magna id neque pellentesque, in imperdiet urna ornare. Vivamus aliquam vitae ligula nec vestibulum.\n\nInteger porta cursus risus, sit amet mattis tortor elementum interdum. Curabitur ac eros nec massa interdum interdum eu suscipit libero. Aliquam enim mi, auctor dignissim fermentum at, placerat in urna. Nunc rhoncus dolor sit amet dui lacinia porta. Aenean vestibulum dolor ligula, et elementum enim pellentesque sit amet. Praesent sodales purus vel nunc molestie, in suscipit ipsum convallis. Proin ultrices volutpat urna. Etiam porta nec massa vel varius. Proin urna lectus, convallis et commodo sed, tristique vitae dui. Duis sed suscipit augue, a imperdiet arcu. Morbi consequat egestas nisi, non convallis mi dignissim sit amet. Donec tincidunt congue sem, sed venenatis enim commodo a. Donec a arcu tincidunt, consequat ex et, maximus augue. Integer pellentesque, nulla ornare dignissim accumsan, lacus diam tempus mauris, sit amet tempus mauris nulla eget urna. Suspendisse mi sem, congue scelerisque purus sit amet, sagittis cursus purus. Cras laoreet sem et condimentum blandit.';
+
+

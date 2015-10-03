@@ -52,6 +52,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'io
       }
     }
   })
+  
+  .state('tab.history', {
+    url: '/history',
+    views: {
+      'tab-history': {
+        templateUrl: 'templates/tab-history.html',
+        controller: 'HistoryController'
+      }
+    }
+  })
+  
   .state('tab.passage', {
     url: '/home/passage/:passageId',
     views: {

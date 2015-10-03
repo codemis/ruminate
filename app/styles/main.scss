@@ -34,6 +34,10 @@
 	margin-bottom:-25px;
 }
 
+.question-modal-content {
+	padding: 16px;
+}
+
 $question-answer-bg: #eee;
 
 .question-scale-viewer {
@@ -45,6 +49,7 @@ $question-answer-bg: #eee;
 
 .question-answer {
 	overflow: hidden;
+	text-overflow: ellipsis;
 	padding-top: 0;
 	padding-bottom: 0;
 	padding-left: 20px;

@@ -1,23 +1,24 @@
 <ion-view view-title="Ruminate">
 
   <ion-nav-buttons side="secondary">
-    <button class="button icon button-icon ion-plus"></button>
+    <button class="button icon button-icon ion-plus" ng-click="selectPassage()"></button>
   </ion-nav-buttons>
 
 
   <ion-content>
     <ion-list class="list">
       <ion-item class="item-text-wrap passage-snippet">
-        {{passageSnippet}}
+        <span class="passage-snippet-text">{{truncatedSnippet}}</span>
+        <span class="passage-snippet-more" ng-click="openPassageModal($event, passage)"></span>
       </ion-item>
       <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">
         {{unansweredQuestion}}
         <textarea class="answer-input" placeholder="Answer" ng-model="$parent.$parent.$parent.answerModel" ng-change="updateAnswer()"></textarea> <!-- angular-elastic? -->
       </ion-item>
       <div ng-repeat="question in questions">
-        <ion-item class="question-question">
-          <span ng-click="toggleQuestion(question)">{{question.question}}</span>
-          <button class="button icon button-icon ion-arrow-expand question-popover-button" ng-click="openModal($event)"></button>
+        <ion-item class="question-question" ng-click="toggleQuestion(question)">
+          {{question.question}}
+          <button class="button icon button-icon ion-arrow-expand question-popover-button" ng-click="openQuestionModal($event, question)"></button>
         </ion-item>
         <ion-item class="question-answer item-text-wrap">
           <div class="padding-reference">

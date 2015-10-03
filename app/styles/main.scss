@@ -1,1 +1,64 @@
 // Your application styles go here
+
+.pad-reference {
+	position:relative;
+}
+.position-referece {
+	position:relative;
+	// width:0;
+	height:0;
+}
+
+.passage-snippet {
+	margin-bottom:12px;
+}
+
+.current-question {
+	margin-bottom:12px;
+}
+
+.answer-input {
+	margin-top:2px;
+	resize:none;
+	width:100%;
+}
+
+.question-question {
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.question-popover-button {
+	float:right;
+	margin-top:-13px;
+	margin-bottom:-25px;
+}
+
+$question-answer-bg: #eee;
+
+.question-scale-viewer {
+	position:absolute;
+	left:20px;
+	right:16px;
+	height:0;
+}
+
+.question-answer {
+	overflow: hidden;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 20px;
+  background-color:$question-answer-bg;
+}
+.question-answer-hidden {
+  transition: 0.1s line-height linear;
+  //color:$question-answer-bg;
+  visibility: hidden;
+}
+.question-answer-hidden.ng-hide {
+  line-height: 0;
+}
+.question-answer-hidden.ng-hide-add,
+.question-answer-hidden.ng-hide-remove {
+  display: block !important;
+}

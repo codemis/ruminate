@@ -6,7 +6,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'config'])
+angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'ionic.utilities', 'config'])
 
 .run(['$ionicPlatform', 'ParseService', 'ENV', function($ionicPlatform, ParseService, ENV) {
   $ionicPlatform.ready(function() {

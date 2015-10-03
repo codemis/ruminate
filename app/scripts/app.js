@@ -51,6 +51,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('tab.passage', {
+    url: '/home/passage/:passageId',
+    views: {
+      'tab-home':{
+        templateUrl: 'templates/tab-passage.html',
+        controller: 'PassageController'
+      }
+    }
+  })
 
   .state('tab.settings', {
     url: '/settings',

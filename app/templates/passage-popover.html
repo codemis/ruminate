@@ -1,9 +1,7 @@
 <ion-modal-view>
 	<ion-header-bar>
-	  <button class="button icon button-icon ion-close" ng-click="$parent.closeModal()"></button>
+	  <button class="button icon button-icon ion-ios-arrow-back" ng-click="$parent.closeModal()"></button>
 	  <h1 class="title">{{openPassage.getBookName()}} {{openPassage.chapter}}</h1>
 	</ion-header-bar>
-	<ion-content class="question-modal-content">
-	  {{openPassage.getText()}}
-	</ion-content>
+	<ion-content class="passage-modal-content">{{openPassage.getText()}}</ion-content>
 </ion-modal-view>

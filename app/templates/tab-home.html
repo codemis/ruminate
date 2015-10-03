@@ -6,10 +6,16 @@
 
 
   <ion-content>
-    <ion-list class="list">
-      <ion-item class="item-text-wrap passage-snippet">
+    <div ng-hide="hasPassage()" class="ng-hide">
+      <div class="logo-watermark"></div>
+      <div class="call-to-action">
+        <button class="button button-calm button-block" ng-click="selectPassage()">Select a Passage</button>
+      </div>
+    </div>
+    <ion-list class="list" ng-show="hasPassage()" class="ng-hide">
+      <ion-item href="#/tab/home/passage/1" class="item-text-wrap passage-snippet item-icon-right">
         <span class="passage-snippet-text">{{truncatedSnippet}}</span>
-        <span class="passage-snippet-more" ng-click="openPassageModal($event, passage)"></span>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">
         {{unansweredQuestion}}

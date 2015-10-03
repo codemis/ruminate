@@ -1,7 +1,40 @@
 <ion-view view-title="Ruminate">
-  <ion-content class="padding">
-    <p>Input something in the input box:</p>
-<p>Name : <input type="text" ng-model="name" placeholder="Enter name here"></p>
-<h1>Hello {{name}}</h1>
+
+  <ion-nav-buttons side="secondary">
+    <button class="button icon button-icon ion-plus" ng-click="selectPassage()"></button>
+  </ion-nav-buttons>
+
+
+  <ion-content>
+    <div ng-hide="hasPassage()" class="ng-hide">
+      <div class="logo-watermark"></div>
+      <div class="call-to-action">
+        <button class="button button-calm button-block" ng-click="selectPassage()">Select a Passage</button>
+      </div>
+    </div>
+    <ion-list class="list" ng-show="hasPassage()" class="ng-hide">
+      <ion-item href="#/tab/home/passage/1" class="item-text-wrap passage-snippet item-icon-right">
+        <span class="passage-snippet-text">{{truncatedSnippet}}</span>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">
+        {{unansweredQuestion}}
+        <textarea class="answer-input" placeholder="Answer" ng-model="$parent.$parent.$parent.answerModel" ng-change="updateAnswer()"></textarea> <!-- angular-elastic? -->
+      </ion-item>
+      <div ng-repeat="question in questions">
+        <ion-item class="question-question" ng-click="toggleQuestion(question)">
+          {{question.question}}
+          <button class="button icon button-icon ion-arrow-expand question-popover-button" ng-click="openQuestionModal($event, question)"></button>
+        </ion-item>
+        <ion-item class="question-answer item-text-wrap">
+          <div class="padding-reference">
+            <div class="position-reference">
+              <span class="question-scale-viewer">{{question.answer}}</span>
+            </div>
+          </div>
+          <div class="question-answer-hidden" ng-show="question.open">{{question.answer}}</div>
+        </ion-item>
+      </li>
+    </ion-list>
   </ion-content>
 </ion-view>

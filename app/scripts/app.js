@@ -6,9 +6,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'ionic.utilities', 'config'])
+angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'ionic.utilities', 'config', 'api-tokens.config'])
 
-.run(['$ionicPlatform', 'ParseService', 'ENV', function($ionicPlatform, ParseService, ENV) {
+.run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', function($ionicPlatform, ParseService, PARSE_ENV) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'io
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
-    ParseService.initialize(ENV.parseAppId, ENV.parseJSKey);
+    ParseService.initialize(PARSE_ENV.appId, PARSE_ENV.jSKey);
   });
 }])
 

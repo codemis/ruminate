@@ -1,0 +1,13 @@
+<ion-view view-title="{{book.name}} {{chapter}}">
+
+  <ion-nav-buttons side="secondary">
+  </ion-nav-buttons>
+
+  <ion-content class="passage-content">
+  	<span class="verse" ng-class="{'highlight-verse': isSelected(verse.number)}" ng-repeat="verse in verses" ng-click="handleClick(verse.number)">
+  		<span class="verse-number">{{verse.number}}.</span>
+  		<span class="verse-content">{{verse.content}}</span>
+  	</span>
+  </ion-content>
+
+</ion-view>

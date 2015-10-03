@@ -92,9 +92,42 @@ $question-answer-bg: #eee;
 
 .passage-content {
 	padding:16px;
+	// font-size:1em;
+	// line-height:1em;
 }
 
 .verse-number {
 	font-weight:bold;
 	color:#000;
+}
+
+// ---- chapter select -----
+
+.chapter-item {
+	font-size:1.75em;
+	color:#555;
+	width:2em;
+	height:2em;
+	display:inline-block;
+	font-weight:bolder;
+	text-align:center;
+	padding-top:0.5em;
+	text-decoration:none;
+}
+
+$highlight-color: #FF0;
+$x-padding: 0.25em;
+$y-padding: 2px;
+.highlight-verse {
+	background-color: $highlight-color;
+	box-shadow: $x-padding*-1 $y-padding    0 $highlight-color,
+						  $x-padding*-1 $y-padding*-1 0 $highlight-color,
+						  0             $y-padding    0 $highlight-color,
+						  0             $y-padding*-1 0 $highlight-color;
+}
+
+.chapter-box {
+	width:100%;
+	height:100%;
+	white-space:normal;
 }

@@ -156,13 +156,30 @@ angular.module('starter.controllers', [])
 .controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
   $scope.books = [];
   BibleAccessor.getBookList(function(list) { $scope.books = list; });
+  var cur = null
+  $scope.isShown = function(book) {
+    return book === cur;
+    // if(typeof book.show === 'undefined') {
+    //   return false;
+    // } else {
+    //   return book.show;
+    // }
+  };
+  $scope.toggleShown = function(book) {
+    if($scope.isShown(book)) {
+      cur = null;
+    } else {
+      cur = book;
+    }
+    //book.show = !$scope.isShown(book);
+  };
 }])
 .controller('VerseSelectController', ['$scope', '$stateParams', 'BibleAccessor', function($scope, $stateParams, BibleAccessor) {
   
   // These contain the information that will be added to the database
   $scope.chapter = $stateParams.chapter;
   $scope.book = $stateParams.bookId;
-  $scope.bookName = BibleAccessor.versionNames[$scope.book];
+  $scope.bookName = BibleAccessor.bookNames[$scope.book];
   $scope.dam_id = $stateParams.damId;
   $scope.firstVerse=-1;
   $scope.lastVerse=-1

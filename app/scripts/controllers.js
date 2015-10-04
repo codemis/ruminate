@@ -148,7 +148,7 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage', function($scope, ParseReflection) {
+.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage', function($scope, ParseReflection, ParsePassage) {
 
   //Use parse to fetch the history
 
@@ -160,22 +160,28 @@ angular.module('starter.controllers', [])
 
   //dateString = (date.getMonth() + 1).toString() + "-" + (date.getDate()).toString() + "-" + (date.getYear()).toString();
 
-  //var dateString = '10-03-2015';
+  var dateString = '10-03-2015';
   
   var numberOfQueriesWithReflection = 0;
   
   var parseResult = [];
   
-  ParseReflection.query(new Date(new Date().toDateString()),
+  var dateOfToday = new Date(new Date().toDateString());
+  var dateOfTomorrow = new Date(new Date().toDateString());
+  dateOfTomorrow.setDate(dateOfTomorrow.getDate() + 1);
+  
+  ParseReflection.query(dateOfToday,
+      dateOfTomorrow,
       function()
 	  {
 	      //ParseReflection.result.get("createdAt")
+		  //alert("This is a test.");
 		  for (var ctr = 0; ctr < ParseReflection.result.length; ctr++)
 		  {
 		      ParsePassage.queryWithReflection(ParseReflection.result[ctr],
 			      function()
 				  {
-				      var createdDate = ParseRefelection.result[numberOfQueriesWithReflection].get("createdAt");
+				      var createdDate = ParseReflection.result[numberOfQueriesWithReflection].get("createdAt");
 					  for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
 					  {
 					      parseResult.push({date:createdDate, passageResult:ParsePassage.result[ctr2]});
@@ -187,11 +193,13 @@ angular.module('starter.controllers', [])
 						  {
 						      $scope.historyView.push(
 							      {
-								      verse:parseResult[ctr3].passageResult.snippet
-									 ,date:parseResult[ctr3].date
+								      info:  parseResult[ctr3].passageResult.book + " " + parseResult[ctr3].passageResult.chapter + ":" + parseResult[ctr3].passageResult.firstVerse + "-" + parseResult[ctr3].passageResult.lastVerse
+								     ,verse: parseResult[ctr3].passageResult.snippet
+									 ,date: parseResult[ctr3].date.toDateString()
 								  }
-							  );
+							  );								
 						  }
+						  $scope.$apply();
 					  }
 				  }
 			  );

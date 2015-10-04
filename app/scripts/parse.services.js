@@ -149,6 +149,8 @@ angular.module('parse.services', [])
    */
   var parseReflectionObject = {};
   
+  parseReflectionObject.result = [];
+  
    //var Mapper = Parse.Object.extend("mapper");
    //var a_mapper = new Mapper();
    //a_mapper.set("userPointer", Parse.User.current());
@@ -223,6 +225,12 @@ angular.module('parse.services', [])
 		query.find(
 		{
 			success: function (reflections)  {
+			for (var ctr = 0; ctr < reflections.length; ctr++)
+			{
+			    var reflection = reflections[ctr];
+				//var resultToStore = {};
+				parseReflectionObject.result.push(reflection);
+			}
         callback(reflections);
 			},
 			failure:  function (object, error) {  
@@ -352,7 +360,7 @@ angular.module('parse.services', [])
 					
 					parsePassageObject.result.push(resultToStore);
                 }				
-				callback;
+				callback();
 			},
 			failure:  function (object, error) {  
 				
@@ -397,7 +405,7 @@ angular.module('parse.services', [])
 					
 					parsePassageObject.result.push(resultToStore);
                 }				
-				callback;
+				callback();
 			},
 			failure:  function (object, error) {  
 				
@@ -458,7 +466,7 @@ angular.module('parse.services', [])
 					resultToStore.question = question;
 					parseQuestionObject.result.push(resultToStore);
                 }				
-				callback;
+				callback();
 			},
 			failure:  function (object, error) {  
 				
@@ -553,7 +561,7 @@ angular.module('parse.services', [])
 					resultToStore.answer = response.get("answer");
 					parseResponseObject.result.push(resultToStore);
                 }				
-				callback;
+				callback();
 			},
 			failure:  function (object, error) {  
 				
@@ -597,7 +605,7 @@ angular.module('parse.services', [])
 					response.set("answer", answer);
 					response.save();
                 }				
-				callback;
+				callback();
 			},
 			failure:  function (object, error) {  
 				

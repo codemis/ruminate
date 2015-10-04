@@ -14,3 +14,4 @@ plugins
 
 app/scripts/configuration.js
 app/scripts/api-tokens.config.js
+parse/.parse.local

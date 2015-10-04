@@ -174,7 +174,8 @@ angular.module('starter.controllers', [])
     //book.show = !$scope.isShown(book);
   };
 }])
-.controller('VerseSelectController', ['$scope', '$stateParams', 'BibleAccessor', function($scope, $stateParams, BibleAccessor) {
+.controller('VerseSelectController', ['$scope', '$stateParams', '$location', 'BibleAccessor', 'ParseUser', 'ParseReflection', 'ParsePassage', 
+  function($scope, $stateParams, $location, BibleAccessor, ParseUser, ParseReflection, ParsePassage) {
   
   // These contain the information that will be added to the database
   $scope.chapter = $stateParams.chapter;
@@ -191,8 +192,8 @@ angular.module('starter.controllers', [])
 
   $scope.isSelected = function(id) {
     id = parseInt(id);
-    if($scope.firstVerse == -1 || $scope.lastVerse == -1) {
-      return id == $scope.firstVerse || id == $scope.lastVerse;
+    if($scope.firstVerse === -1 || $scope.lastVerse === -1) {
+      return id === $scope.firstVerse || id === $scope.lastVerse;
     } else {
       return id >= $scope.firstVerse && id <= $scope.lastVerse;
     }
@@ -200,18 +201,18 @@ angular.module('starter.controllers', [])
 
   $scope.handleClick = function(id) {
     id = parseInt(id);
-    if(id == $scope.lastVerse) {
+    if(id === $scope.lastVerse) {
       $scope.lastVerse = -1;
     } else
-    if(id == $scope.firstVerse) {
+    if(id === $scope.firstVerse) {
       $scope.firstVerse = -1;
     } else
 
-    if($scope.lastVerse == -1 && $scope.firstVerse == -1) {
+    if($scope.lastVerse === -1 && $scope.firstVerse === -1) {
       $scope.lastVerse = id;
     } else
 
-    if( $scope.lastVerse == -1 && $scope.firstVerse != -1) {
+    if( $scope.lastVerse === -1 && $scope.firstVerse != -1) {
       if($scope.firstVerse > id) {
         $scope.lastVerse = $scope.firstVerse;
         $scope.firstVerse = id;
@@ -219,7 +220,7 @@ angular.module('starter.controllers', [])
         $scope.lastVerse = id;
       }
     } else
-    if( $scope.firstVerse == -1 && $scope.lastVerse != -1) {
+    if( $scope.firstVerse === -1 && $scope.lastVerse != -1) {
       if($scope.lastVerse < id) {
         $scope.firstVerse = $scope.lastVerse;
         $scope.lastVerse = id;
@@ -242,6 +243,16 @@ angular.module('starter.controllers', [])
         $scope.lastVerse = id;
       }
     }
+  };
+
+  $scope.updateOrCreateReflection = function() {
+    var reflection = null;
+
+    ParseReflection.create(function(reflection) {
+      ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection);
+    });
+
+    $location.path('/tab/home');
   };
 }])
 

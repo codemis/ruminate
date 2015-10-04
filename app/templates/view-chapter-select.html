@@ -4,7 +4,7 @@
 		<ion-item class="book-item" ng-repeat="book in books">
 			{{book.name}}
 			<div class="chapter-box">
-				<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.id}}/{{chapter}}">
+				<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.dam_id}}/{{book.id}}/{{chapter}}">
 					{{chapter}}
 				</a>
 			</div>

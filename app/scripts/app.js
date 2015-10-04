@@ -6,7 +6,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'ionic.utilities', 'config', 'api-tokens.config'])
+angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'config', 'api-tokens.config'])
 
 .run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', function($ionicPlatform, ParseService, PARSE_ENV) {
   $ionicPlatform.ready(function() {
@@ -82,7 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'io
     }
   })
   .state('tab.verse-select', {
-    url: '/home/verse-select/:bookId/:chapter',
+    url: '/home/verse-select/:damId/:bookId/:chapter',
     views: {
       'tab-home':{
         templateUrl: 'templates/view-verse-select.html',

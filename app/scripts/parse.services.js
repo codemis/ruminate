@@ -519,7 +519,7 @@ angular.module('parse.services', [])
 		var query = new Parse.Query(Response);
 		
 		query.equalTo("reflection", reflection);
-		query.equalTo("questionAsked", questionAsked);
+		query.equalTo("question", questionAsked);
 		
 		query.find(
 		{

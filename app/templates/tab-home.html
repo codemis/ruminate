@@ -13,7 +13,7 @@
       </div>
     </div>
     <ion-list class="list" ng-show="hasPassage()" class="ng-hide">
-      <ion-item href="#/tab/home/passage/1" class="item-text-wrap passage-snippet item-icon-right">
+      <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap passage-snippet item-icon-right">
         <span class="passage-snippet-text">{{truncatedSnippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>

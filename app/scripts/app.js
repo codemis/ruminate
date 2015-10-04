@@ -8,7 +8,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'config', 'api-tokens.config'])
 
-.run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', function($ionicPlatform, ParseService, PARSE_ENV) {
+.run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', 'BibleAccessor', function($ionicPlatform, ParseService, PARSE_ENV, BibleAccessor) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,6 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'db
       StatusBar.styleLightContent();
     }
     ParseService.initialize(PARSE_ENV.appId, PARSE_ENV.clientId, PARSE_ENV.jSKey);
+    BibleAccessor.updateBookMaps();
   });
 }])
 

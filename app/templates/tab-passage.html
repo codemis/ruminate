@@ -1,10 +1,10 @@
-<ion-view view-title="{{passage.getBookName()}} {{passage.chapter}}">
+<ion-view view-title="{{bookName}} {{chapter}}">
 
   <ion-nav-buttons side="secondary">
   </ion-nav-buttons>
 
   <ion-content class="passage-content">
-  	<span class="verse" ng-repeat="verse in passage.getText()">
+  	<span class="verse" ng-repeat="verse in verses">
   		<span class="verse-number">{{verse.number}}.</span>
   		<span class="verse-content">{{verse.content}}</span>
   	</span>

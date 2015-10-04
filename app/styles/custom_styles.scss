@@ -64,9 +64,13 @@ and (orientation : portrait) {
 }
 
 .question-popover-button {
-    float:right;
-    margin-top:-13px;
-    margin-bottom:-25px;
+    position:absolute;
+    top:-5px;
+    right:0;
+    color:#444;
+    // float:right;
+    // margin-top:-13px;
+    // margin-bottom:-25px;
 }
 
 .question-modal-content {

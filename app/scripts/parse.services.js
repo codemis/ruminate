@@ -31,17 +31,17 @@ angular.module('parse.services', [])
     if(typeof parsePlugin === 'undefined') {
       ParseUser.createAndLogin();
     } else {
-    parsePlugin.initialize(appId, clientId, function() {
-      parsePlugin.subscribe('allDevices', function() {
-        ParseUser.createAndLogin();
+      parsePlugin.initialize(appId, clientId, function() {
+        parsePlugin.subscribe('allDevices', function() {
+          ParseUser.createAndLogin();
+        },
+        function() {
+          console.log('Unable to subscribe to allDevices');
+        });
       },
       function() {
-        console.log('Unable to subscribe to allDevices');
+        console.log('Unable to initialize the parsePlugin');
       });
-    },
-    function() {
-      console.log('Unable to initialize the parsePlugin');
-    });
 
     }
   };
@@ -100,6 +100,9 @@ angular.module('parse.services', [])
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   parseUserObject.createAndLogin = function() {
+    if(Parse.User.current()) {
+      return;
+    }
     var userData = $localStorage.getObject('parse_user');
     if (Object.keys(userData).length === 0) {
       var user = new Parse.User();
@@ -123,7 +126,7 @@ angular.module('parse.services', [])
         }
       });
     } else {
-      console.log('I am a user.');
+      console.log('I am a user. ' + userData.username + ' ' + userData.password);
       return Parse.User.logIn(userData.username, userData.password, {
         success: function() {
         },
@@ -180,6 +183,17 @@ angular.module('parse.services', [])
     reflection.save(null, {success:callback});
   };
 
+  parseReflectionObject.getForTodayOrCreate = function(callback) {
+    var Reflection = Parse.Object.extend("Reflection");
+    parseReflectionObject.getForToday(function(reflections) {
+      if(typeof reflections === 'undefined' || typeof reflections[0] === 'undefined') {
+        create(callback);
+        return;
+      }
+      callback(reflections[0]);
+    })
+  }
+
   parseReflectionObject.getForToday = function(callback) {
     var midnight = new Date();
     midnight.setHours(0);
@@ -212,7 +226,7 @@ angular.module('parse.services', [])
         callback(reflections);
 			},
 			failure:  function (object, error) {  
-				
+				callback();
 			}
 		});
 		
@@ -278,12 +292,25 @@ angular.module('parse.services', [])
     passage.save(null, {success:callback});
 	  
     };
+
+  parsePassageObject.getFromId = function(id, callback) {
+    var Passage = Parse.Object.extend("Passage");
+    var query = new Parse.Query(Passage);
+    query.get(id, {
+      success: function(passages) {
+        callback(passages);
+      },
+      failure: function() {
+        callback();
+      }
+    })
+  }
 	
   parsePassageObject.getFromReflection = function(reflection, callback) {
     var Passage = Parse.Object.extend("Passage");
     var query = new Parse.Query(Passage);
-    query.equalTo('reflection', reflection.id);
-    query.matchesQuery({
+    query.equalTo('reflection', reflection);
+    query.find({
       success: function(passages) {
         callback(passages);
       }

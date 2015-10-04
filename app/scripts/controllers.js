@@ -248,7 +248,9 @@ angular.module('starter.controllers', [])
   $scope.updateOrCreateReflection = function() {
     var reflection = null;
 
-    ParsePassage.create($scope.book, $scope.chapter, $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection);
+    ParseReflection.create(function(reflection) {
+      ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection);
+    });
 
     $location.path('/tab/home');
   };

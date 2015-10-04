@@ -164,7 +164,7 @@ angular.module('parse.services', [])
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parseReflectionObject.create = function() {
+  parseReflectionObject.create = function(callback) {
 
 	  
 	//Extend the native Parse.Object class.
@@ -174,10 +174,10 @@ angular.module('parse.services', [])
     var reflection = new Reflection();
 
     //listItem is now the object that we want to save, so we assign the properties that we want on it.
-    reflection.set("userPointer", Parse.User.current());
+    reflection.set("user", Parse.User.current());
 
     //We call the save method, and pass in success and failure callback functions.
-    reflection.save();
+    reflection.save(null, {success:callback});
 	  
     };
 

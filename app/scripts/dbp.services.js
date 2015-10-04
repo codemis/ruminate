@@ -14,7 +14,7 @@ angular.module('dbp.services', [])
 	var default_dam_id = 'ENG' + version;
 	var dam_other      = versions[version][0];
 	serviceObject.versionNames = {'ESV':"English Standard Version"};
-
+	serviceObject.bookNames = {}
 	// $http.get( 'http://dbt.io/library/version', { params: { v:2, key:env.apiKey, code:version } })
 	// .then(function(response) {
 	// 	var data = response.data;
@@ -31,6 +31,7 @@ angular.module('dbp.services', [])
 				var newObj = {};
 				newObj.id = raw.book_id;
 				newObj.name = raw.book_name;
+				serviceObject.bookNames[raw.book_id] = raw.book_name;
 				newObj.chapters = raw.chapters.split(',');
 				newObj.dam_id = raw.dam_id;
 				parsed.push(newObj);

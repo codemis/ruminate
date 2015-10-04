@@ -3,56 +3,7 @@
 // initialized at the bottom because it's really long,
 // and these are callbacks which means it'll be initialized by the time they're called
 var lorem;
-var arr = [
-  {
-    'number':2,
-    'content':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus ligula. Nullam turpis metus, sodales vehicula dignissim a, tincidunt convallis erat. Donec eu ligula quis mi fermentum blandit.'
-  },
-  {
-    'number':3,
-    'content':'Vestibulum egestas sapien eu turpis efficitur, id rutrum velit aliquam. Vivamus elementum quis neque semper tristique. Phasellus luctus et mauris id condimentum. Vestibulum vestibulum porttitor semper.'
-  },
-  {
-    'number':4,
-    'content':'Pellentesque molestie eros quis varius congue. In blandit risus non nulla viverra, eget porta ipsum porta. Vivamus molestie ut metus eu viverra.'
-  },
-  {
-    'number':5,
-    'content':'Curabitur rutrum risus quis elit feugiat ultricies. Ut non lacus lorem. Fusce aliquet laoreet lorem eget hendrerit. Sed eleifend ex urna, vitae porttitor ipsum tristique in.'
-  },
-  {
-    'number':6,
-    'content':'Mauris iaculis lacus vel est congue, in pharetra orci porta. Integer sollicitudin lacinia nisi, eu suscipit tortor congue sit amet.'
-  },
-  {
-    'number':7,
-    'content':'Duis interdum turpis non aliquet dignissim. Aliquam ullamcorper ligula ipsum, at luctus justo blandit et. Phasellus imperdiet fermentum ex, ut feugiat leo cursus elementum. Nulla venenatis feugiat accumsan.'
-  },
-  {
-    'number':8,
-    'content':'Nunc pulvinar, metus non ornare faucibus, leo lectus maximus arcu, id eleifend justo nunc in lacus.'
-  },
-  {
-    'number':9,
-    'content':'Nulla ut tincidunt sapien, sit amet vestibulum ipsum. Mauris quam ante, accumsan et sodales et, dictum a ligula. Donec congue accumsan nunc. Donec quam elit, lacinia nec maximus ac, gravida et erat.'
-  },
-  {
-    'number':10,
-    'content':'Phasellus vitae nisl viverra, commodo velit et, tristique nibh. Nunc efficitur odio ac velit pulvinar, et commodo nunc aliquam. Fusce ultricies arcu erat, et suscipit felis ullamcorper at. Aenean non pulvinar nulla, non fermentum nisl.'
-  },
-  {
-    'number':11,
-    'content':'Aenean et ipsum leo. Nullam tristique arcu sit amet dolor sodales rutrum. Suspendisse eget arcu arcu. Nunc condimentum nulla velit, et convallis ipsum maximus dignissim. Proin vehicula, odio nec ultricies bibendum, est nisl elementum orci, quis porta risus lacus non risus.'
-  },
-  {
-    'number':12,
-    'content':'Sed commodo purus sit amet lectus elementum blandit. Aenean quis fringilla diam. Etiam in ligula ut felis efficitur semper et vitae diam.'
-  },
-  {
-    'number':13,
-    'content':'Mauris sit amet ante id libero tincidunt laoreet nec eget nulla. Vestibulum ac porttitor eros. Praesent nec congue urna, non feugiat orci. Nullam tristique suscipit lacus eget viverra. Etiam urna turpis, tempus eu consequat a, sodales id ligula. Etiam fermentum, nisl ac egestas luctus, ligula eros tincidunt lacus, id auctor tortor elit eget urna.'
-  }
-];
+
 var passageDef = {
   'book':'BID',
   'chapter':2,
@@ -99,11 +50,10 @@ angular.module('starter.controllers', [])
     return $scope.unansweredQuestion !== null;
   };
   $scope.updateAnswer = function() {
-    // do something with $scope.answerModel
-    // console.log(''' + $scope.answerModel + ''');
+    
   };
-
-  $scope.toggleQuestion = function(question) {
+  
+    $scope.toggleQuestion = function(question) {
     question.open = !question.open;
   };
 
@@ -162,155 +112,120 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChapterSelectController', function($scope) {
+.controller('HistoryController', function($scope) {
 
+  //Use parse to fetch the history
 
-  var books = [
-    {
-      'id':'Gen',
-      'name':'Genesis',
-      'chapters':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
-    },
-    {
-      'id':'Exod',
-      'name':'Exodus',
-      'chapters':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
-    },
-    {
-      'id':'Lev',
-      'name':'Leviticus',
-      'chapters':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
-    },
-    {
-      'id':'Num',
-      'name':'Numbers',
-      'chapters':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]
-    },
-    {
-      'id':'Ps',
-      'name':'Psalms',
-      'chapters':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,
-                  51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,
-                  101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150]
-    }
-  ];
+  //After that is done....place it in the $scope variable....
 
-  $scope.books = books;
+  $scope.historyView = [];
+
+  //var date = new Date();
+
+  //dateString = (date.getMonth() + 1).toString() + "-" + (date.getDate()).toString() + "-" + (date.getYear()).toString();
+
+  var dateString = '10-03-2015';
+
+  $scope.historyView.push({
+      id:1,
+      verse:'This is one test data',
+      date:dateString
+  });
+  $scope.historyView.push({
+      id:2,
+      verse:'This is another test data',
+      date:dateString
+  });
+  $scope.historyView.push({
+      id:3,
+      verse:'This is yet another test data',
+      date:dateString
+  });
+  $scope.historyView.push({
+      id:4,
+      verse:'This is yet one more test data',
+      date:dateString
+  });
+
+  //$scope.historyView.push(dateString + ' This is one test data');
+  //$scope.historyView.push(dateString + ' This is another test data');
+  //$scope.historyView.push(dateString + ' This is yet another test data');
+  //$scope.historyView.push(dateString + ' This is yet one more test data');
 
 })
-.controller('VerseSelectController', function($scope) {
-  $scope.chapter = 12;
-  $scope.book = "Genesis";
-  var verses = [
-    {
-      'number':2,
-      'content':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus ligula. Nullam turpis metus, sodales vehicula dignissim a, tincidunt convallis erat. Donec eu ligula quis mi fermentum blandit.'
-    },
-    {
-      'number':3,
-      'content':'Vestibulum egestas sapien eu turpis efficitur, id rutrum velit aliquam. Vivamus elementum quis neque semper tristique. Phasellus luctus et mauris id condimentum. Vestibulum vestibulum porttitor semper.'
-    },
-    {
-      'number':4,
-      'content':'Pellentesque molestie eros quis varius congue. In blandit risus non nulla viverra, eget porta ipsum porta. Vivamus molestie ut metus eu viverra.'
-    },
-    {
-      'number':5,
-      'content':'Curabitur rutrum risus quis elit feugiat ultricies. Ut non lacus lorem. Fusce aliquet laoreet lorem eget hendrerit. Sed eleifend ex urna, vitae porttitor ipsum tristique in.'
-    },
-    {
-      'number':6,
-      'content':'Mauris iaculis lacus vel est congue, in pharetra orci porta. Integer sollicitudin lacinia nisi, eu suscipit tortor congue sit amet.'
-    },
-    {
-      'number':7,
-      'content':'Duis interdum turpis non aliquet dignissim. Aliquam ullamcorper ligula ipsum, at luctus justo blandit et. Phasellus imperdiet fermentum ex, ut feugiat leo cursus elementum. Nulla venenatis feugiat accumsan.'
-    },
-    {
-      'number':8,
-      'content':'Nunc pulvinar, metus non ornare faucibus, leo lectus maximus arcu, id eleifend justo nunc in lacus.'
-    },
-    {
-      'number':9,
-      'content':'Nulla ut tincidunt sapien, sit amet vestibulum ipsum. Mauris quam ante, accumsan et sodales et, dictum a ligula. Donec congue accumsan nunc. Donec quam elit, lacinia nec maximus ac, gravida et erat.'
-    },
-    {
-      'number':10,
-      'content':'Phasellus vitae nisl viverra, commodo velit et, tristique nibh. Nunc efficitur odio ac velit pulvinar, et commodo nunc aliquam. Fusce ultricies arcu erat, et suscipit felis ullamcorper at. Aenean non pulvinar nulla, non fermentum nisl.'
-    },
-    {
-      'number':11,
-      'content':'Aenean et ipsum leo. Nullam tristique arcu sit amet dolor sodales rutrum. Suspendisse eget arcu arcu. Nunc condimentum nulla velit, et convallis ipsum maximus dignissim. Proin vehicula, odio nec ultricies bibendum, est nisl elementum orci, quis porta risus lacus non risus.'
-    },
-    {
-      'number':12,
-      'content':'Sed commodo purus sit amet lectus elementum blandit. Aenean quis fringilla diam. Etiam in ligula ut felis efficitur semper et vitae diam.'
-    },
-    {
-      'number':13,
-      'content':'Mauris sit amet ante id libero tincidunt laoreet nec eget nulla. Vestibulum ac porttitor eros. Praesent nec congue urna, non feugiat orci. Nullam tristique suscipit lacus eget viverra. Etiam urna turpis, tempus eu consequat a, sodales id ligula. Etiam fermentum, nisl ac egestas luctus, ligula eros tincidunt lacus, id auctor tortor elit eget urna.'
-    }
-  ];
+.controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
+  $scope.books = [];
+  BibleAccessor.getBookList(function(list) { $scope.books = list; });
+}])
+.controller('VerseSelectController', ['$scope', '$stateParams', 'BibleAccessor', function($scope, $stateParams, BibleAccessor) {
+  
+  // These contain the information that will be added to the database
+  $scope.chapter = $stateParams.chapter;
+  $scope.book = $stateParams.bookId;
+  $scope.bookName = BibleAccessor.versionNames[$scope.book];
+  $scope.dam_id = $stateParams.damId;
+  $scope.firstVerse=-1;
+  $scope.lastVerse=-1
 
-  $scope.verses = verses;
+  BibleAccessor.getVerses($scope.dam_id, $scope.book, $scope.chapter, function(verses) {
+    $scope.verses = verses;
+  });
 
-  var minId=-1, maxId=-1
 
   $scope.isSelected = function(id) {
-    if(minId == -1 || maxId == -1) {
-      return id == minId || id == maxId;
+    id = parseInt(id);
+    if($scope.firstVerse == -1 || $scope.lastVerse == -1) {
+      return id == $scope.firstVerse || id == $scope.lastVerse;
     } else {
-      return id >= minId && id <= maxId;
+      return id >= $scope.firstVerse && id <= $scope.lastVerse;
     }
   }
 
   $scope.handleClick = function(id) {
-    if(id == maxId) {
-      maxId = -1;
+    id = parseInt(id);
+    if(id == $scope.lastVerse) {
+      $scope.lastVerse = -1;
     } else
-    if(id == minId) {
-      minId = -1;
-    } else
-
-    if(maxId == -1 && minId == -1) {
-      maxId = id;
+    if(id == $scope.firstVerse) {
+      $scope.firstVerse = -1;
     } else
 
-    if( maxId == -1 && minId != -1) {
-      if(minId > id) {
-        maxId = minId;
-        minId = id;
+    if($scope.lastVerse == -1 && $scope.firstVerse == -1) {
+      $scope.lastVerse = id;
+    } else
+
+    if( $scope.lastVerse == -1 && $scope.firstVerse != -1) {
+      if($scope.firstVerse > id) {
+        $scope.lastVerse = $scope.firstVerse;
+        $scope.firstVerse = id;
       } else {
-        maxId = id;
+        $scope.lastVerse = id;
       }
     } else
-    if( minId == -1 && maxId != -1) {
-      if(maxId < id) {
-        minId = maxId;
-        maxId = id;
+    if( $scope.firstVerse == -1 && $scope.lastVerse != -1) {
+      if($scope.lastVerse < id) {
+        $scope.firstVerse = $scope.lastVerse;
+        $scope.lastVerse = id;
       } else {
-        minId = id;
+        $scope.firstVerse = id;
       }
     } else
 
-    if(id > maxId && maxId != -1) {
-      maxId = id;
+    if(id > $scope.lastVerse && $scope.lastVerse != -1) {
+      $scope.lastVerse = id;
     } else
-    if(id < minId && minId != -1) {
-      minId = id;
+    if(id < $scope.firstVerse && $scope.firstVerse != -1) {
+      $scope.firstVerse = id;
     } else
 
     {
-      if( Math.abs(id-minId) < Math.abs(id-maxId) ) {
-        minId = id;
+      if( Math.abs(id-$scope.firstVerse) < Math.abs(id-$scope.lastVerse) ) {
+        $scope.firstVerse = id;
       } else {
-        maxId = id;
+        $scope.lastVerse = id;
       }
     }
   };
-})
+}])
 
-.controller('HistoryController', function($scope) {})
 .controller('SettingsController', function($scope) {});
-
-lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus ligula. Nullam turpis metus, sodales vehicula dignissim a, tincidunt convallis erat. Donec eu ligula quis mi fermentum blandit. Vestibulum egestas sapien eu turpis efficitur, id rutrum velit aliquam. Vivamus elementum quis neque semper tristique. Phasellus luctus et mauris id condimentum. Vestibulum vestibulum porttitor semper. Pellentesque molestie eros quis varius congue. In blandit risus non nulla viverra, eget porta ipsum porta. Vivamus molestie ut metus eu viverra. Curabitur rutrum risus quis elit feugiat ultricies. Ut non lacus lorem. Fusce aliquet laoreet lorem eget hendrerit. Sed eleifend ex urna, vitae porttitor ipsum tristique in.\n\nIn placerat faucibus efficitur. Vestibulum et vulputate erat, sit amet luctus lectus. Nam semper tempor pharetra. Mauris iaculis lacus vel est congue, in pharetra orci porta. Integer sollicitudin lacinia nisi, eu suscipit tortor congue sit amet. Duis interdum turpis non aliquet dignissim. Aliquam ullamcorper ligula ipsum, at luctus justo blandit et. Phasellus imperdiet fermentum ex, ut feugiat leo cursus elementum. Nulla venenatis feugiat accumsan. Nunc pulvinar, metus non ornare faucibus, leo lectus maximus arcu, id eleifend justo nunc in lacus.\n\nNulla ut tincidunt sapien, sit amet vestibulum ipsum. Mauris quam ante, accumsan et sodales et, dictum a ligula. Donec congue accumsan nunc. Donec quam elit, lacinia nec maximus ac, gravida et erat. Phasellus vitae nisl viverra, commodo velit et, tristique nibh. Nunc efficitur odio ac velit pulvinar, et commodo nunc aliquam. Fusce ultricies arcu erat, et suscipit felis ullamcorper at. Aenean non pulvinar nulla, non fermentum nisl.\n\nAenean et ipsum leo. Nullam tristique arcu sit amet dolor sodales rutrum. Suspendisse eget arcu arcu. Nunc condimentum nulla velit, et convallis ipsum maximus dignissim. Proin vehicula, odio nec ultricies bibendum, est nisl elementum orci, quis porta risus lacus non risus. Sed commodo purus sit amet lectus elementum blandit. Aenean quis fringilla diam. Etiam in ligula ut felis efficitur semper et vitae diam.\n\nMauris sit amet ante id libero tincidunt laoreet nec eget nulla. Vestibulum ac porttitor eros. Praesent nec congue urna, non feugiat orci. Nullam tristique suscipit lacus eget viverra. Etiam urna turpis, tempus eu consequat a, sodales id ligula. Etiam fermentum, nisl ac egestas luctus, ligula eros tincidunt lacus, id auctor tortor elit eget urna. Donec nec lobortis tellus. Nulla sagittis, justo eu pulvinar molestie, metus mi condimentum augue, eget rhoncus mauris nisi ut arcu. Nunc pulvinar porta dolor ut tristique. In hac habitasse platea dictumst. Sed gravida, lectus a semper maximus, mauris diam pellentesque arcu, nec imperdiet enim magna ac lacus. Sed pellentesque magna id neque pellentesque, in imperdiet urna ornare. Vivamus aliquam vitae ligula nec vestibulum.\n\nInteger porta cursus risus, sit amet mattis tortor elementum interdum. Curabitur ac eros nec massa interdum interdum eu suscipit libero. Aliquam enim mi, auctor dignissim fermentum at, placerat in urna. Nunc rhoncus dolor sit amet dui lacinia porta. Aenean vestibulum dolor ligula, et elementum enim pellentesque sit amet. Praesent sodales purus vel nunc molestie, in suscipit ipsum convallis. Proin ultrices volutpat urna. Etiam porta nec massa vel varius. Proin urna lectus, convallis et commodo sed, tristique vitae dui. Duis sed suscipit augue, a imperdiet arcu. Morbi consequat egestas nisi, non convallis mi dignissim sit amet. Donec tincidunt congue sem, sed venenatis enim commodo a. Donec a arcu tincidunt, consequat ex et, maximus augue. Integer pellentesque, nulla ornare dignissim accumsan, lacus diam tempus mauris, sit amet tempus mauris nulla eget urna. Suspendisse mi sem, congue scelerisque purus sit amet, sagittis cursus purus. Cras laoreet sem et condimentum blandit.';

@@ -6,9 +6,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'config', 'api-tokens.config'])
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', function($ionicPlatform, ParseService, PARSE_ENV) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,8 +21,9 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+    ParseService.initialize(PARSE_ENV.appId, PARSE_ENV.jSKey);
   });
-})
+}])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -51,6 +52,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  
+  .state('tab.history', {
+    url: '/history',
+    views: {
+      'tab-history': {
+        templateUrl: 'templates/tab-history.html',
+        controller: 'HistoryController'
+      }
+    }
+  })
+  
   .state('tab.passage', {
     url: '/home/passage/:passageId',
     views: {
@@ -70,7 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
   .state('tab.verse-select', {
-    url: '/home/verse-select/:bookId/:chapter',
+    url: '/home/verse-select/:damId/:bookId/:chapter',
     views: {
       'tab-home':{
         templateUrl: 'templates/view-verse-select.html',

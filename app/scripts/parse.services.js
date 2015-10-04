@@ -517,6 +517,8 @@ angular.module('parse.services', [])
   /**
    * Create the response if it does not exist
    *
+   * @param {Pointer} reflection:  A reference to the question that was asked.
+   *
    * @param {Pointer} questionAsked:  A reference to the question that was asked.
    *
    * @param {string} answer:  An answer to the question that was asked.
@@ -527,7 +529,7 @@ angular.module('parse.services', [])
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parseResponseObject.create = function(questionAsked, answer, callback) {
+  parseResponseObject.create = function(reflection, questionAsked, answer, callback) {
 
     var Response = Parse.Object.extend("Response");
 
@@ -535,6 +537,7 @@ angular.module('parse.services', [])
     var response = new Response();
 
     //listItem is now the object that we want to save, so we assign the properties that we want on it.
+	response.set("reflection", reflection);
 	response.set("question", questionAsked);
     response.set("answer", answer);	
 

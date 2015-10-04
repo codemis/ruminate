@@ -1,14 +1,39 @@
 <ion-view view-title="Chapter Select">
 	<ion-content>
 		<ion-list>
-		<ion-item class="book-item" ng-repeat="book in books">
-			{{book.name}}
-			<div class="chapter-box">
-				<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.dam_id}}/{{book.id}}/{{chapter}}">
-					{{chapter}}
-				</a>
-			</div>
-		</ion-item>
+		
+		<div ng-repeat="book in books">
+			<ion-item class="chapter-title" ng-click="toggleShown(book)">
+	      {{book.name}}
+	    </ion-item>
+
+	    <ion-item class="chapter-list item-text-wrap">
+	      <div class="padding-reference">
+	        <div class="position-reference">
+	          
+	        	<span class="chapter-box-abs">
+	          	<div class="chapter-box to-display"  ng-click="$event.stopPropagation()">
+								<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.dam_id}}/{{book.id}}/{{chapter}}"
+								>{{chapter}}</a>
+							</div>
+	          </span>
+
+	        </div>
+	      </div>
+
+	      <div class="chapter-list-hidden">
+	      	<div class="chapter-box"  ng-click="$event.stopPropagation()">
+						<span class="chapter-item-hiding" ng-show="isShown(book)" ng-repeat="chapter in book.chapters"></span>
+					</div>
+				</div>
+	    </ion-item>
+
+		</div>
+		
+
+
+
+
 	</ion-list>
 	</ion-content>
 </ion-view>

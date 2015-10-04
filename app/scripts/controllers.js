@@ -38,9 +38,9 @@ angular.module('starter.controllers', [])
 
 }])
 .controller('HomeController', [ '$scope', '$ionicModal', '$stateParams', '$location', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
-  ,function($scope, $ionicModal, $location, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
+  ,function($scope, $ionicModal, $stateParams, $location, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   
-  var objId = $stateParams.objId;
+  $scope.objId = $stateParams.objId;
 
   $scope.updateData = function(objId) {
     var f = function(reflection) {
@@ -83,8 +83,6 @@ angular.module('starter.controllers', [])
     }
   }
   
-  $scope.updateData(objId);
-
   $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';

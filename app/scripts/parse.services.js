@@ -468,6 +468,19 @@ angular.module('parse.services', [])
 		
 	};
 
+  parseQuestionObject.getFromId = function(id, callback) {
+    var Question = Parse.Object.extend("Question");
+    var query = new Parse.Query(Question);
+    query.get(id, {
+      success: function(question) {
+        callback(question);
+      },
+      failure: function() {
+        callback();
+      }
+    })
+  }
+
   return parseQuestionObject;
 
 
@@ -477,7 +490,7 @@ angular.module('parse.services', [])
 
 //pointer to question, answer as string
 
-.factory('ParseResponse', [function() {
+.factory('ParseResponse', ['ParseQuestion', function(ParseQuestion) {
   /**
    * The parseResponse Object that will be returned
    *
@@ -606,6 +619,37 @@ angular.module('parse.services', [])
         		
     };
 
+
+  parseResponseObject.getFromReflection = function(reflection, callback) {
+    var Response = Parse.Object.extend("Response");
+    var query = new Parse.Query(Response);
+    query.equalTo('reflection', reflection);
+    query.find({
+      success: function(responses) {
+        callback(responses);
+      }
+    })
+  }
+
+  parseResponseObject.forEachFromReflectionWithQuestion = function(reflection, callback) {
+    var Response = Parse.Object.extend("Response");
+    var query = new Parse.Query(Response);
+    query.equalTo('reflection', reflection);
+    query.find({
+      success: function(responses) {
+        if(typeof responses === 'undefined' || responses.length === 0){ return; }
+        console.log(responses);
+        for (var i = 0; i < responses.length; i++) {
+          (function(response) {
+            ParseQuestion.getFromId(response.get('question').id, function(question) {
+              response.question = question;
+              callback(response);
+            });
+          })(responses[i])
+        };
+      }
+    })
+  }
   return parseResponseObject;
 
 

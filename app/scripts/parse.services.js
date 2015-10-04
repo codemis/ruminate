@@ -389,6 +389,7 @@ angular.module('parse.services', [])
 					var resultToStore = {};
 					resultToStore.questionText = question.get("questionText");
 					resultToStore.questionType = question.get("questionType");
+					resultToStore.question = question;
 					parseQuestionObject.result.push(resultToStore);
                 }				
 				callback;

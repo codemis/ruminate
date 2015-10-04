@@ -6,19 +6,19 @@
 
 
   <ion-content>
-    <div ng-hide="hasPassage()" class="ng-hide">
+    <div ng-hide="hasReflection" class="ng-hide">
       <div class="logo-watermark"></div>
       <div class="call-to-action">
         <button class="button button-positive button-block" ng-click="selectPassage()">Select a Passage</button>
       </div>
     </div>
-    <ion-list class="list" ng-show="hasPassage()" class="ng-hide">
+    <ion-list class="list" ng-show="hasReflection" class="ng-hide">
       <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap passage-snippet item-icon-right">
         <span class="passage-snippet-text">{{truncatedSnippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">
-        {{unansweredQuestion}}
+        {{unansweredQuestion.question}}
         <textarea class="answer-input" placeholder="Answer" ng-model="$parent.$parent.$parent.answerModel" ng-change="updateAnswer()"></textarea> <!-- angular-elastic? -->
       </ion-item>
       <div ng-repeat="question in questions">

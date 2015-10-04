@@ -42,6 +42,7 @@ angular.module('starter.controllers', [])
   ParseReflection.getForToday(function(reflections) {
     if(typeof reflections === 'undefined' || typeof reflections[0] === 'undefined'){ return; }
     $scope.reflection = reflections[0];
+    console.log($scope.reflection.id);
     ParsePassage.getFromReflection($scope.reflection, function(passages) {
       if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
       var passage = passages[0];
@@ -54,16 +55,57 @@ angular.module('starter.controllers', [])
       $scope.passage.recordId   = passage.id;
 
       $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
-      console.log($scope.truncatedSnippet);
+      $scope.$apply();
     });
-    // ParseResponse.getFromReflection(reflection, function(responces) {
-    //   ParseQuestion.getFrom
-    // });
-  });
+    ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
+      // if(typeof responses === 'undefined' || responses.length === 0){ return; }
+      // for (var i = 0; i < responses.length; i++) {
+        // var response = responses[i];
 
+        console.log(response);
+        var obj = {open:false};
+        obj.answer = response.get('answer');
+        obj.recordId = response.id;
+        obj.question = response.question.get('questionText');
+
+        if(obj.answer.trim().length == 0) {
+          $scope.unansweredQuestion = obj;
+        } else {
+          $scope.questions.push(obj);
+        }
+
+        console.log(obj);
+
+        $scope.$apply();
+
+        // ParseQuestion.getFromId(response.get('question').id, function(question) {
+        //   if(typeof question === 'undefined'){ return; }
+        //   obj.question = question.get('questionText');
+        //   if(obj.answer.trim().length == 0) {
+        //     $scope.unansweredQuestion = obj;
+        //   } else {
+        //     $scope.questions.push(obj);
+        //   }
+        //   $scope.$apply();
+        // });
+
+      // };
+    });
+    $scope.hasReflection = true;
+    $scope.$apply();
+  });
+  
+  $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';
-  
+  $scope.passage = null;
+  $scope.questions = [];
+  $scope.unansweredQuestion = null;
+  // {
+  //   'question':'Some question I asked you',
+  //   'answer':'Some answer I gave',
+  //   'open':false
+  // }
   var truncate = function(str, len) {
     var trimmedString = str.substr(0, len);
     trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' ')));
@@ -72,15 +114,14 @@ angular.module('starter.controllers', [])
     }
     return trimmedString;
   };
-  $scope.passage = null;//passageDef;
 
-  $scope.hasPassage = function() {
-    return typeof $scope.reflection !== 'undefined' && $scope.reflection !== null;
-  };
+  // $scope.hasPassage = function() {
+  //   return $scope.reflection !== null;
+  // };
 
 
   $scope.answerModel = '';
-  $scope.unansweredQuestion = 'Some unanswered question';
+  // $scope.unansweredQuestion = 'Some unanswered question';
 
   $scope.hasUnansweredQuestion = function() {
     return $scope.unansweredQuestion !== null;
@@ -98,24 +139,6 @@ angular.module('starter.controllers', [])
     $location.path('/tab/home/chapter-select');
     // do LOTS of VERY complicated stuff
   };
-
-  $scope.questions = [
-    {
-      'question':'Some complex question I asked you',
-      'answer':'Some long answer I gave. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce lectus ipsum, rhoncus consectetur rhoncus sed, sodales id sapien. Donec ac consequat augue. Sed fermentum nibh sit amet ipsum maximus varius. Nulla finibus mauris eget purus viverra, et maximus ante laoreet. Etiam at eros ac neque gravida ullamcorper at in leo. Aliquam eget lobortis diam. Mauris tellus erat, condimentum eget tristique eget, commodo in quam. Praesent sit amet interdum leo. Fusce id metus euismod, fringilla purus a, varius mi.\n\nCurabitur risus diam, condimentum non augue sed, varius imperdiet libero. Aenean iaculis, mi et posuere rutrum, lectus ligula efficitur erat, sed ullamcorper odio nisl eu ligula. In sodales massa nec maximus pellentesque. Aenean ornare risus felis, et viverra nisi consequat at. Donec arcu metus, luctus ornare auctor et, pharetra nec quam. In a nulla tincidunt, convallis purus nec, mollis odio. Donec egestas sem id vestibulum consectetur. Etiam at leo odio. Nunc pellentesque felis quis nibh dictum, quis posuere justo fringilla. Mauris mollis augue et erat pulvinar, in tristique turpis mollis.\n\nQuisque at mattis lacus. Quisque interdum sagittis accumsan. Praesent laoreet vulputate nunc, ac consectetur leo pulvinar sed. Proin volutpat tellus quis hendrerit fringilla. Suspendisse a enim ac purus dictum tincidunt eu eget nunc. Phasellus faucibus nisi diam, at varius lacus pretium id. Sed sed eros nisl. Nulla pharetra eget ex nec vulputate. Praesent vehicula enim gravida ipsum bibendum pharetra. Quisque tincidunt scelerisque odio, id finibus massa elementum at. Sed venenatis blandit iaculis. Cras finibus ornare sagittis. Vestibulum quis luctus ex.\n\nMorbi non molestie ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla vitae ante eu turpis eleifend volutpat tincidunt ut risus. Pellentesque ligula nisi, ultricies eget tincidunt et, scelerisque a ante. Praesent erat metus, viverra sed turpis nec, mollis gravida felis. Quisque eget cursus elit. Vivamus iaculis, tortor vitae efficitur mollis, diam ante iaculis nisl, in viverra ex libero ac ipsum. Sed in nisl quis nunc posuere convallis. Vestibulum sollicitudin eleifend nulla, et ultrices nisi pulvinar sed. Quisque dui nulla, auctor ut tincidunt a, molestie vitae massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris hendrerit felis vitae ex consectetur, ut dictum ex iaculis. Maecenas vitae sem congue, imperdiet mi vitae, tincidunt lectus. Fusce sollicitudin purus tellus, nec faucibus nibh sollicitudin id.\n\nAliquam et nunc ac orci scelerisque rhoncus. Etiam ullamcorper dui quis fermentum congue. Nulla fringilla sit amet ante vel ultrices. Sed vitae lacus nec turpis ultricies tempor. Aenean nisl leo, egestas sit amet nisi sit amet, euismod egestas quam. Proin dolor purus, hendrerit scelerisque dignissim eu, consectetur ac ipsum. Sed dictum sodales libero non rhoncus. Phasellus condimentum ullamcorper congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce accumsan scelerisque purus, non vulputate lorem facilisis pulvinar. Aliquam sodales at erat ac sagittis. Integer tempus arcu vitae ligula lobortis laoreet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum nec tristique metus. Proin sollicitudin fringilla lacus, mattis iaculis libero dignissim at. Nam nisi ligula, finibus sit amet orci vitae, consectetur iaculis ipsum.',
-      'open':false
-    },
-    {
-      'question':'Some other question I asked you',
-      'answer':'Some other answer I gave',
-      'open':false
-    },
-    {
-      'question':'Some question I asked you',
-      'answer':'Some answer I gave',
-      'open':false
-    }
-  ];
 
 
   $ionicModal.fromTemplateUrl('templates/question-popover.html', {

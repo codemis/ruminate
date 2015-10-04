@@ -25,8 +25,18 @@ angular.module('parse.services', [])
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parseServiceObject.initialize = function(appId, javascriptKey) {
+  parseServiceObject.initialize = function(appId, clientId, javascriptKey) {
     Parse.initialize(appId, javascriptKey);
+    parsePlugin.initialize(appId, clientId, function() {
+      parsePlugin.subscribe('allDevices', function() {
+      },
+      function() {
+        console.log('Unable to subscribe to allDevices');
+      });
+    },
+    function() {
+      console.log('Unable to initialize the parsePlugin');
+    });
     return ParseUser.createAndLogin();
   };
 

@@ -340,6 +340,51 @@ angular.module('parse.services', [])
 		
 		
 	};
+	
+	/**
+	 * Retrieves an existing passage from the Parse database
+	 *
+	 * @param {Pointer} reflection:  The reflection to query for.
+	 *
+	 * @param {function} callback: A callback function to use once the object is queried.
+     * 	 
+	 * @return {Promise} A promise to return a passage object.
+	 *
+	 */
+  parsePassageObject.queryWithReflection = function(reflection, callback) {
+	    var Passage = Parse.Object.extend("Passage");
+		
+		
+		
+		var query = new Parse.Query(Passage);
+		
+		query.equalTo("reflection", reflection);
+		
+		query.find(
+		{
+			success: function (passages)  {
+                for (var ctr = 0; ctr < passages.length; ctr++)
+                {
+                    var passage = passages[ctr];
+					var resultToStore = {};
+					resultToStore.book = passage.get("book");
+					resultToStore.chapter = passage.get("chapter");
+					resultToStore.firstVerse = passage.get("firstVerse");
+					resultToStore.lastVerse = passage.get("lastVerse");
+					resultToStore.snippet = passage.get("snippet");
+					resultToStore.reflection = passage.get("reflection");
+					
+					parsePassageObject.result.push(resultToStore);
+                }				
+				callback;
+			},
+			failure:  function (object, error) {  
+				
+			}
+		});
+		
+		
+	};
 
   return parsePassageObject;
 

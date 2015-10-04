@@ -112,7 +112,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HistoryController', function($scope) {
+.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage' function($scope, ParseReflection) {
 
   //Use parse to fetch the history
 
@@ -124,35 +124,72 @@ angular.module('starter.controllers', [])
 
   //dateString = (date.getMonth() + 1).toString() + "-" + (date.getDate()).toString() + "-" + (date.getYear()).toString();
 
-  var dateString = '10-03-2015';
+  //var dateString = '10-03-2015';
+  
+  var numberOfQueriesWithReflection = 0;
+  
+  var parseResult = [];
+  
+  ParseReflection.query(new Date(new Date().toDateString()),
+      function()
+	  {
+	      //ParseReflection.result.get("createdAt")
+		  for (var ctr = 0; ctr < ParseReflection.result.length; ctr++)
+		  {
+		      ParsePassage.queryWithReflection(ParseReflection.result[ctr],
+			      function()
+				  {
+				      var createdDate = ParseRefelection.result[numberOfQueriesWithReflection].get("createdAt");
+					  for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
+					  {
+					      parseResult.push({date:createdDate, passageResult:ParsePassage.result[ctr2]});
+					  }
+					  numberOfQueriesWithReflection++;
+					  if (numberOfQueriesWithReflection == ParseReflection.result.length)
+					  {
+					      for (var ctr3 = 0; ctr3 < parseResult.length; ctr3++)
+						  {
+						      $scope.historyView.push(
+							      {
+								      verse:parseResult[ctr3].passageResult.snippet
+									 ,date:parseResult[ctr3].date
+								  }
+							  );
+						  }
+					  }
+				  }
+			  );
+		  }
+	  }
+  )
 
-  $scope.historyView.push({
-      id:1,
-      verse:'This is one test data',
-      date:dateString
-  });
-  $scope.historyView.push({
-      id:2,
-      verse:'This is another test data',
-      date:dateString
-  });
-  $scope.historyView.push({
-      id:3,
-      verse:'This is yet another test data',
-      date:dateString
-  });
-  $scope.historyView.push({
-      id:4,
-      verse:'This is yet one more test data',
-      date:dateString
-  });
+  //$scope.historyView.push({
+  //    id:1,
+  //    verse:'This is one test data',
+  //    date:dateString
+  //});
+  //$scope.historyView.push({
+  //    id:2,
+  //    verse:'This is another test data',
+  //    date:dateString
+  //});
+  //$scope.historyView.push({
+  //    id:3,
+  //    verse:'This is yet another test data',
+  //    date:dateString
+  //});
+  //$scope.historyView.push({
+  //    id:4,
+  //    verse:'This is yet one more test data',
+  //    date:dateString
+  //});
 
   //$scope.historyView.push(dateString + ' This is one test data');
   //$scope.historyView.push(dateString + ' This is another test data');
   //$scope.historyView.push(dateString + ' This is yet another test data');
   //$scope.historyView.push(dateString + ' This is yet one more test data');
 
-})
+}])
 .controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
   $scope.books = [];
   BibleAccessor.getBookList(function(list) { $scope.books = list; });

@@ -454,4 +454,4 @@ angular.module('parse.services', [])
   return parsePassageObject;
 
 
-}])
+}]);

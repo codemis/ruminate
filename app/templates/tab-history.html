@@ -1,8 +1,14 @@
 <ion-view view-title="Ruminate History">
   <ion-content class="padding">
-     <div class="list">	 
-	     <a class="item item-icon-right item-text-wrap" ng-repeat="history in historyView" href="#/tab/home">{{history.date}} <br /> {{history.info}} <br /> {{history.verse}} <i class="icon ion-chevron-right icon-accessory"></i></a>	
-
-	 </div>
+     <ion-list>	 
+	     <ion-item class="item item-icon-right item-text-wrap" ng-repeat="history in historyView" href="#/tab/reflection/{{history.objId}}">
+	     	<div class="history-top">
+	     		<span class="history-date">{{history.date}}</span>
+	     		<span class="history-chapter">{{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}</span>
+	     	</div>
+	     	<span class="history-snippet">{{history.verse}}</span>
+	     	<i class="icon ion-chevron-right icon-accessory"></i>
+	     </ion-item>
+	 </ion-list>
   </ion-content>
 </ion-view>

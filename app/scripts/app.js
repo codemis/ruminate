@@ -53,6 +53,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'db
       }
     }
   })
+  .state('tab.reflection', {
+    url: '/home/reflection/:objId',
+    views: {
+      'tab-home': {
+        templateUrl: 'templates/tab-home.html',
+        controller: 'HomeController'
+      }
+    }
+  })
   
   .state('tab.history', {
     url: '/history',

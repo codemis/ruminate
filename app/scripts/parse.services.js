@@ -21,13 +21,23 @@ angular.module('parse.services', [])
    * @param  {String} appId         The Parse Application Id
    * @param  {String} javascriptKey The Parse Javascript Key
    *
-   * @return {Promise} A promise to login the user
+   * @return {Void}
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parseServiceObject.initialize = function(appId, javascriptKey) {
+  parseServiceObject.initialize = function(appId, clientId, javascriptKey) {
     Parse.initialize(appId, javascriptKey);
-    return ParseUser.createAndLogin();
+    parsePlugin.initialize(appId, clientId, function() {
+      parsePlugin.subscribe('allDevices', function() {
+        ParseUser.createAndLogin();
+      },
+      function() {
+        console.log('Unable to subscribe to allDevices');
+      });
+    },
+    function() {
+      console.log('Unable to initialize the parsePlugin');
+    });
   };
 
   return parseServiceObject;
@@ -98,6 +108,7 @@ angular.module('parse.services', [])
       return user.signUp(null, {
         success: function() {
           $localStorage.setObject('parse_user', {username: username, password: password});
+          parsePlugin.subscribe('user-'+username, function(){}, function(){});
         },
         error: function(user, error) {
           console.log('Unable to sign up:  ' + error.code + ' ' + error.message);

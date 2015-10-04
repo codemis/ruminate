@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'db
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
-    ParseService.initialize(PARSE_ENV.appId, PARSE_ENV.jSKey);
+    ParseService.initialize(PARSE_ENV.appId, PARSE_ENV.clientId, PARSE_ENV.jSKey);
   });
 }])
 

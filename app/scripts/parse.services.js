@@ -160,6 +160,8 @@ angular.module('parse.services', [])
     /**
    * Create the user if it does not exist, and log them in
    *
+   * @param {function} callback: A callback function to use once the object is created.
+   * 
    * @return {Promise} A promise to create a reflection object.
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
@@ -181,7 +183,58 @@ angular.module('parse.services', [])
 	  
     };
 
+		/**
+	 * Retrieves an existing passage from the Parse database
+	 *
+	 * @param {string} createdDate:  The date to search for...
+	 *
+	 * @param {function} callback: A callback function to use once the object is queried.
+     * 	 
+	 * @return {Promise} A promise to return a reflection object.
+	 *
+	 */
+  parseReflectionObject.query = function(createdDate, callback) {
+	    var Reflection = Parse.Object.extend("Reflection");
+		
+		
+		
+		var query = new Parse.Query(Reflection);
+		
+		query.greaterThanOrEqualTo("createdAt", createdDate);
+		query.equalTo("user", Parse.User.current());
+		
+		query.find(
+		{
+			success: function (reflections)  {
+                for (var ctr = 0; ctr < reflections.length; ctr++)
+                {
+                    var reflection = reflections[ctr];
+					//var resultToStore = {};
+					//resultToStore.createdAt = reflection.get("createdAt");
+					//resultToStore.user = reflection.get("user");
+					//resultToStore.objectId = reflection.get("objectId");
+					
+					//resultToStore.chapter = passage.get("chapter");
+					//resultToStore.firstVerse = passage.get("firstVerse");
+					//resultToStore.lastVerse = passage.get("lastVerse");
+					//resultToStore.snippet = passage.get("snippet");
+					//resultToStore.reflection = passage.get("reflection");
+					
+					parseReflectionObject.result.push(reflection);
+                }				
+				callback;
+			},
+			failure:  function (object, error) {  
+				
+			}
+		});
+		
+		
+	};
+
   return parseReflectionObject;
+  
+  
 
 
 }])
@@ -216,11 +269,13 @@ angular.module('parse.services', [])
    *
    * @param {Pointer} reflection:  The reflection in which the passage is related to.
    *
+   * @param {function} callback: A callback function to use once the object is created.
+   * 
    * @return {Promise} A promise to create a passage object.
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parsePassageObject.create = function(book, chapter, firstVerse, lastVerse, snippet, reflection) {
+  parsePassageObject.create = function(book, chapter, firstVerse, lastVerse, snippet, reflection, callback) {
 
     var Passage = Parse.Object.extend("Passage");
 
@@ -237,7 +292,7 @@ angular.module('parse.services', [])
 	
 
     //We call the save method, and pass in success and failure callback functions.
-    passage.save();
+    passage.save(null, {success:callback});
 	  
     };
 	
@@ -246,10 +301,12 @@ angular.module('parse.services', [])
 	 *
 	 * @param {string} snippetSearchText:  The snippet to query for.
 	 *
+	 * @param {function} callback: A callback function to use once the object is queried.
+     * 	 
 	 * @return {Promise} A promise to return a passage object.
 	 *
 	 */
-  parsePassageObject.query = function(snippetSearchText) {
+  parsePassageObject.query = function(snippetSearchText, callback) {
 	    var Passage = Parse.Object.extend("Passage");
 		
 		
@@ -274,6 +331,7 @@ angular.module('parse.services', [])
 					
 					parsePassageObject.result.push(resultToStore);
                 }				
+				callback;
 			},
 			failure:  function (object, error) {  
 				
@@ -310,10 +368,12 @@ angular.module('parse.services', [])
 	 *
 	 * @param {string} questionType:  The question type to query for.
 	 *
+	 * @param {function} callback: A callback function to use once the object is queried.
+     * 	 
 	 * @return {Promise} A promise to return a question object.
 	 *
 	 */  
-  parseQuestionObject.query = function(questionType) {
+  parseQuestionObject.query = function(questionType, callback) {
 	    var Question = Parse.Object.extend("Question");
 		
 		var query = new Parse.Query(Question);
@@ -329,8 +389,10 @@ angular.module('parse.services', [])
 					var resultToStore = {};
 					resultToStore.questionText = question.get("questionText");
 					resultToStore.questionType = question.get("questionType");
+					resultToStore.question = question;
 					parseQuestionObject.result.push(resultToStore);
                 }				
+				callback;
 			},
 			failure:  function (object, error) {  
 				
@@ -372,11 +434,13 @@ angular.module('parse.services', [])
    *
    * @param {string} answer:  An answer to the question that was asked.
    *
+   * @param {function} callback: A callback function to use once the object is created.
+   *
    * @return {Promise} A promise to create a response object.
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
-  parseResponseObject.create = function(questionAsked, answer) {
+  parseResponseObject.create = function(questionAsked, answer, callback) {
 
     var Response = Parse.Object.extend("Response");
 
@@ -388,7 +452,7 @@ angular.module('parse.services', [])
     response.set("answer", answer);	
 
     //We call the save method, and pass in success and failure callback functions.
-    response.save();
+    response.save(null, {success:callback});
 	  
     };
 	
@@ -399,10 +463,12 @@ angular.module('parse.services', [])
 	 *
 	 * @param {Pointer} reflection:  The reflection to query for.
 	 *
+	 * @param {function} callback: A callback function to use once the object is queried.
+     * 
 	 * @return {Promise} A promise to return a response object.
 	 *
 	 */
-  parseResponseObject.query = function(reflection, answerSearchText) {
+  parseResponseObject.query = function(reflection, answerSearchText, callback) {
 	    var Response = Parse.Object.extend("Response");
 		
 		var query = new Parse.Query(Response);
@@ -421,6 +487,7 @@ angular.module('parse.services', [])
 					resultToStore.answer = response.get("answer");
 					parseResponseObject.result.push(resultToStore);
                 }				
+				callback;
 			},
 			failure:  function (object, error) {  
 				
@@ -440,11 +507,13 @@ angular.module('parse.services', [])
 	 *
 	 * @param {string}  answer:  The answer for use with updating an existing response
 	 *
+	 * @param {function} callback: A callback function to use once the object is updated.
+     * 
 	 * @return {Promise} A promise to return a response object.
 	 *
 	 */
 	
-  parseResponseObject.update = function(reflection, questionAsked, answer) {
+  parseResponseObject.update = function(reflection, questionAsked, answer, callback) {
 	    var Response = Parse.Object.extend("Response");
 		
 		var query = new Parse.Query(Response);
@@ -462,6 +531,7 @@ angular.module('parse.services', [])
 					response.set("answer", answer);
 					response.save();
                 }				
+				callback;
 			},
 			failure:  function (object, error) {  
 				

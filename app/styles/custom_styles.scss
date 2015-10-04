@@ -204,3 +204,17 @@ $y-padding: 2px;
 .chapter-item-hiding.ng-hide {
   height:0;
 }
+
+// --- history ---
+
+.history-date {
+  float:left;
+  font-size:0.75em;
+  font-color:#ddd;
+}
+.history-chapter {
+  float:right;
+}
+.history-snippet {
+  display:inline-block;
+}

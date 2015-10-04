@@ -33,68 +33,58 @@ angular.module('starter.controllers', [])
     BibleAccessor.getVerses(BibleAccessor.bookDamMap[passage.get('book')], passage.get('book'), passage.get('chapter'), function(verses) {
       $scope.verses = verses.slice(passage.get('firstVerse'), passage.get('lastVerse') + 1);
     });
+    $scope.$apply();
   })
 
 }])
-.controller('HomeController', [ '$scope', '$ionicModal', '$location', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
+.controller('HomeController', [ '$scope', '$ionicModal', '$stateParams', '$location', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
   ,function($scope, $ionicModal, $location, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   
-  ParseReflection.getForToday(function(reflections) {
-    if(typeof reflections === 'undefined' || typeof reflections[0] === 'undefined'){ return; }
-    $scope.reflection = reflections[0];
-    console.log($scope.reflection.id);
-    ParsePassage.getFromReflection($scope.reflection, function(passages) {
-      if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
-      var passage = passages[0];
-      $scope.passage = {};
-      $scope.passage.book       = passage.get('book');
-      $scope.passage.chapter    = passage.get('chapter');
-      $scope.passage.firstVerse = passage.get('firstVerse');
-      $scope.passage.lastVerse  = passage.get('lastVerse');
-      $scope.passage.snippet    = passage.get('snippet');
-      $scope.passage.recordId   = passage.id;
+  var objId = $stateParams.objId;
 
-      $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
-      $scope.$apply();
-    });
-    ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
-      // if(typeof responses === 'undefined' || responses.length === 0){ return; }
-      // for (var i = 0; i < responses.length; i++) {
-        // var response = responses[i];
+  $scope.updateData = function(objId) {
+    var f = function(reflection) {
+      $scope.reflection = reflection;
+      console.log($scope.reflection.id);
+      ParsePassage.getFromReflection($scope.reflection, function(passages) {
+        if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
+        var passage = passages[0];
+        $scope.passage = {};
+        $scope.passage.book       = passage.get('book');
+        $scope.passage.chapter    = passage.get('chapter');
+        $scope.passage.firstVerse = passage.get('firstVerse');
+        $scope.passage.lastVerse  = passage.get('lastVerse');
+        $scope.passage.snippet    = passage.get('snippet');
+        $scope.passage.recordId   = passage.id;
 
-        console.log(response);
-        var obj = {open:false};
-        obj.answer = response.get('answer');
-        obj.recordId = response.id;
-        obj.question = response.question.get('questionText');
-
-        if(obj.answer.trim().length == 0) {
-          $scope.unansweredQuestion = obj;
-        } else {
-          $scope.questions.push(obj);
-        }
-
-        console.log(obj);
-
+        $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
         $scope.$apply();
+      });
+      ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
+          var obj = {open:false};
+          obj.answer = response.get('answer');
+          obj.recordId = response.id;
+          obj.question = response.question.get('questionText');
 
-        // ParseQuestion.getFromId(response.get('question').id, function(question) {
-        //   if(typeof question === 'undefined'){ return; }
-        //   obj.question = question.get('questionText');
-        //   if(obj.answer.trim().length == 0) {
-        //     $scope.unansweredQuestion = obj;
-        //   } else {
-        //     $scope.questions.push(obj);
-        //   }
-        //   $scope.$apply();
-        // });
-
-      // };
-    });
-    $scope.hasReflection = true;
-    $scope.$apply();
-  });
+          if(obj.answer.trim().length == 0) {
+            $scope.unansweredQuestion = obj;
+          } else {
+            $scope.questions.push(obj);
+          }
+          $scope.$apply();
+      });
+      $scope.hasReflection = true;
+      $scope.$apply();
+    };
+    if(typeof objId === 'undefined') {
+      ParseReflection.getForToday(f);      
+    } else {
+      ParseReflection.getById(objId, f);
+    }
+  }
   
+  $scope.updateData(objId);
+
   $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';
@@ -171,7 +161,8 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage', function($scope, ParseReflection, ParsePassage) {
+.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage', 'BibleAccessor'
+  , function($scope, ParseReflection, ParsePassage, BibleAccessor) {
 
   //Use parse to fetch the history
 
@@ -193,22 +184,40 @@ angular.module('starter.controllers', [])
   var dateOfTomorrow = new Date(new Date().toDateString());
   dateOfTomorrow.setDate(dateOfTomorrow.getDate() + 1);
   
-  ParseReflection.query(dateOfToday,
-      dateOfTomorrow,
-      function()
-	  {
-	      //ParseReflection.result.get("createdAt")
-		  //alert("This is a test.");
-		  for (var ctr = 0; ctr < ParseReflection.result.length; ctr++)
-		  {
-		      ParsePassage.queryWithReflection(ParseReflection.result[ctr],
-			      function()
-				  {
-				      var createdDate = ParseReflection.result[numberOfQueriesWithReflection].get("createdAt");
-					  for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
+  ParseReflection.query(dateOfToday, dateOfTomorrow, function(results) {
+    if(typeof results === 'undefined' || results.length === 0) { return; }
+    for (var i = 0; i < results.length; i++) {
+      var reflection = results[i];
+      ParsePassage.queryWithReflection(reflection, function(passages) {
+        if(typeof passages === 'undefined' || passages.length === 0) { return; }
+        for (var i = 0; i < passages.length; i++) {
+          var passage = passages[i];
+          var tmp = {
+            book: BibleAccessor.bookNames[passage.get('book')],
+            chapter: passage.get('chapter'),
+            start: passage.get('firstVerse'),
+            end: passage.get('lastVerse'),
+            verse: passage.get('snippet'),
+            date: reflection.get('createdAt').toDateString(),
+            objId: reflection.id
+          };
+          $scope.historyView.push(tmp)
+        };
+        $scope.$apply();
+      })
+    };
+  });
+		/* for (var ctr = 0; ctr < result.length; ctr++) {
+        
+        (function(ctr){
+		      ParsePassage.queryWithReflection(ParseReflection.result[ctr], function() {
+				    var createdDate = ParseReflection.result[numberOfQueriesWithReflection].get("createdAt");
+					  
+            for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
 					  {
 					      parseResult.push({date:createdDate, passageResult:ParsePassage.result[ctr2]});
 					  }
+
 					  numberOfQueriesWithReflection++;
 					  if (numberOfQueriesWithReflection == ParseReflection.result.length)
 					  {
@@ -224,11 +233,11 @@ angular.module('starter.controllers', [])
 						  }
 						  $scope.$apply();
 					  }
-				  }
-			  );
+				  });
+        })(ctr)
 		  }
 	  }
-  )
+  )*/
 
   //$scope.historyView.push({
   //    id:1,

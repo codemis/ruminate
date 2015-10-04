@@ -167,9 +167,7 @@ angular.module('parse.services', [])
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   parseReflectionObject.create = function(callback) {
-
-	  
-	//Extend the native Parse.Object class.
+  	//Extend the native Parse.Object class.
     var Reflection = Parse.Object.extend("Reflection");
 
     //Instantiate an object of the ListItem class
@@ -180,8 +178,14 @@ angular.module('parse.services', [])
 
     //We call the save method, and pass in success and failure callback functions.
     reflection.save(null, {success:callback});
-	  
-    };
+  };
+
+  parseReflectionObject.getForToday = function(callback) {
+    var midnight = new Date();
+    midnight.setHours(0);
+    midnight.setMinutes(0);
+    parseReflectionObject.query(midnight, new Date(), callback);
+  }
 
 		/**
 	 * Retrieves an existing passage from the Parse database
@@ -193,36 +197,19 @@ angular.module('parse.services', [])
 	 * @return {Promise} A promise to return a reflection object.
 	 *
 	 */
-  parseReflectionObject.query = function(createdDate, callback) {
-	    var Reflection = Parse.Object.extend("Reflection");
-		
-		
+  parseReflectionObject.query = function(startDate, stopDate, callback) {
+    var Reflection = Parse.Object.extend("Reflection");
 		
 		var query = new Parse.Query(Reflection);
 		
-		query.greaterThanOrEqualTo("createdAt", createdDate);
+		query.greaterThanOrEqualTo("createdAt", startDate);
+    query.lessThanOrEqualTo('createdAt', stopDate);
 		query.equalTo("user", Parse.User.current());
 		
 		query.find(
 		{
 			success: function (reflections)  {
-                for (var ctr = 0; ctr < reflections.length; ctr++)
-                {
-                    var reflection = reflections[ctr];
-					//var resultToStore = {};
-					//resultToStore.createdAt = reflection.get("createdAt");
-					//resultToStore.user = reflection.get("user");
-					//resultToStore.objectId = reflection.get("objectId");
-					
-					//resultToStore.chapter = passage.get("chapter");
-					//resultToStore.firstVerse = passage.get("firstVerse");
-					//resultToStore.lastVerse = passage.get("lastVerse");
-					//resultToStore.snippet = passage.get("snippet");
-					//resultToStore.reflection = passage.get("reflection");
-					
-					parseReflectionObject.result.push(reflection);
-                }				
-				callback;
+        callback(reflections);
 			},
 			failure:  function (object, error) {  
 				
@@ -233,10 +220,6 @@ angular.module('parse.services', [])
 	};
 
   return parseReflectionObject;
-  
-  
-
-
 }])
 
 .factory('ParsePassage', [function() {
@@ -296,6 +279,17 @@ angular.module('parse.services', [])
 	  
     };
 	
+  parsePassageObject.getFromReflection = function(reflection, callback) {
+    var Passage = Parse.Object.extend("Passage");
+    var query = new Parse.Query(Passage);
+    query.equalTo('reflection', reflection.id);
+    query.matchesQuery({
+      success: function(passages) {
+        callback(passages);
+      }
+    })
+  }
+
 	/**
 	 * Retrieves an existing passage from the Parse database
 	 *

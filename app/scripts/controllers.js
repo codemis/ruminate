@@ -156,6 +156,16 @@ angular.module('starter.controllers', [])
 .controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
   $scope.books = [];
   BibleAccessor.getBookList(function(list) { $scope.books = list; });
+  $scope.isShown = function(book) {
+    if(typeof book.show === 'undefined') {
+      return false;
+    } else {
+      return book.show;
+    }
+  };
+  $scope.toggleShown = function(book) {
+    book.show = !$scope.isShown(book);
+  };
 }])
 .controller('VerseSelectController', ['$scope', '$stateParams', 'BibleAccessor', function($scope, $stateParams, BibleAccessor) {
   

@@ -100,19 +100,7 @@ $question-answer-bg: #eee;
     color:#000;
 }
 
-// ---- chapter select -----
-
-.chapter-item {
-    font-size:1.75em;
-    color:#555;
-    width:2em;
-    height:2em;
-    display:inline-block;
-    font-weight:bolder;
-    text-align:center;
-    padding-top:0.5em;
-    text-decoration:none;
-}
+// ---- verse select -----
 
 $highlight-color: #FF0;
 $x-padding: 0.25em;
@@ -120,13 +108,77 @@ $y-padding: 2px;
 .highlight-verse {
     background-color: $highlight-color;
     box-shadow: $x-padding*-1 $y-padding    0 $highlight-color,
-                          $x-padding*-1 $y-padding*-1 0 $highlight-color,
-                          0             $y-padding    0 $highlight-color,
-                          0             $y-padding*-1 0 $highlight-color;
+                $x-padding*-1 $y-padding*-1 0 $highlight-color,
+                0             $y-padding    0 $highlight-color,
+                0             $y-padding*-1 0 $highlight-color;
+}
+
+// ---- chapter select -----
+
+.chapter-list {
+  overflow:hidden;
+  padding-top:0; padding-bottom:0;
 }
 
 .chapter-box {
-    width:100%;
-    height:100%;
-    white-space:normal;
+  width:100%;
+  height:auto;
+  line-height:0;
+  white-space:normal;
+  overflow:hidden;
+}
+
+.chapter-title {
+  // transition: 1.1s margin-bottom linear;
+  // margin-bottom:0;
+}
+
+.chapter-item {
+    color:#555;
+    width:2em;
+    height:2em;
+    display:inline-block;
+    font-weight:bolder;
+    text-align:center;
+    padding-top:1em;
+    display:inline-block;
+    text-decoration:none;
+}
+
+.chapter-box {
+  font-size:1.75em;
+  overflow:hidden;
+}
+
+.chapter-box.to-display {
+  // padding-top:0.5em;
+}
+
+.chapter-box-abs {
+  position:absolute;
+  left:20px;
+  right:16px;
+  height:0;
+}
+
+.chapter-list-hidden {
+  visibility: hidden;
+}
+
+.chapter-item-hiding {
+  padding:0;
+  background-color:#ddd;
+  display:inline-block;
+  float: left;
+  width:2em;
+  // height:1em;
+  transition: all 0.25s linear;
+}
+
+.chapter-item-hiding {
+  height:2em;
+}
+
+.chapter-item-hiding.ng-hide {
+  height:0;
 }

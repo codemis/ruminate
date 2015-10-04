@@ -72,6 +72,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'io
       }
     }
   })
+  .state('tab.chapter-select', {
+    url: '/home/chapter-select',
+    views: {
+      'tab-home':{
+        templateUrl: 'templates/view-chapter-select.html',
+        controller: 'ChapterSelectController'
+      }
+    }
+  })
+  .state('tab.verse-select', {
+    url: '/home/verse-select/:bookId/:chapter',
+    views: {
+      'tab-home':{
+        templateUrl: 'templates/view-verse-select.html',
+        controller: 'VerseSelectController'
+      }
+    }
+  })
 
   .state('tab.settings', {
     url: '/settings',

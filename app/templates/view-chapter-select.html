@@ -1,0 +1,14 @@
+<ion-view view-title="Chapter Select">
+	<ion-content>
+		<ion-list>
+		<ion-item class="book-item" ng-repeat="book in books">
+			{{book.name}}
+			<div class="chapter-box">
+				<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.id}}/{{chapter}}">
+					{{chapter}}
+				</a>
+			</div>
+		</ion-item>
+	</ion-list>
+	</ion-content>
+</ion-view>

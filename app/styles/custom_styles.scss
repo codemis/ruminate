@@ -18,6 +18,22 @@
     width: 40%;
     margin: 65px auto 0px auto;
 }
+/**
+ * Handle iPhone
+ */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : portrait) { 
+  .logo-watermark {
+    top: 0px;
+  }
+
+  .call-to-action {
+    width: 60%;
+    margin: 5px auto 0px auto;
+  }
+}
 
 .pad-reference {
     position:relative;

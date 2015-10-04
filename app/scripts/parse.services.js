@@ -27,6 +27,10 @@ angular.module('parse.services', [])
    */
   parseServiceObject.initialize = function(appId, clientId, javascriptKey) {
     Parse.initialize(appId, javascriptKey);
+    
+    if(typeof parsePlugin === 'undefined') {
+      ParseUser.createAndLogin();
+    } else {
     parsePlugin.initialize(appId, clientId, function() {
       parsePlugin.subscribe('allDevices', function() {
         ParseUser.createAndLogin();
@@ -38,6 +42,8 @@ angular.module('parse.services', [])
     function() {
       console.log('Unable to initialize the parsePlugin');
     });
+
+    }
   };
 
   return parseServiceObject;
@@ -108,7 +114,9 @@ angular.module('parse.services', [])
       return user.signUp(null, {
         success: function() {
           $localStorage.setObject('parse_user', {username: username, password: password});
-          parsePlugin.subscribe('user-'+username, function(){}, function(){});
+          if(typeof parsePlugin !== 'undefined') {
+            parsePlugin.subscribe('user-'+username, function(){}, function(){});
+          }
         },
         error: function(user, error) {
           console.log('Unable to sign up:  ' + error.code + ' ' + error.message);

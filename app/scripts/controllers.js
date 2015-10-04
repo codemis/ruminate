@@ -148,7 +148,7 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage' function($scope, ParseReflection) {
+.controller('HistoryController', ['$scope', 'ParseReflection', 'ParsePassage', function($scope, ParseReflection) {
 
   //Use parse to fetch the history
 

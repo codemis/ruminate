@@ -37,9 +37,8 @@ angular.module('starter.controllers', [])
   })
 
 }])
-.controller('HomeController', [ '$scope', '$ionicModal', '$stateParams', '$location', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
-  ,function($scope, $ionicModal, $stateParams, $location, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
-  
+.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
+  ,function($scope, $log, $ionicModal, $stateParams, $location, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   $scope.objId = $stateParams.objId;
 
   $scope.updateData = function(objId) {
@@ -55,6 +54,7 @@ angular.module('starter.controllers', [])
         $scope.passage.firstVerse = passage.get('firstVerse');
         $scope.passage.lastVerse  = passage.get('lastVerse');
         $scope.passage.snippet    = passage.get('snippet');
+        $scope.passage.date       = passage.get('createdAt').toDateString();
         $scope.passage.recordId   = passage.id;
 
         $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
@@ -156,6 +156,12 @@ angular.module('starter.controllers', [])
   $scope.$on('modal.removed', function() {
     // Execute action
   });
+
+  $scope.$on('$ionicView.enter', function() {
+    if (ParseService.parseInitialized === true) {
+      $scope.updateData($scope.objId);
+    }
+  })
 
   /**
    * Watch and wait for Parse to Initialize before loading everything

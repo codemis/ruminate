@@ -14,7 +14,11 @@
     </div>
     <ion-list class="list" ng-show="hasReflection" class="ng-hide">
       <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap passage-snippet item-icon-right">
-        <span class="passage-snippet-text">{{truncatedSnippet}}</span>
+        <div class="history-top">
+          <span class="history-date">{{passage.date}}</span>
+          <span class="history-chapter">{{passage.book}} {{passage.chapter}}, {{passage.firstVerse}}-{{passage.lastVerse}}</span>
+        </div>
+        <span class="history-snippet">{{truncatedSnippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">

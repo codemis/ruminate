@@ -7,13 +7,25 @@ angular.module('parse.services', [])
  *
  * @author Johnathan Pulos <johnathan@missionaldigerati.org>
  */
-.factory('ParseService', ['ParseUser', function(ParseUser) {
+.factory('ParseService', ['$log', 'ParseUser', function($log, ParseUser) {
   /**
    * The object for the parse service
    *
    * @type {Object}
    */
   var parseServiceObject = {};
+  /**
+   * Has Parse been initialized?
+   *
+   * @type {Boolean}
+   */
+  parseServiceObject.parseInitialized = false;
+  /**
+   * Has the Parse Push Plugin initialized?
+   *
+   * @type {Boolean}
+   */
+  parseServiceObject.parsePushInitialized = false;
 
   /**
    * Initialize Parse
@@ -27,20 +39,22 @@ angular.module('parse.services', [])
    */
   parseServiceObject.initialize = function(appId, clientId, javascriptKey) {
     Parse.initialize(appId, javascriptKey);
-    
+    parseServiceObject.parseInitialized = true;
     if(typeof parsePlugin === 'undefined') {
       ParseUser.createAndLogin();
     } else {
       parsePlugin.initialize(appId, clientId, function() {
+        parseServiceObject.parsePushInitialized = true;
         parsePlugin.subscribe('allDevices', function() {
+          $log.log('Subscribed the user.');
           ParseUser.createAndLogin();
         },
         function() {
-          console.log('Unable to subscribe to allDevices');
+          $log.log('Unable to subscribe to allDevices');
         });
       },
       function() {
-        console.log('Unable to initialize the parsePlugin');
+        $log.log('Unable to initialize the parsePlugin');
       });
 
     }

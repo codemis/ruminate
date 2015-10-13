@@ -37,8 +37,8 @@ angular.module('starter.controllers', [])
   })
 
 }])
-.controller('HomeController', [ '$scope', '$ionicModal', '$stateParams', '$location', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
-  ,function($scope, $ionicModal, $stateParams, $location, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
+.controller('HomeController', [ '$scope', '$ionicModal', '$stateParams', '$location', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
+  ,function($scope, $ionicModal, $stateParams, $location, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   
   $scope.objId = $stateParams.objId;
 
@@ -118,7 +118,7 @@ angular.module('starter.controllers', [])
     
   };
   
-    $scope.toggleQuestion = function(question) {
+  $scope.toggleQuestion = function(question) {
     question.open = !question.open;
   };
 
@@ -156,6 +156,20 @@ angular.module('starter.controllers', [])
   $scope.$on('modal.removed', function() {
     // Execute action
   });
+
+  /**
+   * Watch and wait for Parse to Initialize before loading everything
+   */
+  $scope.$watch(
+    function() {
+      return ParseService.parseInitialized;
+    },
+    function() {
+      if (ParseService.parseInitialized === true) {
+        $scope.updateData($scope.objId);
+      }
+    }
+  );
 
 }])
 

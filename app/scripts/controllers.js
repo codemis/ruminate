@@ -60,7 +60,9 @@ angular.module('starter.controllers', [])
         $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
         $scope.$apply();
       });
+      var i = 1;
       ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
+          $scope.questions = [];
           var obj = {open:false};
           obj.answer = response.get('answer');
           obj.recordId = response.id;

@@ -51,6 +51,7 @@ angular.module('starter.controllers', [])
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   $scope.updateData = function(objId) {
+    console.log('updateData');
     if(typeof objId === 'undefined') {
       ParseReflection.getForToday(loadReflection);
     } else {
@@ -69,6 +70,7 @@ angular.module('starter.controllers', [])
    */
   function loadReflection(reflection) {
     $scope.reflection = reflection;
+    $scope.questions = [];
     ParsePassage.getFromReflection($scope.reflection, function(passages) {
       if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
       var passage = passages[0];
@@ -85,18 +87,17 @@ angular.module('starter.controllers', [])
       $scope.$apply();
     });
     ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
-        $scope.questions = [];
-        var obj = {open:false};
-        obj.answer = response.get('answer');
-        obj.recordId = response.id;
-        obj.question = response.question.get('questionText');
+      var obj = {open:false};
+      obj.answer = response.get('answer');
+      obj.recordId = response.id;
+      obj.question = response.question.get('questionText');
 
-        if(obj.answer.trim().length == 0) {
-          $scope.unansweredQuestion = obj;
-        } else {
-          $scope.questions.push(obj);
-        }
-        $scope.$apply();
+      if(obj.answer.trim().length == 0) {
+        $scope.unansweredQuestion = obj;
+      } else {
+        $scope.questions.push(obj);
+      }
+      $scope.$apply();
     });
     $scope.hasReflection = true;
     $scope.$apply();
@@ -175,12 +176,6 @@ angular.module('starter.controllers', [])
   $scope.$on('modal.removed', function() {
     // Execute action
   });
-
-  $scope.$on('$ionicView.enter', function() {
-    if (ParseService.parseInitialized === true) {
-      $scope.updateData($scope.objId);
-    }
-  })
 
   /**
    * Watch and wait for Parse to Initialize before loading everything

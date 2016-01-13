@@ -413,6 +413,9 @@ angular.module('starter.controllers', [])
      */
     var callback = function() {
       $ionicHistory.clearCache();
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
       $location.path('/tab/home');
     };
 

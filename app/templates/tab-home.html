@@ -13,32 +13,21 @@
       </div>
     </div>
     <ion-list class="list" ng-show="hasReflection" class="ng-hide">
-      <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap passage-snippet item-icon-right">
+      <ion-item class="item item-divider">
+        {{passage.title}}
+      </ion-item>
+      <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap item-icon-right">
         <div class="history-top">
           <span class="history-date">{{passage.date}}</span>
-          <span class="history-chapter">{{passage.book}} {{passage.chapter}}, {{passage.firstVerse}}-{{passage.lastVerse}}</span>
+          <span class="history-chapter"></span>
         </div>
         <span class="history-snippet">{{truncatedSnippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
-      <ion-item class="item-text-wrap current-question" ng-if="hasUnansweredQuestion()">
-        {{unansweredQuestion.question}}
-        <textarea class="answer-input" placeholder="Answer" ng-model="$parent.$parent.$parent.answerModel" ng-change="updateAnswer()"></textarea> <!-- angular-elastic? -->
+      <ion-item class="item item-text-wrap" ng-repeat="question in questions" ng-click="toggleQuestion(question)">
+        <h2>{{question.question}}</h2>
+        <p><textarea class="answer-input msd-elastic" ng-model="question.answer" placeholder="Answer">{{question.answer}}</textarea></p>
       </ion-item>
-      <div ng-repeat="question in questions">
-        <ion-item class="question-question" ng-click="toggleQuestion(question)">
-          {{question.question}}
-          <button class="button icon button-icon ion-arrow-expand question-popover-button" ng-click="openQuestionModal($event, question)"></button>
-        </ion-item>
-        <ion-item class="question-answer item-text-wrap">
-          <div class="padding-reference">
-            <div class="position-reference">
-              <span class="question-scale-viewer">{{question.answer}}</span>
-            </div>
-          </div>
-          <div class="question-answer-hidden" ng-show="question.open">{{question.answer}}</div>
-        </ion-item>
-      </li>
     </ion-list>
   </ion-content>
 </ion-view>

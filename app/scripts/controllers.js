@@ -19,9 +19,10 @@ var passageDef = {
 
 
 angular.module('starter.controllers', [])
+
 .controller('PassageController', ['$scope', '$stateParams', 'ParseReflection', 'ParsePassage', 'BibleAccessor'
   , function($scope, $stateParams, ParseReflection, ParsePassage, BibleAccessor){
-  
+
   $scope.id = $stateParams.passageId;
   console.log('id ' + $scope.id);
 
@@ -37,54 +38,74 @@ angular.module('starter.controllers', [])
   })
 
 }])
+
 .controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
   ,function($scope, $log, $ionicModal, $stateParams, $location, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   $scope.objId = $stateParams.objId;
 
+  /**
+   * Update the data for the Reflection
+   *
+   * @param  {String} objId The id for the given reflection
+   * @return {void}
+   * @access public
+   *
+   * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+   */
   $scope.updateData = function(objId) {
-    var f = function(reflection) {
-      $scope.reflection = reflection;
-      console.log($scope.reflection.id);
-      ParsePassage.getFromReflection($scope.reflection, function(passages) {
-        if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
-        var passage = passages[0];
-        $scope.passage = {};
-        $scope.passage.book       = passage.get('book');
-        $scope.passage.chapter    = passage.get('chapter');
-        $scope.passage.firstVerse = passage.get('firstVerse');
-        $scope.passage.lastVerse  = passage.get('lastVerse');
-        $scope.passage.snippet    = passage.get('snippet');
-        $scope.passage.date       = passage.get('createdAt').toDateString();
-        $scope.passage.recordId   = passage.id;
-
-        $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
-        $scope.$apply();
-      });
-      var i = 1;
-      ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
-          $scope.questions = [];
-          var obj = {open:false};
-          obj.answer = response.get('answer');
-          obj.recordId = response.id;
-          obj.question = response.question.get('questionText');
-
-          if(obj.answer.trim().length == 0) {
-            $scope.unansweredQuestion = obj;
-          } else {
-            $scope.questions.push(obj);
-          }
-          $scope.$apply();
-      });
-      $scope.hasReflection = true;
-      $scope.$apply();
-    };
     if(typeof objId === 'undefined') {
-      ParseReflection.getForToday(f);      
+      console.log('getToday()');
+      ParseReflection.getForToday(loadReflection);
     } else {
-      ParseReflection.getById(objId, f);
+      ParseReflection.getById(objId, loadReflection);
     }
   }
-  
+
+  /**
+   * Load the given reflection and questions with responses
+   *
+   * @param  {ParseReflection} reflection The reflection to load
+   * @return {void}
+   * @access private
+   *
+   * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+   */
+  function loadReflection(reflection) {
+    $scope.reflection = reflection;
+    console.log('Loading Reflection!');
+    ParsePassage.getFromReflection($scope.reflection, function(passages) {
+      if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
+      var passage = passages[0];
+      $scope.passage = {};
+      $scope.passage.book       = passage.get('book');
+      $scope.passage.chapter    = passage.get('chapter');
+      $scope.passage.firstVerse = passage.get('firstVerse');
+      $scope.passage.lastVerse  = passage.get('lastVerse');
+      $scope.passage.snippet    = passage.get('snippet');
+      $scope.passage.date       = passage.get('createdAt').toDateString();
+      $scope.passage.recordId   = passage.id;
+
+      $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
+      $scope.$apply();
+    });
+    ParseResponse.forEachFromReflectionWithQuestion($scope.reflection, function(response) {
+        $scope.questions = [];
+        var obj = {open:false};
+        obj.answer = response.get('answer');
+        obj.recordId = response.id;
+        obj.question = response.question.get('questionText');
+
+        if(obj.answer.trim().length == 0) {
+          $scope.unansweredQuestion = obj;
+        } else {
+          $scope.questions.push(obj);
+        }
+        $scope.$apply();
+    });
+    $scope.hasReflection = true;
+    $scope.$apply();
+  }
+
   $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';
@@ -100,7 +121,7 @@ angular.module('starter.controllers', [])
     var trimmedString = str.substr(0, len);
     trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' ')));
     if(trimmedString.length < str.length) {
-      trimmedString = trimmedString + '...';      
+      trimmedString = trimmedString + '...';
     }
     return trimmedString;
   };
@@ -117,9 +138,9 @@ angular.module('starter.controllers', [])
     return $scope.unansweredQuestion !== null;
   };
   $scope.updateAnswer = function() {
-    
+
   };
-  
+
   $scope.toggleQuestion = function(question) {
     question.open = !question.open;
   };
@@ -195,15 +216,15 @@ angular.module('starter.controllers', [])
   //dateString = (date.getMonth() + 1).toString() + "-" + (date.getDate()).toString() + "-" + (date.getYear()).toString();
 
   var dateString = '10-03-2015';
-  
+
   var numberOfQueriesWithReflection = 0;
-  
+
   var parseResult = [];
-  
+
   var dateOfToday = new Date(new Date().toDateString());
   var dateOfTomorrow = new Date(new Date().toDateString());
   dateOfTomorrow.setDate(dateOfTomorrow.getDate() + 1);
-  
+
   ParseReflection.query(dateOfToday, dateOfTomorrow, function(results) {
     if(typeof results === 'undefined' || results.length === 0) { return; }
     for (var i = 0; i < results.length; i++) {
@@ -228,11 +249,11 @@ angular.module('starter.controllers', [])
     };
   });
 		/* for (var ctr = 0; ctr < result.length; ctr++) {
-        
+
         (function(ctr){
 		      ParsePassage.queryWithReflection(ParseReflection.result[ctr], function() {
 				    var createdDate = ParseReflection.result[numberOfQueriesWithReflection].get("createdAt");
-					  
+
             for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
 					  {
 					      parseResult.push({date:createdDate, passageResult:ParsePassage.result[ctr2]});
@@ -249,7 +270,7 @@ angular.module('starter.controllers', [])
 								     ,verse: parseResult[ctr3].passageResult.snippet
 									 ,date: parseResult[ctr3].date.toDateString()
 								  }
-							  );								
+							  );
 						  }
 						  $scope.$apply();
 					  }
@@ -286,6 +307,7 @@ angular.module('starter.controllers', [])
   //$scope.historyView.push(dateString + ' This is yet one more test data');
 
 }])
+
 .controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
   $scope.books = [];
   BibleAccessor.getBookList(function(list) { $scope.books = list; });
@@ -307,9 +329,10 @@ angular.module('starter.controllers', [])
     //book.show = !$scope.isShown(book);
   };
 }])
-.controller('VerseSelectController', ['$scope', '$stateParams', '$location', 'BibleAccessor', 'ParseUser', 'ParseReflection', 'ParsePassage', 
-  function($scope, $stateParams, $location, BibleAccessor, ParseUser, ParseReflection, ParsePassage) {
-  
+
+.controller('VerseSelectController', ['$scope', '$stateParams', '$location', '$ionicHistory', 'BibleAccessor', 'ParseUser', 'ParseReflection', 'ParsePassage',
+  function($scope, $stateParams, $location, $ionicHistory, BibleAccessor, ParseUser, ParseReflection, ParsePassage) {
+
   // These contain the information that will be added to the database
   $scope.chapter = $stateParams.chapter;
   $scope.book = $stateParams.bookId;
@@ -380,12 +403,26 @@ angular.module('starter.controllers', [])
 
   $scope.updateOrCreateReflection = function() {
     var reflection = null;
+    /**
+     * An empty function for going home when complete
+     *
+     * @return {void}
+     * @access private
+     *
+     * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+     */
+    var callback = function() {
+      $ionicHistory.clearCache();
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $location.path('/tab/home');
+    };
 
     ParseReflection.create(function(reflection) {
-      ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection);
+      ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection, callback);
     });
 
-    $location.path('/tab/home');
   };
 }])
 

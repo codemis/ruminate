@@ -24,11 +24,9 @@ angular.module('starter.controllers', [])
   , function($scope, $stateParams, ParseReflection, ParsePassage, BibleAccessor){
 
   $scope.id = $stateParams.passageId;
-  console.log('id ' + $scope.id);
 
   ParsePassage.getFromId($scope.id, function(passage) {
     if(typeof passage === 'undefined'){ return; }
-    console.log('HI!');
     $scope.bookName = BibleAccessor.bookNames[passage.get('book')];
     $scope.chapter  = passage.get('chapter');
     BibleAccessor.getVerses(BibleAccessor.bookDamMap[passage.get('book')], passage.get('book'), passage.get('chapter'), function(verses) {
@@ -54,7 +52,6 @@ angular.module('starter.controllers', [])
    */
   $scope.updateData = function(objId) {
     if(typeof objId === 'undefined') {
-      console.log('getToday()');
       ParseReflection.getForToday(loadReflection);
     } else {
       ParseReflection.getById(objId, loadReflection);
@@ -72,7 +69,6 @@ angular.module('starter.controllers', [])
    */
   function loadReflection(reflection) {
     $scope.reflection = reflection;
-    console.log('Loading Reflection!');
     ParsePassage.getFromReflection($scope.reflection, function(passages) {
       if(typeof passages === 'undefined' || typeof passages[0] === 'undefined'){ return; }
       var passage = passages[0];

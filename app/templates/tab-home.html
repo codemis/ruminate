@@ -24,8 +24,10 @@
         <span class="history-snippet">{{truncatedSnippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
-      <ion-item class="item item-text-wrap" ng-repeat="question in questions" ng-click="toggleQuestion(question)">
-        <h2>{{question.question}}</h2>
+      <ion-item class="item item-divider item-text-wrap" ng-repeat-start="question in questions">
+        {{question.question}}
+      </ion-item>
+      <ion-item class="item item-text-wrap" ng-repeat-end>
         <p><textarea class="answer-input msd-elastic" ng-model="question.answer" placeholder="Answer">{{question.answer}}</textarea></p>
       </ion-item>
     </ion-list>

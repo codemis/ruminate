@@ -82,6 +82,7 @@ angular.module('starter.controllers', [])
       $scope.passage.snippet    = passage.get('snippet');
       $scope.passage.date       = passage.get('createdAt').toDateString();
       $scope.passage.recordId   = passage.id;
+      $scope.passage.title      = getTitle();
 
       $scope.truncatedSnippet = truncate($scope.passage.snippet, 320);
       $scope.$apply();
@@ -92,11 +93,7 @@ angular.module('starter.controllers', [])
       obj.recordId = response.id;
       obj.question = response.question.get('questionText');
 
-      if(obj.answer.trim().length == 0) {
-        $scope.unansweredQuestion = obj;
-      } else {
-        $scope.questions.push(obj);
-      }
+      $scope.questions.push(obj);
       $scope.$apply();
     });
     $scope.hasReflection = true;
@@ -106,9 +103,8 @@ angular.module('starter.controllers', [])
   $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';
-  $scope.passage = null;
+  $scope.passage = {};
   $scope.questions = [];
-  $scope.unansweredQuestion = null;
   // {
   //   'question':'Some question I asked you',
   //   'answer':'Some answer I gave',
@@ -123,6 +119,22 @@ angular.module('starter.controllers', [])
     return trimmedString;
   };
 
+  /**
+   * Get the title for the passage
+   *
+   * @return {String} The title for the given passage
+   * @access private
+   *
+   * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+   */
+  function getTitle() {
+    if (angular.equals({}, $scope.passage)) {
+      return 'Passage Loading';
+    } else {
+        return $scope.passage.book+' '+$scope.passage.chapter+' verses '+$scope.passage.firstVerse+' - '+$scope.passage.lastVerse;
+    }
+  };
+
   // $scope.hasPassage = function() {
   //   return $scope.reflection !== null;
   // };
@@ -131,9 +143,6 @@ angular.module('starter.controllers', [])
   $scope.answerModel = '';
   // $scope.unansweredQuestion = 'Some unanswered question';
 
-  $scope.hasUnansweredQuestion = function() {
-    return $scope.unansweredQuestion !== null;
-  };
   $scope.updateAnswer = function() {
 
   };
@@ -143,9 +152,7 @@ angular.module('starter.controllers', [])
   };
 
   $scope.selectPassage = function() {
-    // $scope.passage = $scope.hasPassage() ? null : passageDef;
     $location.path('/tab/home/chapter-select');
-    // do LOTS of VERY complicated stuff
   };
 
 

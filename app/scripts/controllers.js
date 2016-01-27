@@ -37,9 +37,15 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
-  ,function($scope, $log, $ionicModal, $stateParams, $location, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
+.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', '$interval', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
+  ,function($scope, $log, $ionicModal, $stateParams, $location, $interval, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
   $scope.objId = $stateParams.objId;
+  /**
+   * Saving Interval for checking whether we need to push a save
+   * @type {Object|Null}
+   * @access private
+   */
+  var savingInterval = null;
 
   /**
    * Update the data for the Reflection
@@ -134,17 +140,38 @@ angular.module('starter.controllers', [])
         return $scope.passage.book+' '+$scope.passage.chapter+' verses '+$scope.passage.firstVerse+' - '+$scope.passage.lastVerse;
     }
   };
-
+  /**
+   * Save all notes by sending it to Parse
+   *
+   * @return {Void}
+   * @access public
+   *
+   * @author Johnathan Pulos <johnathan@missionaldigerati.org>
+   */
+  function saveAllNotes() {
+    angular.forEach($scope.questions, function(question, key) {
+      if (question.needsSaving === true) {
+        /**
+         * Save the question
+         */
+        $log.log('Saving Question: '+question.question);
+        ParseResponse.update(question.recordId, question.answer, function(saved) {
+          if (saved) {
+            $scope.questions[key].needsSaving = false;
+          }
+        });
+      }
+    });
+  };
   // $scope.hasPassage = function() {
   //   return $scope.reflection !== null;
   // };
 
 
   $scope.answerModel = '';
-  // $scope.unansweredQuestion = 'Some unanswered question';
 
-  $scope.updateAnswer = function() {
-
+  $scope.updateNeedsSaving = function(question) {
+    question.needsSaving = true;
   };
 
   $scope.toggleQuestion = function(question) {
@@ -173,6 +200,10 @@ angular.module('starter.controllers', [])
   };
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
+    $interval.cancel(savingInterval);
+    savingInterval = null;
+    console.log('Saving all notes!');
+    saveAllNotes();
     $scope.modal.remove();
   });
   // Execute action on hide modal
@@ -182,6 +213,15 @@ angular.module('starter.controllers', [])
   // Execute action on remove modal
   $scope.$on('modal.removed', function() {
     // Execute action
+  });
+
+  $scope.$on('$ionicView.enter', function() {
+    if (savingInterval === null) {
+      savingInterval = $interval(function() {
+        console.log('Saving all notes!');
+        saveAllNotes();
+      }, 5000);
+    }
   });
 
   /**

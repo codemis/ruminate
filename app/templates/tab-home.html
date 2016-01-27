@@ -27,8 +27,9 @@
       <ion-item class="item item-divider item-text-wrap" ng-repeat-start="question in questions">
         {{question.question}}
       </ion-item>
-      <ion-item class="item item-text-wrap" ng-repeat-end>
-        <p><textarea class="answer-input msd-elastic" ng-model="question.answer" placeholder="Answer">{{question.answer}}</textarea></p>
+      <ion-item class="item item-text-wrap item-icon-right" ng-repeat-end>
+        <p><textarea class="answer-input msd-elastic" ng-model="question.answer" ng-keyup="updateNeedsSaving(question)" placeholder="Answer">{{question.answer}}</textarea></p>
+        <ion-spinner ng-show="question.needsSaving" icon="spiral" class="icon"></ion-spinner>
       </ion-item>
     </ion-list>
   </ion-content>

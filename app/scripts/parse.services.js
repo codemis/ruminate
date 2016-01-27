@@ -155,23 +155,23 @@ angular.module('parse.services', [])
 }])
 
 .factory('ParseReflection', [ function() {
-  
+
   /**
    * The parseReflection Object that will be returned
    *
    * @type {Object}
    */
   var parseReflectionObject = {};
-  
+
   parseReflectionObject.result = [];
-  
+
    //var Mapper = Parse.Object.extend("mapper");
    //var a_mapper = new Mapper();
    //a_mapper.set("userPointer", Parse.User.current());
    //a_mapper.save();
-   
+
    //var Reflection = Parse.Object.extend("reflection");
-   
+
    //var a_reflection = new Reflection();
    //a_reflection.set("userPointer", Parse.User.current());
    //a_reflection.save();
@@ -180,7 +180,7 @@ angular.module('parse.services', [])
    * Create the user if it does not exist, and log them in
    *
    * @param {function} callback: A callback function to use once the object is created.
-   * 
+   *
    * @return {Promise} A promise to create a reflection object.
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
@@ -227,19 +227,19 @@ angular.module('parse.services', [])
 	 * @param {string} createdDate:  The date to search for...
 	 *
 	 * @param {function} callback: A callback function to use once the object is queried.
-     * 	 
+     *
 	 * @return {Promise} A promise to return a reflection object.
 	 *
 	 */
   parseReflectionObject.query = function(startDate, stopDate, callback) {
     var Reflection = Parse.Object.extend("Reflection");
-		
+
 		var query = new Parse.Query(Reflection);
-		
+
 		query.greaterThanOrEqualTo("createdAt", startDate);
     query.lessThanOrEqualTo('createdAt', stopDate);
 		query.equalTo("user", Parse.User.current());
-		
+
 		query.find(
 		{
 			success: function (reflections)  {
@@ -251,12 +251,12 @@ angular.module('parse.services', [])
 			}
         callback(reflections);
 			},
-			failure:  function (object, error) {  
+			failure:  function (object, error) {
 				callback();
 			}
 		});
-		
-		
+
+
 	};
 
   return parseReflectionObject;
@@ -269,14 +269,14 @@ angular.module('parse.services', [])
    * @type {Object}
    */
   var parsePassageObject = {};
-  
+
   /**
    *  The result when executing a query will be stored in result.
    *
    * @type {Array}
    */
   parsePassageObject.result = [];
-  
+
   /**
    * Create the passage if it does not exist
    *
@@ -293,7 +293,7 @@ angular.module('parse.services', [])
    * @param {Pointer} reflection:  The reflection in which the passage is related to.
    *
    * @param {function} callback: A callback function to use once the object is created.
-   * 
+   *
    * @return {Promise} A promise to create a passage object.
    *
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
@@ -312,11 +312,11 @@ angular.module('parse.services', [])
 	passage.set("lastVerse", lastVerse);
 	passage.set("snippet", snippet);
 	passage.set("reflection", reflection);
-	
+
 
     //We call the save method, and pass in success and failure callback functions.
     passage.save(null, {success:callback});
-	  
+
     };
 
   parsePassageObject.getFromId = function(id, callback) {
@@ -331,7 +331,7 @@ angular.module('parse.services', [])
       }
     })
   }
-	
+
   parsePassageObject.getFromReflection = function(reflection, callback) {
     var Passage = Parse.Object.extend("Passage");
     var query = new Parse.Query(Passage);
@@ -349,19 +349,19 @@ angular.module('parse.services', [])
 	 * @param {string} snippetSearchText:  The snippet to query for.
 	 *
 	 * @param {function} callback: A callback function to use once the object is queried.
-     * 	 
+     *
 	 * @return {Promise} A promise to return a passage object.
 	 *
 	 */
   parsePassageObject.query = function(snippetSearchText, callback) {
 	    var Passage = Parse.Object.extend("Passage");
-		
-		
-		
+
+
+
 		var query = new Parse.Query(Passage);
-		
+
 		query.startsWith("snippet", snippetSearchText);
-		
+
 		query.find(
 		{
 			success: function (passages)  {
@@ -375,42 +375,42 @@ angular.module('parse.services', [])
 					resultToStore.lastVerse = passage.get("lastVerse");
 					resultToStore.snippet = passage.get("snippet");
 					resultToStore.reflection = passage.get("reflection");
-					
+
 					parsePassageObject.result.push(resultToStore);
-                }				
+                }
 				callback();
 			},
-			failure:  function (object, error) {  
-				
+			failure:  function (object, error) {
+
 			}
 		});
-		
-		
+
+
 	};
-	
+
 	/**
 	 * Retrieves an existing passage from the Parse database
 	 *
 	 * @param {Pointer} reflection:  The reflection to query for.
 	 *
 	 * @param {function} callback: A callback function to use once the object is queried.
-     * 	 
+     *
 	 * @return {Promise} A promise to return a passage object.
 	 *
 	 */
   parsePassageObject.queryWithReflection = function(reflection, callback) {
     var Passage = Parse.Object.extend("Passage");
     var query = new Parse.Query(Passage);
-		
+
 		query.equalTo("reflection", reflection);
-		
+
 		query.find(
 		{
 			success: function (passages)  {
         callback(passages);
 			},
-			failure:  function (object, error) {  
-				
+			failure:  function (object, error) {
+
 			}
 		});
   };
@@ -428,7 +428,7 @@ angular.module('parse.services', [])
    * @type {Object}
    */
   var parseQuestionObject = {};
-  
+
   /**
    *  The result when executing a query will be stored in result.
    *
@@ -443,17 +443,17 @@ angular.module('parse.services', [])
 	 * @param {string} questionType:  The question type to query for.
 	 *
 	 * @param {function} callback: A callback function to use once the object is queried.
-     * 	 
+     *
 	 * @return {Promise} A promise to return a question object.
 	 *
-	 */  
+	 */
   parseQuestionObject.query = function(questionType, callback) {
-	    var Question = Parse.Object.extend("Question");
-		
+	    var Question = Parse.Object.extend('Question');
+
 		var query = new Parse.Query(Question);
-		
-		query.startsWith("questionType", questionType);
-		
+
+		query.startsWith('questionType', questionType);
+
 		query.find(
 		{
 			success: function (questions)  {
@@ -461,23 +461,23 @@ angular.module('parse.services', [])
                 {
                     var question = questions[ctr];
 					var resultToStore = {};
-					resultToStore.questionText = question.get("questionText");
-					resultToStore.questionType = question.get("questionType");
+					resultToStore.questionText = question.get('questionText');
+					resultToStore.questionType = question.get('questionType');
 					resultToStore.question = question;
 					parseQuestionObject.result.push(resultToStore);
-                }				
+                }
 				callback();
 			},
-			failure:  function (object, error) {  
-				
+			failure:  function (object, error) {
+
 			}
 		});
-		
-		
+
+
 	};
 
   parseQuestionObject.getFromId = function(id, callback) {
-    var Question = Parse.Object.extend("Question");
+    var Question = Parse.Object.extend('Question');
     var query = new Parse.Query(Question);
     query.get(id, {
       success: function(question) {
@@ -505,15 +505,15 @@ angular.module('parse.services', [])
    * @type {Object}
    */
   var parseResponseObject = {};
-  
+
   /**
    *  The result when executing a query will be stored in result.
    *
    * @type {Array}
    */
-  
+
   parseResponseObject.result = [];
-  
+
   /**
    * Create the response if it does not exist
    *
@@ -539,13 +539,13 @@ angular.module('parse.services', [])
     //listItem is now the object that we want to save, so we assign the properties that we want on it.
 	response.set("reflection", reflection);
 	response.set("question", questionAsked);
-    response.set("answer", answer);	
+    response.set("answer", answer);
 
     //We call the save method, and pass in success and failure callback functions.
     response.save(null, {success:callback});
-	  
+
     };
-	
+
 	/**
 	 * Retrieves an existing response from the Parse database
 	 *
@@ -554,18 +554,18 @@ angular.module('parse.services', [])
 	 * @param {Pointer} reflection:  The reflection to query for.
 	 *
 	 * @param {function} callback: A callback function to use once the object is queried.
-     * 
+     *
 	 * @return {Promise} A promise to return a response object.
 	 *
 	 */
   parseResponseObject.query = function(reflection, answerSearchText, callback) {
-	    var Response = Parse.Object.extend("Response");
-		
+	  var Response = Parse.Object.extend('Response');
+
 		var query = new Parse.Query(Response);
-		
+
 		query.startsWith("answer", answerSearchText);
 		query.equalTo("reflection", reflection);
-		
+
 		query.find(
 		{
 			success: function (responses)  {
@@ -576,59 +576,42 @@ angular.module('parse.services', [])
 					resultToStore.question = response.get("question");
 					resultToStore.answer = response.get("answer");
 					parseResponseObject.result.push(resultToStore);
-                }				
+                }
 				callback();
 			},
-			failure:  function (object, error) {  
-				
+			failure:  function (object, error) {
+
 			}
 		});
-		
-		
-	};
-
-
+  };
 	/**
 	 * Updates an existing response from the Parse database
 	 *
-	 * @param {Pointer} reflection:  The reflection to query for.
-	 *
-	 * @param {Pointer}  questionAsked:  The question to query for.
+	 * @param {Integer} id:  The id of the response.
 	 *
 	 * @param {string}  answer:  The answer for use with updating an existing response
 	 *
 	 * @param {function} callback: A callback function to use once the object is updated.
-     * 
+     *
 	 * @return {Promise} A promise to return a response object.
 	 *
 	 */
-	
-  parseResponseObject.update = function(reflection, questionAsked, answer, callback) {
-	    var Response = Parse.Object.extend("Response");
-		
-		var query = new Parse.Query(Response);
-		
-		query.equalTo("reflection", reflection);
-		query.equalTo("question", questionAsked);
-		
-		query.find(
-		{
-			success: function (responses)  {
-			    //There really should be only one response result.
-                for (var ctr = 0; ctr < responses.length; ctr++)
-                {
-                    var response = responses[ctr];
-					response.set("answer", answer);
-					response.save();
-                }				
-				callback();
-			},
-			failure:  function (object, error) {  
-				
-			}
-		});
-        		
-    };
+  parseResponseObject.update = function(id, answer, callback) {
+	  var parseResponse = Parse.Object.extend('Response');
+
+		var query = new Parse.Query(parseResponse);
+
+    query.get(id, {
+      success: function(currentResponse) {
+        currentResponse.set('answer', answer);
+        currentResponse.save();
+        callback(true);
+      },
+      failure: function() {
+        callback(false);
+      }
+    });
+  };
 
 
   parseResponseObject.getFromReflection = function(reflection, callback) {

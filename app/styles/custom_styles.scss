@@ -21,10 +21,10 @@
 /**
  * Handle iPhone
  */
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) 
-and (orientation : portrait) { 
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px)
+and (orientation : portrait) {
   .logo-watermark {
     top: 0px;
   }
@@ -217,4 +217,8 @@ $y-padding: 2px;
 }
 .history-snippet {
   display:inline-block;
+}
+.history-top {
+  display: block;
+  clear: both;
 }

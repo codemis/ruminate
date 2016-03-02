@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
   $scope.updateData = function(objId) {
     console.log('updateData');
     if(typeof objId === 'undefined') {
-      ParseReflection.getForToday(loadReflection);
+      ParseReflection.getForToday(loadReflection, loadReflectionError);
     } else {
       ParseReflection.getById(objId, loadReflection);
     }
@@ -106,6 +106,20 @@ angular.module('starter.controllers', [])
     $scope.$apply();
   }
 
+  /**
+   * If no results were found when attempting to load a reflection....
+   * the function below executes....
+   *
+   * @return {void}
+   * @access private
+   *
+   */
+  function loadReflectionError() {
+     $scope.displaySelectButton = true;
+     $scope.$apply();
+  }
+
+  $scope.displaySelectButton = false;
   $scope.hasReflection = false;
   $scope.reflection = null;
   $scope.truncatedSnippet = '';

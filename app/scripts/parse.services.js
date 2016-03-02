@@ -210,12 +210,12 @@ angular.module('parse.services', [])
     })
   }
 
-  parseReflectionObject.getForToday = function(callback) {
+  parseReflectionObject.getForToday = function(callback, errorCallback) {
     var midnight = new Date();
     midnight.setHours(0);
     midnight.setMinutes(0);
     parseReflectionObject.query(midnight, new Date(), function(reflections) {
-      if(typeof reflections === 'undefined' || typeof reflections[0] === 'undefined'){ return; }
+      if(typeof reflections === 'undefined' || typeof reflections[0] === 'undefined'){ errorCallback(); return; }
       var reflection = reflections[0];
       callback(reflection);
     });

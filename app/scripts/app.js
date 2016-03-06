@@ -6,7 +6,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'monospaced.elastic', 'config', 'api-tokens.config'])
+//angular.module('starter', ['ionic', 'starter.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'monospaced.elastic', 'config', 'api-tokens.config'])
+angular.module('starter', ['ionic', 'app.controllers', 'parse.services', 'dbp.services', 'ionic.utilities', 'monospaced.elastic', 'config', 'api-tokens.config'])
 
 .run(['$ionicPlatform', 'ParseService', 'PARSE_ENV', 'BibleAccessor', function($ionicPlatform, ParseService, PARSE_ENV, BibleAccessor) {
   $ionicPlatform.ready(function() {

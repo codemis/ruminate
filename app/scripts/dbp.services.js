@@ -27,11 +27,6 @@ angular.module('dbp.services', [])
 			};
 		})
 	}
-	// $http.get( 'http://dbt.io/library/version', { params: { v:2, key:env.apiKey, code:version } })
-	// .then(function(response) {
-	// 	var data = response.data;
-	// 	serviceObject.versionNames[data[0].version_code] = data[0].version_name.trim();
-	// })
 
 	serviceObject.getBookList = function(callback) {
 		$http.get( 'http://dbt.io/library/book', { params: { v:2, key:env.apiKey, dam_id:default_dam_id } } )

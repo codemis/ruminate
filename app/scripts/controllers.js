@@ -177,9 +177,6 @@ angular.module('starter.controllers', [])
       }
     });
   };
-  // $scope.hasPassage = function() {
-  //   return $scope.reflection !== null;
-  // };
 
 
   $scope.answerModel = '';
@@ -300,64 +297,6 @@ angular.module('starter.controllers', [])
       })
     };
   });
-		/* for (var ctr = 0; ctr < result.length; ctr++) {
-
-        (function(ctr){
-		      ParsePassage.queryWithReflection(ParseReflection.result[ctr], function() {
-				    var createdDate = ParseReflection.result[numberOfQueriesWithReflection].get("createdAt");
-
-            for (var ctr2 = 0; ctr2 < ParsePassage.result.length; ctr2++)
-					  {
-					      parseResult.push({date:createdDate, passageResult:ParsePassage.result[ctr2]});
-					  }
-
-					  numberOfQueriesWithReflection++;
-					  if (numberOfQueriesWithReflection == ParseReflection.result.length)
-					  {
-					      for (var ctr3 = 0; ctr3 < parseResult.length; ctr3++)
-						  {
-						      $scope.historyView.push(
-							      {
-								      info:  parseResult[ctr3].passageResult.book + " " + parseResult[ctr3].passageResult.chapter + ":" + parseResult[ctr3].passageResult.firstVerse + "-" + parseResult[ctr3].passageResult.lastVerse
-								     ,verse: parseResult[ctr3].passageResult.snippet
-									 ,date: parseResult[ctr3].date.toDateString()
-								  }
-							  );
-						  }
-						  $scope.$apply();
-					  }
-				  });
-        })(ctr)
-		  }
-	  }
-  )*/
-
-  //$scope.historyView.push({
-  //    id:1,
-  //    verse:'This is one test data',
-  //    date:dateString
-  //});
-  //$scope.historyView.push({
-  //    id:2,
-  //    verse:'This is another test data',
-  //    date:dateString
-  //});
-  //$scope.historyView.push({
-  //    id:3,
-  //    verse:'This is yet another test data',
-  //    date:dateString
-  //});
-  //$scope.historyView.push({
-  //    id:4,
-  //    verse:'This is yet one more test data',
-  //    date:dateString
-  //});
-
-  //$scope.historyView.push(dateString + ' This is one test data');
-  //$scope.historyView.push(dateString + ' This is another test data');
-  //$scope.historyView.push(dateString + ' This is yet another test data');
-  //$scope.historyView.push(dateString + ' This is yet one more test data');
-
 }])
 
 .controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
@@ -366,19 +305,13 @@ angular.module('starter.controllers', [])
   var cur = null
   $scope.isShown = function(book) {
     return book === cur;
-    // if(typeof book.show === 'undefined') {
-    //   return false;
-    // } else {
-    //   return book.show;
-    // }
-  };
+      };
   $scope.toggleShown = function(book) {
     if($scope.isShown(book)) {
       cur = null;
     } else {
       cur = book;
     }
-    //book.show = !$scope.isShown(book);
   };
 }])
 

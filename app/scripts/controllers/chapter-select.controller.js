@@ -8,11 +8,6 @@ appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor',
   var cur = null
   $scope.isShown = function(book) {
     return book === cur;
-    // if(typeof book.show === 'undefined') {
-    //   return false;
-    // } else {
-    //   return book.show;
-    // }
   };
   $scope.toggleShown = function(book) {
     if($scope.isShown(book)) {
@@ -20,6 +15,5 @@ appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor',
     } else {
       cur = book;
     }
-    //book.show = !$scope.isShown(book);
   };
 }]);

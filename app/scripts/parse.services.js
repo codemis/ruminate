@@ -165,17 +165,6 @@ angular.module('parse.services', [])
 
   parseReflectionObject.result = [];
 
-   //var Mapper = Parse.Object.extend("mapper");
-   //var a_mapper = new Mapper();
-   //a_mapper.set("userPointer", Parse.User.current());
-   //a_mapper.save();
-
-   //var Reflection = Parse.Object.extend("reflection");
-
-   //var a_reflection = new Reflection();
-   //a_reflection.set("userPointer", Parse.User.current());
-   //a_reflection.save();
-
     /**
    * Create the user if it does not exist, and log them in
    *
@@ -246,7 +235,6 @@ angular.module('parse.services', [])
 			for (var ctr = 0; ctr < reflections.length; ctr++)
 			{
 			    var reflection = reflections[ctr];
-				//var resultToStore = {};
 				parseReflectionObject.result.push(reflection);
 			}
         callback(reflections);
@@ -493,8 +481,6 @@ angular.module('parse.services', [])
 
 
 }])
-
-//.factory('ParseResponse', ;
 
 //pointer to question, answer as string
 

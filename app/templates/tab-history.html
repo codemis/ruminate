@@ -1,26 +1,8 @@
 <ion-view view-title="Ruminate History">
   <ion-content>
-    <!--<ion-list>
-	     <ion-item class="item item-icon-right item-text-wrap" ng-repeat="history in historyView" href="#/tab/reflection/{{history.objId}}">
-	     	<div class="history-top">
-	     		<span class="history-date">{{history.date}}</span>
-	     		<span class="history-chapter">{{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}</span>
-	     	</div>
-	     	<span class="history-snippet">{{history.verse}}</span>
-	     	<i class="icon ion-chevron-right icon-accessory"></i>
-	     </ion-item>
-	 </ion-list>-->
-
    <ion-list>
-     <!--<ion-item class="item item-divider">-->
-     <!--<div class="item item-divider">
-       {{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}
-     </div>-->
-     <!--</ion-item>-->
      <ion-item class="item-divider" ng-repeat-start="history in historyView">
-       <!--<div class="item item-divider">-->
          {{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}
-       <!--</div>-->
      </ion-item>
      <ion-item href="#/tab/reflection/{{history.objId}}" class="item-text-wrap item-icon-right" ng-repeat-end>
        <div class="history-top">
@@ -30,13 +12,6 @@
        <div class="history-snippet">{{history.verse}}</div>
        <i class="icon ion-chevron-right icon-accessory"></i>
      </ion-item>
-     <!--<ion-item class="item item-divider item-text-wrap" ng-repeat-start="question in questions">
-       {{question.question}}
-     </ion-item>
-     <ion-item class="item item-text-wrap item-icon-right" ng-repeat-end>
-       <p><textarea class="answer-input msd-elastic" ng-model="question.answer" ng-keyup="updateNeedsSaving(question)" placeholder="Answer">{{question.answer}}</textarea></p>
-       <ion-spinner ng-show="question.needsSaving" icon="spiral" class="icon"></ion-spinner>
-     </ion-item>-->
    </ion-list>
 
   </ion-content>

@@ -15,3 +15,6 @@ plugins
 app/scripts/configuration.js
 app/scripts/api-tokens.config.js
 parse/.parse.local
+
+settings.dev.yml
+settings.prod.yml

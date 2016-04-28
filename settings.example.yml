@@ -1,0 +1,26 @@
+# To setup an app, you will need to make 2 copies of this file.
+#
+# settings.dev.yml  - these constants are used when you run grunt serve. (Development)
+# settings.prod.yml  - these constants are used when you run grunt compress & grunt serve:compress. (Production)
+#
+# In each file set the settings for the appropriate environment.
+
+# The name of the current environment
+#
+name: 'development'
+
+# The Parse App Id
+#
+parseAppId: ''
+
+# The parse javascript key
+#
+parseJSKey: ''
+
+# The Ruminate API URL
+#
+ruminateApiUrl: ''
+
+# The Ruminate API Client Id
+#
+ruminateApiClientId: ''

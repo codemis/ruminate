@@ -17,10 +17,9 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
         var parsedData = JSON.parse(consumerData);
         deferred.resolve(new Consumer(parsedData));
       } else {
-        getConsumerData().then(function(data) {
-          createConsumer(data).then(function(consumer) {
-            deferred.resolve(consumer);
-          });
+        var data = getConsumerData();
+        createConsumer(data).then(function(consumer) {
+          deferred.resolve(consumer);
         });
       }
     });
@@ -84,7 +83,8 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
    *
    */
   function getConsumerData() {
-    var deferred = $q.defer();
+    /*globals jstz */
+    var tz = jstz.determine();
     var data = {
       device: {
         model: 'browser',
@@ -96,7 +96,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
         interval: 20000,
         token: 'pending',
         receive: false,
-        timezone: 'America/Los_Angeles'
+        timezone: tz.name()
       }
     };
     if(onDeviceService.check()) {
@@ -106,8 +106,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
       data.device.version = device.version;
       data.device.uuid = device.uuid;
     }
-    deferred.resolve(data);
-    return deferred.promise;
+    return data;
   }
 
 }])

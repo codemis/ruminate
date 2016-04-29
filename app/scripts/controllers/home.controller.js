@@ -2,8 +2,13 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', '$interval', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor'
-  ,function($scope, $log, $ionicModal, $stateParams, $location, $interval, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor) {
+appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', '$interval', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor', 'ConsumerService'
+  ,function($scope, $log, $ionicModal, $stateParams, $location, $interval, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor, ConsumerService) {
+
+  ConsumerService.getCurrent().then(function(consumer) {
+    console.log(consumer);
+  });
+
   $scope.objId = $stateParams.objId;
   /**
    * Saving Interval for checking whether we need to push a save
@@ -22,7 +27,6 @@ appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   $scope.updateData = function(objId) {
-    console.log('updateData');
     if(typeof objId === 'undefined') {
       ParseReflection.getForToday(loadReflection, loadReflectionError);
     } else {

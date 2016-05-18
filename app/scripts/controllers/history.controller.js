@@ -40,7 +40,13 @@ appControllers.controller('HistoryController', ['$scope', 'ParseReflection', 'Pa
             end: passage.get('lastVerse'),
             verse: passage.get('snippet'),
             date: reflection.get('createdAt').toDateString(),
-            objId: reflection.id
+            objId: reflection.id,
+            title:
+                BibleAccessor.bookNames[passage.get('book')] + ' ' + passage.get('chapter')
+                + (passage.get('firstVerse') != passage.get('lastVerse')
+                   ? ' verses ' + passage.get('firstVerse') + ' - ' + passage.get('lastVerse')
+                   : ' verse ' + passage.get('firstVerse'))
+
           };
           $scope.historyView.push(tmp)
         };

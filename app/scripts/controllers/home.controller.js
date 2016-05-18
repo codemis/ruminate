@@ -116,7 +116,14 @@ appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '
     if (angular.equals({}, $scope.passage)) {
       return 'Passage Loading';
     } else {
-        return $scope.passage.book+' '+$scope.passage.chapter+' verses '+$scope.passage.firstVerse+' - '+$scope.passage.lastVerse;
+        if ($scope.passage.firstVerse === $scope.passage.lastVerse)
+        {
+          return $scope.passage.book+' '+$scope.passage.chapter+' verse '+$scope.passage.firstVerse;
+        }
+        else
+        {
+          return $scope.passage.book+' '+$scope.passage.chapter+' verses '+$scope.passage.firstVerse+' - '+$scope.passage.lastVerse;
+        }
     }
   };
   /**
@@ -142,9 +149,6 @@ appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '
       }
     });
   };
-  // $scope.hasPassage = function() {
-  //   return $scope.reflection !== null;
-  // };
 
 
   $scope.answerModel = '';

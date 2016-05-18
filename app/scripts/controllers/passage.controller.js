@@ -12,7 +12,7 @@ appControllers.controller('PassageController', ['$scope', '$stateParams', 'Parse
     $scope.bookName = BibleAccessor.bookNames[passage.get('book')];
     $scope.chapter  = passage.get('chapter');
     BibleAccessor.getVerses(BibleAccessor.bookDamMap[passage.get('book')], passage.get('book'), passage.get('chapter'), function(verses) {
-      $scope.verses = verses.slice(passage.get('firstVerse'), passage.get('lastVerse') + 1);
+      $scope.verses = verses.slice(passage.get('firstVerse') - 1, passage.get('lastVerse'));
     });
     $scope.$apply();
   })

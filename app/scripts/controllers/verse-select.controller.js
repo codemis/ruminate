@@ -91,9 +91,16 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
       $location.path('/tab/home');
     };
 
-    ParseReflection.create(function(reflection) {
-      ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse].content, reflection, callback);
-    });
+    //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
+    //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
+    //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
+    if ($scope.lastVerse > -1 && $scope.firstVerse === -1)
+    {
+        $scope.firstVerse = $scope.lastVerse;
+    }
+      ParseReflection.create(function(reflection) {
+        ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse-1].content, reflection, callback);
+      });
 
   };
 }]);

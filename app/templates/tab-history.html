@@ -2,7 +2,7 @@
   <ion-content>
    <ion-list>
      <ion-item class="item-divider" ng-repeat-start="history in historyView">
-         {{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}
+         {{history.title}}
      </ion-item>
      <ion-item href="#/tab/reflection/{{history.objId}}" class="item-text-wrap item-icon-right" ng-repeat-end>
        <div class="history-top">

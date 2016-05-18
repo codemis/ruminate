@@ -4,6 +4,49 @@ var appModels = angular.module('app.models');
 
 appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Rumination', function($q, $log, $http, ENV, Rumination) {
   /**
+   * Get all the Ruminations for the current Consumer
+   *
+   * @param  {String} apiKey          The Consumer's API Key
+   * @param  {String} sortRuminations A pipe seperated string (column|direction) representing how to sort the ruminations (default: createdAt|asc)
+   * @param  {String} sortResponses   A pipe seperated string (column|direction) representing how to sort the responses (default: createdAt|asc)
+   * @return {Array}                  An array of the Consumer's responses
+   * @access public
+   */
+  this.all = function(apiKey, sortRuminations, sortResponses) {
+    sortRuminations = sortRuminations || 'createdAt|asc';
+    sortResponses = sortResponses || 'createdAt|asc';
+    var deferred = $q.defer();
+    var url = ENV.ruminateApiUrl + '/consumers/ruminations?sort_ruminations=' + sortRuminations + '&sort_responses=' + sortResponses;
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key':  apiKey
+      }
+    })
+    .success(function(response, status, headers) {
+      if (response) {
+        var ruminations = [];
+        for (var i = 0; i < response.length; i++) {
+          ruminations.push(new Rumination(response[i]));
+        }
+        deferred.resolve(ruminations);
+      } else {
+        deferred.resolve(null);
+      }
+    })
+    .error(function(response) {
+      if (response !== null) {
+        $log.error('API Error - ' + response.error);
+      } else {
+        $log.error('API Error - No error message sent.');
+      }
+      deferred.reject(null);
+    });
+    return deferred.promise;
+  };
+  /**
    * Create a new Rumination
    *
    * @param  {String}           apiKey The Consumer's API Key
@@ -27,7 +70,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         var rumination = new Rumination(response);
         deferred.resolve(rumination);
       } else {
-        deferred.resolve(null);
+        deferred.reject(null);
       }
     })
     .error(function(response) {
@@ -36,6 +79,34 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
       } else {
         $log.error('API Error - No error message sent.');
       }
+      deferred.reject(null);
+    });
+    return deferred.promise;
+  };
+  /**
+   * Get the rumination for the today.
+   *
+   * @param  {String}           apiKey  The Consumer's API Key
+   * @return {Rumination|null}          The Rumination for today
+   * @access public
+   */
+  this.today = function(apiKey) {
+    var today = new Date();
+    var deferred = $q.defer();
+    this.all(apiKey, 'createdAt|Desc').then(function(ruminations) {
+      if (ruminations) {
+        var rumination = null;
+        for (var i = 0; i < ruminations.length; i++) {
+          var createdAt = new Date(ruminations[i].createdAt);
+          if ((!rumination) && (createdAt.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0))) {
+            rumination = ruminations[i];
+          }
+        }
+        deferred.resolve(rumination);
+      } else {
+        deferred.reject(null);
+      }
+    }, function() {
       deferred.reject(null);
     });
     return deferred.promise;

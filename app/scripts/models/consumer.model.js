@@ -56,7 +56,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
         if (response && apiKey) {
           response.apiKey = apiKey;
           var consumer = new Consumer(response);
-          consumer.save();
+          consumer.save(false);
           deferred.resolve(consumer);
         } else {
           deferred.reject(null);

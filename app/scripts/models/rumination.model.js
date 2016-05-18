@@ -189,7 +189,37 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         }
       };
     };
-
+    /**
+     * Save the current Rumination data
+     *
+     * @param  {String} apiKey The Consumer's API Key
+     * @return {Boolean}       Did it save?
+     * @access public
+     */
+    this.save = function(apiKey) {
+      var deferred = $q.defer();
+      $http({
+        method: 'PUT',
+        url: ENV.ruminateApiUrl + '/consumers/ruminations/' + this.id,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key':  apiKey
+        },
+        data: this.toAPI()
+      })
+      .success(function(response, status, headers) {
+        deferred.resolve(true);
+      })
+      .error(function(response) {
+        if (response !== null) {
+          $log.error('API Error - ' + response.error);
+        } else {
+          $log.error('API Error - No error message sent.');
+        }
+        deferred.reject(false);
+      });
+      return deferred.promise;
+    };
     /**
      * Set the defaults for the Consumer object
      */

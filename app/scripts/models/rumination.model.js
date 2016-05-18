@@ -47,6 +47,44 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
     return deferred.promise;
   };
   /**
+   * Find a Rumination by it's id
+   *
+   * @param  {String}           apiKey        The Consumer's API Key
+   * @param  {Number}           id            The Rumination id to find
+   * @param  {String}           sortResponses A pipe seperated string (column|direction) representing how to sort the responses (default: createdAt|asc)
+   * @return {Rumination|null}                The Rumination your looking for
+   * @access public
+   */
+  this.findById = function(apiKey, id, sortResponses) {
+    sortResponses = sortResponses || 'createdAt|asc';
+    var deferred = $q.defer();
+    var url = ENV.ruminateApiUrl + '/consumers/ruminations/' + id + '?sort_responses=' + sortResponses;
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key':  apiKey
+      }
+    })
+    .success(function(response, status, headers) {
+      if (response) {
+        deferred.resolve(new Rumination(response));
+      } else {
+        deferred.resolve(null);
+      }
+    })
+    .error(function(response) {
+      if (response !== null) {
+        $log.error('API Error - ' + response.error);
+      } else {
+        $log.error('API Error - No error message sent.');
+      }
+      deferred.reject(null);
+    });
+    return deferred.promise;
+  };
+  /**
    * Create a new Rumination
    *
    * @param  {String}           apiKey The Consumer's API Key

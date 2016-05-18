@@ -25,7 +25,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         'x-api-key':  apiKey
       }
     })
-    .success(function(response, status, headers) {
+    .success(function(response) {
       if (response) {
         var ruminations = [];
         for (var i = 0; i < response.length; i++) {
@@ -67,7 +67,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         'x-api-key':  apiKey
       }
     })
-    .success(function(response, status, headers) {
+    .success(function(response) {
       if (response) {
         deferred.resolve(new Rumination(response));
       } else {
@@ -103,7 +103,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
       },
       data: data
     })
-    .success(function(response, status, headers) {
+    .success(function(response) {
       if (response) {
         var rumination = new Rumination(response);
         deferred.resolve(rumination);
@@ -150,7 +150,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
     return deferred.promise;
   };
 }])
-.factory('Rumination', ['$q', '$http', 'ENV', function($q, $http, ENV) {
+.factory('Rumination', ['$q', '$http', '$log', 'ENV', function($q, $http, $log, ENV) {
 
   var Rumination = function(data) {
 
@@ -207,7 +207,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         },
         data: this.toAPI()
       })
-      .success(function(response, status, headers) {
+      .success(function() {
         deferred.resolve(true);
       })
       .error(function(response) {

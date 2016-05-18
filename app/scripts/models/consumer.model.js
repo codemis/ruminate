@@ -2,7 +2,7 @@
 
 var appModels = angular.module('app.models');
 
-appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 'settingsService', 'onDeviceService', function($q, $log, $http, ENV, Consumer, settingsService, onDeviceService) {
+appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', 'ENV', 'Consumer', 'settingsService', 'onDeviceService', function($q, $log, $http, $cordovaDevice, ENV, Consumer, settingsService, onDeviceService) {
 
   /**
    * Gets the current Consumer if they are registered, or registers them and returns the new Consumer.
@@ -110,7 +110,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
   }
 
 }])
-.factory('Consumer', ['$q', '$http', 'settingsService', 'ENV', function($q, $http, settingsService, ENV) {
+.factory('Consumer', ['$q', '$http', '$log', 'settingsService', 'ENV', function($q, $http, $log, settingsService, ENV) {
 
   var Consumer = function(data) {
 
@@ -166,7 +166,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
           },
           data: this.toAPI()
         })
-        .success(function(response, status, headers) {
+        .success(function() {
           deferred.resolve(true);
         })
         .error(function(response) {

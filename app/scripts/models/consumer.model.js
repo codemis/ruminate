@@ -110,7 +110,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
   }
 
 }])
-.factory('Consumer', ['settingsService', function(settingsService) {
+.factory('Consumer', ['$q', '$http', 'settingsService', 'ENV', function($q, $http, settingsService, ENV) {
 
   var Consumer = function(data) {
 
@@ -123,15 +123,64 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', 'ENV', 'Consumer', 
     this.toString = function() {
       return JSON.stringify(this);
     };
+    /**
+     * Prepare the Consumer to be sent to the API using it's current data
+     *
+     * @return {Object} The data for the API
+     * @access public
+     */
+    this.toAPI = function() {
+      return {
+        device: {
+          model:    this.device.model,
+          platform: this.device.platform,
+          version:  this.device.version,
+          uuid:     this.device.uuid
+        },
+        push: {
+          interval: this.push.interval,
+          token:    this.push.token,
+          receive:  this.push.receive,
+          timezone: this.push.timezone
+        }
+      };
+    };
 
     /**
      * Save the Consumer
      *
-     * @return {Void}
+     * @param {Boolean}   updateAPI Do you want the API to update?
+     * @return {Boolean}  Did it save?
      * @access public
      */
-    this.save = function() {
+    this.save = function(updateAPI) {
+      var deferred = $q.defer();
       settingsService.set('consumer', this.toString());
+      if (updateAPI) {
+        $http({
+          method: 'PUT',
+          url: ENV.ruminateApiUrl + '/consumers',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key':  this.apiKey
+          },
+          data: this.toAPI()
+        })
+        .success(function(response, status, headers) {
+          deferred.resolve(true);
+        })
+        .error(function(response) {
+          if (response !== null) {
+            $log.error('API Error - ' + response.error);
+          } else {
+            $log.error('API Error - No error message sent.');
+          }
+          deferred.reject(false);
+        });
+      } else {
+        deferred.resolve(true);
+      }
+      return deferred.promise;
     };
 
     /**

@@ -217,7 +217,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         title += ' v. ' + this.passage.last.verse;
       } else {
         if (this.passage.first.verse !== this.passage.last.verse) {
-          title += ' - v. ' + this.passage.last.verse;
+          title += ' - ' + this.passage.last.verse;
         }
       }
       return title;

@@ -2,8 +2,8 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', '$interval', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor', 'ConsumerService', 'RuminationService'
-  ,function($scope, $log, $ionicModal, $stateParams, $location, $interval, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor, ConsumerService, RuminationService) {
+appControllers.controller('HomeController', [ '$scope', '$log', '$ionicModal', '$stateParams', '$location', '$interval', 'ParseService', 'ParseReflection', 'ParsePassage', 'ParseResponse', 'ParseQuestion', 'BibleAccessor', 'ConsumerService'
+  ,function($scope, $log, $ionicModal, $stateParams, $location, $interval, ParseService, ParseReflection, ParsePassage, ParseResponse, ParseQuestion, BibleAccessor, ConsumerService) {
 
   $scope.objId = $stateParams.objId;
   /**

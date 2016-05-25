@@ -68,7 +68,8 @@ appModels.service('ResponseService', function() {
      * Set the defaults for the Consumer object
      */
     angular.extend(this, {
-      'answer': ''
+      'answer': '',
+      'needsSaving': false
     });
 
     angular.extend(this, data);

@@ -202,6 +202,27 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
       };
     };
     /**
+     * Get a title for the Rumination
+     *
+     * @return {String} The title
+     * @access public
+     */
+    this.getTitle = function() {
+      var title = '';
+      title += this.passage.first.book;
+      title += ' ' + this.passage.first.chapter;
+      title += ' v. ' + this.passage.first.verse;
+      if (this.passage.first.chapter !== this.passage.last.chapter) {
+        title += ' - ' + this.passage.last.chapter;
+        title += ' v. ' + this.passage.last.verse;
+      } else {
+        if (this.passage.first.verse !== this.passage.last.verse) {
+          title += ' - v. ' + this.passage.last.verse;
+        }
+      }
+      return title;
+      };
+    /**
      * Save the current Rumination data
      *
      * @param  {String} apiKey The Consumer's API Key

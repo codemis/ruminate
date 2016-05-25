@@ -2,7 +2,7 @@
 
 var appModels = angular.module('app.models');
 
-appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Rumination', function($q, $log, $http, ENV, Rumination) {
+appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Rumination', 'Response', function($q, $log, $http, ENV, Rumination, Response) {
   /**
    * Get all the Ruminations for the current Consumer
    *
@@ -25,11 +25,17 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         'x-api-key':  apiKey
       }
     })
-    .success(function(response) {
-      if (response) {
+    .success(function(data) {
+      if (data) {
         var ruminations = [];
-        for (var i = 0; i < response.length; i++) {
-          ruminations.push(new Rumination(response[i]));
+        for (var i = 0; i < data.length; i++) {
+          var rumination = new Rumination(data[i]);
+          var responses = rumination.responses;
+          rumination.responses = [];
+          for (var n = 0; n < responses.length; n++) {
+            rumination.responses.push(new Response(responses[n]));
+          }
+          ruminations.push(rumination);
         }
         deferred.resolve(ruminations);
       } else {
@@ -67,9 +73,15 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
         'x-api-key':  apiKey
       }
     })
-    .success(function(response) {
-      if (response) {
-        deferred.resolve(new Rumination(response));
+    .success(function(data) {
+      if (data) {
+        var rumination = new Rumination(data);
+        var responses = rumination.responses;
+        rumination.responses = [];
+        for (var i = 0; i < responses.length; i++) {
+          rumination.responses.push(new Response(responses[i]));
+        }
+        deferred.resolve(rumination);
       } else {
         deferred.resolve(null);
       }

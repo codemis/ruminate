@@ -59,10 +59,6 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
       setup();
     });
 
-    $scope.$on('languageChangedEvent', function() {
-      setup();
-    });
-
     $scope.$on('PushNotify:pollPushStatusCompleted', function(event, data) {
       if ($scope.consumer !== null) {
         updatePushStatus(data.receivePush);

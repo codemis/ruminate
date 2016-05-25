@@ -74,7 +74,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'app.controllers', 'app.models'
   })
 
   .state('tab.passage', {
-    url: '/home/passage/:passageId',
+    url: '/home/passage/:ruminationId',
     views: {
       'tab-home':{
         templateUrl: 'templates/tab-passage.html',

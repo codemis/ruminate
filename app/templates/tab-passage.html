@@ -6,9 +6,12 @@
   </ion-nav-bar>
 
   <ion-content class="passage-content">
-  	<span class="verse" ng-repeat="verse in verses">
-  		<span class="verse-number">{{verse.number}}.</span>
-  		<span class="verse-content">{{verse.content}}</span>
-  	</span>
+    <h3>{{rumination.getTitle()}}</h3>
+    <p>
+    	<span class="verse" ng-repeat="verse in verses">
+    		<span class="verse-number">{{verse.number}}.</span>
+    		<span class="verse-content">{{verse.content}}</span>
+    	</span>
+    </p>
   </ion-content>
 </ion-view>

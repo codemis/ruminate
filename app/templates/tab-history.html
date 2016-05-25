@@ -1,15 +1,15 @@
 <ion-view view-title="Ruminate History">
   <ion-content>
    <ion-list>
-     <ion-item class="item-divider" ng-repeat-start="history in historyView">
-         {{history.book}} {{history.chapter}}, {{history.start}}-{{history.end}}
+     <ion-item class="item-divider" ng-repeat-start="rumination in ruminations">
+         {{rumination.getTitle()}}
      </ion-item>
-     <ion-item href="#/tab/reflection/{{history.objId}}" class="item-text-wrap item-icon-right" ng-repeat-end>
+     <ion-item href="#/tab/reflection/{{rumination.id}}" class="item-text-wrap item-icon-right" ng-repeat-end>
        <div class="history-top">
-         <span class="history-date">{{history.date}}</span>
+         <span class="history-date">{{rumination.createdAt | date:'MM/dd/yyyy'}}</span>
          <span class="history-chapter"></span>
        </div>
-       <div class="history-snippet">{{history.verse}}</div>
+       <div class="history-snippet">{{rumination.passage.snippet}}</div>
        <i class="icon ion-chevron-right icon-accessory"></i>
      </ion-item>
    </ion-list>

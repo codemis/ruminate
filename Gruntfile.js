@@ -41,20 +41,12 @@ module.exports = function (grunt) {
       },
       development: {
         constants: {
-          ENV: {
-            name: 'development',
-            parseAppId: 'rziWjkUW4fOheD6jui50yk6R3Bbsd13eDpltyICv',
-            parseJSKey: 'XIWag8dljGq87EkBK2z94tAhBhsSIR69Yh1wB1VE'
-          }
+          ENV: grunt.file.readYAML('settings.dev.yml')
         }
       },
       production: {
         constants: {
-          ENV: {
-            name: 'production',
-            parseAppId: 'rziWjkUW4fOheD6jui50yk6R3Bbsd13eDpltyICv',
-            parseJSKey: 'XIWag8dljGq87EkBK2z94tAhBhsSIR69Yh1wB1VE'
-          }
+          ENV: grunt.file.readYAML('settings.prod.yml')
         }
       }
     },
@@ -163,7 +155,7 @@ module.exports = function (grunt) {
       }
     },
 
-    
+
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
@@ -192,7 +184,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -551,7 +543,7 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('coverage', 
+  grunt.registerTask('coverage',
     ['karma:continuous',
     'connect:coverage:keepalive'
   ]);

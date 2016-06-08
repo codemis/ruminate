@@ -1,7 +1,7 @@
 <ion-view view-title="Chapter Select">
 	<ion-content>
 		<ion-list>
-		
+
 		<div ng-repeat="book in books">
 			<ion-item class="chapter-title" ng-click="toggleShown(book)">
 	      {{book.name}}
@@ -10,7 +10,7 @@
 	    <ion-item class="chapter-list item-text-wrap">
 	      <div class="padding-reference">
 	        <div class="position-reference">
-	          
+
 	        	<span class="chapter-box-abs">
 	          	<div class="chapter-box to-display"  ng-click="$event.stopPropagation()">
 								<a class="chapter-item" ng-repeat="chapter in book.chapters" href="#/tab/home/verse-select/{{book.dam_id}}/{{book.id}}/{{chapter}}"
@@ -29,10 +29,6 @@
 	    </ion-item>
 
 		</div>
-		
-
-
-
 
 	</ion-list>
 	</ion-content>

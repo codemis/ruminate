@@ -2,21 +2,64 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$location', '$ionicHistory', 'BibleAccessor', 'ParseUser', 'ParseReflection', 'ParsePassage',
-  function($scope, $stateParams, $location, $ionicHistory, BibleAccessor, ParseUser, ParseReflection, ParsePassage) {
+appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$location', '$ionicHistory', '$ionicPlatform', '$cordovaNetwork', 'BibleAccessor', 'onDeviceService', 'ConsumerService', 'RuminationService',
+  function($scope, $stateParams, $location, $ionicHistory, $ionicPlatform, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
 
   // These contain the information that will be added to the database
   $scope.chapter = $stateParams.chapter;
   $scope.book = $stateParams.bookId;
   $scope.bookName = BibleAccessor.bookNames[$scope.book];
-  $scope.dam_id = $stateParams.damId;
+  $scope.damId = $stateParams.damId;
   $scope.firstVerse=-1;
-  $scope.lastVerse=-1
+  $scope.lastVerse=-1;
+  /**
+   * Is the API accessible
+   *
+   * @type {Boolean}
+   * @access public
+   */
+  $scope.apiAccessible = true;
+  /**
+   * The current Consumer
+   *
+   * @type {Object}
+   * @access public
+   */
+  $scope.consumer = null;
 
-  BibleAccessor.getVerses($scope.dam_id, $scope.book, $scope.chapter, function(verses) {
-    $scope.verses = verses;
+  $ionicPlatform.ready(function() {
+    /**
+     * Handle online/offline access
+     */
+    if(onDeviceService.check()) {
+      $scope.apiAccessible = $cordovaNetwork.isOnline();
+    }
+    /**
+     * Watch for events that are broadcasted
+     */
+    $scope.$on('$cordovaNetwork:online', function() {
+      $scope.apiAccessible = true;
+      setup();
+    });
+
+    $scope.$on('$cordovaNetwork:offline', function() {
+      $scope.apiAccessible = false;
+      teardown();
+    });
+
+    $scope.$on('$ionicView.enter', function() {
+      setup();
+    });
+
+    $scope.$on('$ionicView.leave', function() {
+      teardown();
+    });
+
+    $scope.$on('$destroy', function() {
+      teardown();
+    });
+
   });
-
 
   $scope.isSelected = function(id) {
     id = parseInt(id);
@@ -25,10 +68,10 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
     } else {
       return id >= $scope.firstVerse && id <= $scope.lastVerse;
     }
-  }
+  };
 
   $scope.handleClick = function(id) {
-    id = parseInt(id);
+    id = parseInt(id, 10);
     if(id === $scope.lastVerse) {
       $scope.lastVerse = -1;
     } else
@@ -40,7 +83,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
       $scope.lastVerse = id;
     } else
 
-    if( $scope.lastVerse === -1 && $scope.firstVerse != -1) {
+    if( $scope.lastVerse === -1 && $scope.firstVerse !== -1) {
       if($scope.firstVerse > id) {
         $scope.lastVerse = $scope.firstVerse;
         $scope.firstVerse = id;
@@ -48,7 +91,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
         $scope.lastVerse = id;
       }
     } else
-    if( $scope.firstVerse === -1 && $scope.lastVerse != -1) {
+    if( $scope.firstVerse === -1 && $scope.lastVerse !== -1) {
       if($scope.lastVerse < id) {
         $scope.firstVerse = $scope.lastVerse;
         $scope.lastVerse = id;
@@ -57,10 +100,10 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
       }
     } else
 
-    if(id > $scope.lastVerse && $scope.lastVerse != -1) {
+    if(id > $scope.lastVerse && $scope.lastVerse !== -1) {
       $scope.lastVerse = id;
     } else
-    if(id < $scope.firstVerse && $scope.firstVerse != -1) {
+    if(id < $scope.firstVerse && $scope.firstVerse !== -1) {
       $scope.firstVerse = id;
     } else
 
@@ -74,33 +117,70 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
   };
 
   $scope.updateOrCreateReflection = function() {
-    var reflection = null;
-    /**
-     * An empty function for going home when complete
-     *
-     * @return {void}
-     * @access private
-     *
-     * @author Johnathan Pulos <johnathan@missionaldigerati.org>
-     */
-    var callback = function() {
+    //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
+    //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
+    //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
+    if ($scope.lastVerse > -1 && $scope.firstVerse === -1) {
+        $scope.firstVerse = $scope.lastVerse;
+    }
+    var rumination = {
+      'passage': {
+        'version': "ESV",
+        'snippet': $scope.verses[0].content,
+        'first': {
+          'book': capitalize($scope.bookName),
+          'abbreviation': $scope.book,
+          'chapter': parseInt($scope.chapter, 10),
+          'verse': $scope.firstVerse
+        },
+        'last': {
+          'book': capitalize($scope.bookName),
+          'abbreviation': $scope.book,
+          'chapter': parseInt($scope.chapter, 10),
+          'verse': $scope.lastVerse
+        }
+      }
+    };
+
+    RuminationService.new($scope.consumer.apiKey, rumination).then(function() {
       $ionicHistory.clearCache();
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
       $location.path('/tab/home');
-    };
-
-    //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
-    //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
-    //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
-    if ($scope.lastVerse > -1 && $scope.firstVerse === -1)
-    {
-        $scope.firstVerse = $scope.lastVerse;
-    }
-      ParseReflection.create(function(reflection) {
-        ParsePassage.create($scope.book, parseInt($scope.chapter), $scope.firstVerse, $scope.lastVerse, $scope.verses[$scope.firstVerse-1].content, reflection, callback);
-      });
-
+    });
   };
+
+  /**
+   * Setup the controller
+   *
+   * @access private
+   */
+  function setup() {
+    BibleAccessor.getVerses($scope.damId, $scope.book, $scope.chapter, function(verses) {
+      $scope.verses = verses;
+    });
+    ConsumerService.getCurrent().then(function(consumer) {
+      $scope.consumer = consumer;
+    });
+  }
+
+  /**
+   * Teardown the controller
+   *
+   * @access private
+   */
+  function teardown() {
+  }
+
+  /**
+   * Capitalize the first letter of the word.
+   *
+   * @param  {String} string The string to modify
+   * @return {String}        The modified string
+   * @access public
+   */
+  function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
 }]);

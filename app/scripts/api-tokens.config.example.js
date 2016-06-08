@@ -1,8 +1,7 @@
 "use strict";
 
- angular.module('api-tokens.config', [])
+angular.module('api-tokens.config', [])
 
-.constant('PARSE_ENV', {
-  appId:'APPID',
-  jSKey:'JSKEY'
+.constant('DBP_ENV', {
+  apiKey:'API-KEY-FOR-DIGITAL-BIBLE-PLATFORM'
 });

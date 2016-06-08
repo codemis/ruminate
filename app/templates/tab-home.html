@@ -3,33 +3,31 @@
   <ion-nav-buttons side="secondary">
     <button class="button icon button-icon ion-plus" ng-click="selectPassage()"></button>
   </ion-nav-buttons>
-
-
   <ion-content>
-    <div ng-hide="hasReflection" class="ng-hide">
+    <div ng-hide="rumination !== null" class="ng-hide">
       <div class="logo-watermark"></div>
       <div class="call-to-action">
         <button ng-show="displaySelectButton" class="button button-positive button-block" ng-click="selectPassage()">Select a Passage</button>
       </div>
     </div>
-    <ion-list class="list" ng-show="hasReflection" class="ng-hide">
+    <ion-list class="list" ng-show="rumination !== null" class="ng-hide">
       <ion-item class="item item-divider">
-        {{passage.title}}
+        {{rumination.getTitle()}}
       </ion-item>
-      <ion-item href="#/tab/home/passage/{{passage.recordId}}" class="item-text-wrap item-icon-right">
+      <ion-item href="#/tab/home/passage/{{rumination.id}}" class="item-text-wrap item-icon-right">
         <div class="history-top">
-          <span class="history-date">{{passage.date}}</span>
+          <span class="history-date">{{rumination.createdAt | date:'MM/dd/yyyy'}}</span>
           <span class="history-chapter"></span>
         </div>
-        <span class="history-snippet">{{truncatedSnippet}}</span>
+        <span class="history-snippet">{{rumination.passage.snippet}}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
-      <ion-item class="item item-divider item-text-wrap" ng-repeat-start="question in questions">
-        {{question.question}}
+      <ion-item class="item item-divider item-text-wrap" ng-repeat-start="response in rumination.responses">
+        {{response.question.content}}
       </ion-item>
       <ion-item class="item item-text-wrap item-icon-right" ng-repeat-end>
-        <p><textarea class="answer-input msd-elastic" ng-model="question.answer" ng-keyup="updateNeedsSaving(question)" placeholder="Answer">{{question.answer}}</textarea></p>
-        <ion-spinner ng-show="question.needsSaving" icon="spiral" class="icon"></ion-spinner>
+        <p><textarea class="answer-input msd-elastic" ng-model="response.answer" ng-keyup="updateNeedsSaving(response)" placeholder="Answer">{{response.answer}}</textarea></p>
+        <ion-spinner ng-show="response.needsSaving" icon="spiral" class="icon"></ion-spinner>
       </ion-item>
     </ion-list>
   </ion-content>

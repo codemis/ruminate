@@ -128,14 +128,14 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
         'version': "ESV",
         'snippet': $scope.verses[0].content,
         'first': {
-          'book': $scope.bookName,
-          'abbreviation': capitalize($scope.book),
+          'book': capitalize($scope.bookName),
+          'abbreviation': $scope.book,
           'chapter': parseInt($scope.chapter, 10),
           'verse': $scope.firstVerse
         },
         'last': {
-          'book': $scope.bookName,
-          'abbreviation': capitalize($scope.book),
+          'book': capitalize($scope.bookName),
+          'abbreviation': $scope.book,
           'chapter': parseInt($scope.chapter, 10),
           'verse': $scope.lastVerse
         }

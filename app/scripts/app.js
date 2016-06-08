@@ -2,7 +2,7 @@
 
 angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models', 'app.libraries', 'dbp.services', 'monospaced.elastic', 'config', 'api-tokens.config'])
 
-.run(['$ionicPlatform', 'BibleAccessor', function($ionicPlatform, BibleAccessor) {
+.run(['$ionicPlatform', function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -15,7 +15,6 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
-    BibleAccessor.updateBookMaps();
   });
 }])
 

@@ -19,11 +19,13 @@ angular.module('dbp.services', [])
 	serviceObject.bookDamMap = {};
 
 	serviceObject.updateBookMaps = function() {
-		serviceObject.getBookList(function(data) {
+		console.log('Updating Books');
+		var self = this;
+		this.getBookList(function(data) {
 			for (var i = 0; i < data.length; i++) {
 				var book = data[i];
-				serviceObject.bookDamMap[book.id] = book.dam_id;
-				serviceObject.bookNames[book.id]  = book.name;
+				self.bookDamMap[book.id] = book.dam_id;
+				self.bookNames[book.id]  = book.name;
 			}
 		});
 	};
@@ -65,6 +67,13 @@ angular.module('dbp.services', [])
 		});
 
 	};
+
+	/**
+	 * Let's update the books
+	 *
+	 * @access public
+	 */
+	serviceObject.updateBookMaps();
 
 	return serviceObject;
 }]);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models', 'app.libraries', 'dbp.services', 'ionic.utilities', 'monospaced.elastic', 'config', 'api-tokens.config'])
+angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models', 'app.libraries', 'dbp.services', 'monospaced.elastic', 'config', 'api-tokens.config'])
 
 .run(['$ionicPlatform', 'BibleAccessor', function($ionicPlatform, BibleAccessor) {
   $ionicPlatform.ready(function() {

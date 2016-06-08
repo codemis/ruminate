@@ -2,31 +2,31 @@
 
 angular.module('dbp.services', [])
 
+/*jshint camelcase: false */
 .factory('BibleAccessor', ['$http', 'DBP_ENV', function($http, env) {
 	var serviceObject = {};
 
 	var versions = {
 		'KJV':['1ET'],
 		'ESV':['2ET']
-	}
+	};
 	var version = 'ESV';
 
 	var default_dam_id = 'ENG' + version;
 	var dam_other      = versions[version][0];
 	serviceObject.versionNames = {'ESV':"English Standard Version"};
-	serviceObject.bookNames = {}
-	serviceObject.bookDamMap = {}
+	serviceObject.bookNames = {};
+	serviceObject.bookDamMap = {};
 
 	serviceObject.updateBookMaps = function() {
 		serviceObject.getBookList(function(data) {
 			for (var i = 0; i < data.length; i++) {
 				var book = data[i];
-
 				serviceObject.bookDamMap[book.id] = book.dam_id;
 				serviceObject.bookNames[book.id]  = book.name;
-			};
-		})
-	}
+			}
+		});
+	};
 
 	serviceObject.getBookList = function(callback) {
 		$http.get( 'http://dbt.io/library/book', { params: { v:2, key:env.apiKey, dam_id:default_dam_id } } )
@@ -41,7 +41,7 @@ angular.module('dbp.services', [])
 				newObj.chapters = raw.chapters.split(',');
 				newObj.dam_id = raw.dam_id;
 				parsed.push(newObj);
-			};
+			}
 			callback(parsed);
 		});
 	};
@@ -59,12 +59,12 @@ angular.module('dbp.services', [])
 				newObj.number = raw.verse_id;
 				newObj.content = raw.verse_text;
 				parsed.push(newObj);
-			};
+			}
 
 			callback(parsed);
 		});
 
-	}
+	};
 
 	return serviceObject;
 }]);

@@ -59,10 +59,10 @@ appControllers.controller('PassageController', ['$scope', '$stateParams', '$ioni
   function setup() {
     ConsumerService.getCurrent().then(function(consumer) {
       $scope.consumer = consumer;
-      RuminationService.findById(consumer.apiKey, $stateParams.ruminationId).then(function(rumination) {
+      RuminationService.findById(consumer.apiKey, $scope.ruminationId).then(function(rumination) {
         $scope.rumination = rumination;
         BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
-          $scope.verses = verses.slice(rumination.passage.first.verse - 1, rumination.passage.last.verse);
+          $scope.verses = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
         });
       });
     });

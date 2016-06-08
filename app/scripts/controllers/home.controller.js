@@ -2,6 +2,7 @@
 
 var appControllers = angular.module('app.controllers');
 
+/*jshint camelcase: false */
 appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$stateParams', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', function($scope, $log, $ionicPlatform, $stateParams, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService) {
 
   /**
@@ -125,6 +126,20 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
     savingInterval = null;
     saveAllNotes();
   }
+
+  /**
+   * Update the consumer's push settings if it changed
+   *
+   * @param  {Boolean}  receivePush   Do they want push notification?
+   * @access private
+   */
+  function updatePushStatus(receivePush) {
+    if ((receivePush !== null) && ($scope.consumer.receive_push !== receivePush)) {
+      $scope.consumer.receive_push = receivePush;
+      $scope.consumer.save(true);
+    }
+  }
+
   /**
    * Save all notes by sending it to Parse
    *
@@ -134,15 +149,17 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   function saveAllNotes() {
-    angular.forEach($scope.rumination.responses, function(response) {
-      if (response.needsSaving === true) {
-        /**
-         * Save the question
-         */
-        response.save($scope.consumer.apiKey, $scope.rumination.id);
-        response.needsSaving = false;
-      }
-    });
+    if ($scope.rumination.responses) {
+      angular.forEach($scope.rumination.responses, function(response) {
+        if (response.needsSaving === true) {
+          /**
+           * Save the question
+           */
+          response.save($scope.consumer.apiKey, $scope.rumination.id);
+          response.needsSaving = false;
+        }
+      });
+    }
   }
 
 }]);

@@ -149,7 +149,7 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @author Johnathan Pulos <johnathan@missionaldigerati.org>
    */
   function saveAllNotes() {
-    if ($scope.rumination.responses) {
+    if (($scope.rumination) && ($scope.rumination.responses)) {
       angular.forEach($scope.rumination.responses, function(response) {
         if (response.needsSaving === true) {
           /**

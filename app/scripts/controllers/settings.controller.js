@@ -2,7 +2,7 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('SettingsController', ['$ionicPlatform', '$scope', '$q', 'onDeviceService', 'PushNotify', 'ConsumerService', 'TimezoneService', function($ionicPlatform, $scope, $q, onDeviceService, PushNotify, ConsumerService, TimezoneService) {
+appControllers.controller('SettingsController', ['$ionicPlatform', '$scope', '$q', '$cordovaNetwork', 'onDeviceService', 'PushNotify', 'ConsumerService', 'TimezoneService', function($ionicPlatform, $scope, $q, $cordovaNetwork, onDeviceService, PushNotify, ConsumerService, TimezoneService) {
   /**
    * The push notify service object
    * @param {Object}
@@ -322,17 +322,5 @@ appControllers.controller('SettingsController', ['$ionicPlatform', '$scope', '$q
       return obj.val === current;
     });
     $scope.selectedInterval = selected[0];
-  }
-  /**
-   * Pad the given number with a leading 0
-   *
-   * @param  {Integer} number The number to pad
-   *
-   * @return {String}  The padded number
-   *
-   *
-   */
-  function pad(number) {
-    return number<10 ? '0'+number : number;
   }
 }]);

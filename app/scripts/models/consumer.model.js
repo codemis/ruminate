@@ -219,7 +219,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
         'uuid':     ''
       },
       'push': {
-        'interval': 20000,
+        'interval': 7200,
         'token':    '',
         'receive':  false,
         'timezone': ''

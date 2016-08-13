@@ -151,7 +151,7 @@ appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q'
         /*globals PushNotification */
         PushNotification.hasPermission(
           function(data) {
-            var receivePush = (data.isEnabled) ? 1 : 0;
+            var receivePush = (data.isEnabled) ? true : false;
             deferred.resolve(receivePush);
           }, function() {
             deferred.resolve(null);
@@ -172,13 +172,13 @@ appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q'
      */
     this.validatePushSettings = function(settings) {
       var valid = true;
-      if ((settings.push_token === '') || (settings.push_token === null)) {
+      if ((settings.push.token === '') || (settings.push.token === null)) {
         valid = false;
       }
-      if ((settings.push_at === '') || (settings.push_at === null)) {
+      if ((settings.push.interval === '') || (settings.push.interval === null)) {
         valid = false;
       }
-      if ((settings.time_zone === '') || (settings.time_zone === null)) {
+      if ((settings.timezone === '') || (settings.timezone === null)) {
         valid = false;
       }
       return valid;

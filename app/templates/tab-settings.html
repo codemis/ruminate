@@ -1,31 +1,44 @@
-<ion-view view-title="Ruminate Settings">
-  <ion-content class="padding">
-    <div class="list">
-
-  	<label class="item item-input item-select">
-		<div class="input-label">
-		Frequency
-		</div>
-		<select>
-		<option ng-repeat="minuteIncrement in minuteSelection" value="{{minuteIncrement.value}}">{{minuteIncrement.text}}</option>
-		</select>
-
-	</label>
-
-
-	<label class="item item-input item-select">
-		<div class="input-label">
-		Sound
-		</div>
-		<select>
-		<option>Cow</option>
-		<option selected>Alarm</option>
-		<option>Drum</option>
-		<option>Guitar</option>
-		</select>
-	</label>
-
-
-	 </div>
+<ion-view>
+  <ion-nav-title>Settings</ion-nav-title>
+  <ion-content>
+    <div class="bar bar-loading bar-assertive" ng-if="apiAccessible === false">
+      Sorry, your offline!
+    </div>
+    <ul class="list">
+      <li class="item item-divider">
+        <p>Rumination Settings</p>
+      </li>
+      <li class="item item-text-wrap">
+        <p>{{pushInstruction}}</p>
+      </li>
+      <li class="item item-input item-toggle">
+        <div class="input-label">Receive Notifications</div>
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-checked="receivingPush()" disabled>
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </li>
+      <li class="item item-input item-select" ng-show="receivingPush()">
+        <div class="input-label">How Often?</div>
+        <select ng-model="selectedInterval" ng-options="interval as interval.label for interval in availableIntervals track by interval.val" ng-change="changeInterval(selectedInterval)"></select>
+      </li>
+      <li class="item item-input item-select" ng-show="receivingPush()">
+        <div class="input-label">Time Zone</div>
+        <select ng-model="selectedTimezone" ng-options="timeZone.label for timeZone in timeZones" ng-change="changeTimezone(selectedTimezone)"></select>
+      </li>
+      <li class="item item-button-left" ng-show="receivingPush()">
+        <span>Automatically Detect Time Zone</span>
+        <button class="button button-positive" ng-click="detectTimezone()">
+          <i class="icon ion-ios-navigate-outline"></i>
+        </button>
+      </li>
+      <li class="item">
+        <button class="button button-positive button-block" ng-click="checkPushSettings()">
+          <i class="icon ion-android-phone-portrait"></i> <span>Check Device Settings</span>
+        </button>
+      </li>
+    </ul>
   </ion-content>
 </ion-view>

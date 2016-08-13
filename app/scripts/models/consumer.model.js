@@ -2,7 +2,7 @@
 
 var appModels = angular.module('app.models');
 
-appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', 'ENV', 'Consumer', 'settingsService', 'onDeviceService', function($q, $log, $http, $cordovaDevice, ENV, Consumer, settingsService, onDeviceService) {
+appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', 'ENV', 'Consumer', 'settingsService', 'onDeviceService', 'TimezoneService', function($q, $log, $http, $cordovaDevice, ENV, Consumer, settingsService, onDeviceService, TimezoneService) {
 
   /**
    * Gets the current Consumer if they are registered, or registers them and returns the new Consumer.
@@ -15,7 +15,18 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
     settingsService.get('consumer', null).then(function(consumerData) {
       if (consumerData !== null) {
         var parsedData = JSON.parse(consumerData);
-        deferred.resolve(new Consumer(parsedData));
+        var consumer;
+        if ((parsedData.push.timezone === null) || (parsedData.push.timezone === '')) {
+          /**
+           * Their timezone is still null
+           */
+          consumer = new Consumer(parsedData);
+        } else {
+          var timezone = TimezoneService.find(parsedData.push.timezone.val);
+          consumer = new Consumer(parsedData);
+          consumer.push.timezone = timezone;
+        }
+        deferred.resolve(consumer);
       } else {
         var data = getConsumerData();
         createConsumer(data).then(function(consumer) {
@@ -42,6 +53,9 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
       $log.error('You must provide a valid push token.');
       deferred.reject(null);
     } else {
+      if ((data.push.timezone !== null) && (data.push.timezone !== '')) {
+        data.push.timezone = data.push.timezone.toAPI();
+      }
       $http({
         method: 'POST',
         url: ENV.ruminateApiUrl + '/consumers',
@@ -56,6 +70,9 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
         if (response && apiKey) {
           response.apiKey = apiKey;
           var consumer = new Consumer(response);
+          if ((consumer.push.timezone !== null) && (consumer.push.timezone !== '')) {
+            consumer.push.timezone = TimezoneService.find(consumer.push.timezone);
+          }
           consumer.save(false);
           deferred.resolve(consumer);
         } else {
@@ -83,8 +100,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
    *
    */
   function getConsumerData() {
-    /*globals jstz */
-    var tz = jstz.determine();
+    var tz = TimezoneService.current();
     var data = {
       device: {
         model: 'browser',
@@ -96,7 +112,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
         interval: 20000,
         token: 'pending',
         receive: false,
-        timezone: tz.name()
+        timezone: tz
       }
     };
     if(onDeviceService.check()) {
@@ -130,6 +146,15 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
      * @access public
      */
     this.toAPI = function() {
+      var timeZone;
+      /**
+       * Handle the time_zone
+       */
+      if ((this.push.timezone === null) || (this.push.timezone === '')) {
+        timeZone = '';
+      } else {
+        timeZone = this.push.timezone.toAPI();
+      }
       return {
         device: {
           model:    this.device.model,
@@ -141,7 +166,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
           interval: this.push.interval,
           token:    this.push.token,
           receive:  this.push.receive,
-          timezone: this.push.timezone
+          timezone: timeZone
         }
       };
     };
@@ -194,7 +219,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
         'uuid':     ''
       },
       'push': {
-        'interval': 20000,
+        'interval': 7200,
         'token':    '',
         'receive':  false,
         'timezone': ''

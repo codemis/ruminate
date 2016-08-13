@@ -9,14 +9,6 @@
 #
 name: 'development'
 
-# The Parse App Id
-#
-parseAppId: ''
-
-# The parse javascript key
-#
-parseJSKey: ''
-
 # The Ruminate API URL
 #
 ruminateApiUrl: ''
@@ -24,3 +16,6 @@ ruminateApiUrl: ''
 # The Ruminate API Client Id
 #
 ruminateApiClientId: ''
+# Android's Sender ID
+#
+androidSenderId: ''

@@ -25,7 +25,7 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @type {Object}
    * @access public
    */
-  $scope.rumination = null;
+  $scope.rumination = '';
 
   $scope.objId = $stateParams.objId;
   /**
@@ -107,6 +107,8 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
       $scope.consumer = consumer;
       RuminationService.today(consumer.apiKey).then(function(rumination) {
         $scope.rumination = rumination;
+      }, function() {
+        $scope.rumination = null;
       });
       if (savingInterval === null) {
         savingInterval = $interval(function() {

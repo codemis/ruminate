@@ -109,7 +109,7 @@ appModels.service('ConsumerService', ['$q', '$log', '$http', '$cordovaDevice', '
         uuid: '9530f9e7-4391-40c7-8073-df500443831e'
       },
       push: {
-        interval: 20000,
+        interval: 7200,
         token: 'pending',
         receive: false,
         timezone: tz

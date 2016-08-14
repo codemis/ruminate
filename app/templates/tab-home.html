@@ -10,7 +10,7 @@
         <button ng-show="displaySelectButton" class="button button-positive button-block" ng-click="selectPassage()">Select a Passage</button>
       </div>
     </div>
-    <ion-list class="list" ng-show="rumination !== null" class="ng-hide">
+    <ion-list class="list" ng-show="rumination !== '' && rumination !== null" class="ng-hide">
       <ion-item class="item item-divider">
         {{rumination.getTitle()}}
       </ion-item>

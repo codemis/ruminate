@@ -86,6 +86,12 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
 
   });
 
+  /**
+   * Toggle the passage
+   *
+   * @return {Void}
+   * @access public
+   */
   $scope.togglePassage = function() {
     $scope.passageShowing = !$scope.passageShowing;
   };

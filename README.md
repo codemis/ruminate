@@ -7,3 +7,5 @@ Push Notification Gotcha's
 --------------------------
 
 You will also need to install the [Phone Gap Push Plugin](https://github.com/phonegap/phonegap-plugin-push/blob/master/docs/INSTALLATION.md) following the instructions in their repo.
+
+Icon from [The Noun Project](https://thenounproject.com).

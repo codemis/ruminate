@@ -15,9 +15,17 @@
         {{rumination.getTitle()}}
         <div class="item-note">{{rumination.createdAt | date:'MM/dd/yyyy'}}</div>
       </ion-item>
-      <ion-item href="#/tab/home/passage/{{rumination.id}}" class="item-text-wrap item-icon-right">
-        <p class="history-snippet">{{rumination.passage.snippet}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+      <ion-item class="item-text-wrap item-icon-right" ng-click="togglePassage()" ng-class="{active: passageShowing}">
+        <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}</p>
+        <i class="icon" ng-class="passageShowing ? '' : 'ion-android-more-vertical'"></i>
+        <ion-item class="item-accordion item-text-wrap" ng-show="passageShowing">
+          <p>
+            <span class="verse" ng-repeat="verse in passage">
+              <span class="verse-number">{{verse.number}}.</span>
+              <span class="verse-content">{{verse.content}}</span>
+            </span>
+          </p>
+        </ion-item>
       </ion-item>
       <ion-item class="item item-divider item-text-wrap" ng-repeat-start="response in rumination.responses">
         {{response.question.content}}

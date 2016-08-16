@@ -3,7 +3,7 @@
 var appControllers = angular.module('app.controllers');
 
 /*jshint camelcase: false */
-appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$stateParams', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', function($scope, $log, $ionicPlatform, $stateParams, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService) {
+appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', function($scope, $log, $ionicPlatform, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor) {
 
   /**
    * Is the API accessible
@@ -26,8 +26,18 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @access public
    */
   $scope.rumination = '';
-
-  $scope.objId = $stateParams.objId;
+  /**
+   * The passage that was selected
+   *
+   * @type {String}
+   */
+  $scope.passage = '';
+  /**
+   * Is the passage showing?
+   *
+   * @type {Boolean}
+   */
+  $scope.passageShowing = false;
   /**
    * Saving Interval for checking whether we need to push a save
    * @type {Object|Null}
@@ -76,6 +86,9 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
 
   });
 
+  $scope.togglePassage = function() {
+    $scope.passageShowing = !$scope.passageShowing;
+  };
   /**
    * Update the needs saving attribute
    *
@@ -107,6 +120,9 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
       $scope.consumer = consumer;
       RuminationService.today(consumer.apiKey).then(function(rumination) {
         $scope.rumination = rumination;
+        BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
+          $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
+        });
       }, function() {
         $scope.rumination = null;
       });

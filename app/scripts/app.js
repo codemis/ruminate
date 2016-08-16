@@ -65,7 +65,17 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
     }
   })
 
-  .state('tab.passage', {
+  .state('tab.history-passage', {
+    url: '/history/passage/:ruminationId',
+    views: {
+      'tab-history': {
+        templateUrl: 'templates/tab-passage.html',
+        controller: 'PassageController'
+      }
+    }
+  })
+
+  .state('tab.home-passage', {
     url: '/home/passage/:ruminationId',
     views: {
       'tab-home':{

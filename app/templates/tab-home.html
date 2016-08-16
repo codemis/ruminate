@@ -13,13 +13,10 @@
     <ion-list class="list" ng-show="rumination !== '' && rumination !== null" class="ng-hide">
       <ion-item class="item item-divider">
         {{rumination.getTitle()}}
+        <div class="item-note">{{rumination.createdAt | date:'MM/dd/yyyy'}}</div>
       </ion-item>
       <ion-item href="#/tab/home/passage/{{rumination.id}}" class="item-text-wrap item-icon-right">
-        <div class="history-top">
-          <span class="history-date">{{rumination.createdAt | date:'MM/dd/yyyy'}}</span>
-          <span class="history-chapter"></span>
-        </div>
-        <span class="history-snippet">{{rumination.passage.snippet}}</span>
+        <p class="history-snippet">{{rumination.passage.snippet}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item class="item item-divider item-text-wrap" ng-repeat-start="response in rumination.responses">

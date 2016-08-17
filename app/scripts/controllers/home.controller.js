@@ -3,7 +3,7 @@
 var appControllers = angular.module('app.controllers');
 
 /*jshint camelcase: false */
-appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', function($scope, $log, $ionicPlatform, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor) {
+appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', 'PushNotify', function($scope, $log, $ionicPlatform, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor, PushNotify) {
 
   /**
    * Is the API accessible
@@ -44,6 +44,12 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @access private
    */
   var savingInterval = null;
+  /**
+   * Keep track if the tool is setting up
+   *
+   * @type {Boolean}
+   */
+  var settingUp = false;
 
 
   $ionicPlatform.ready(function() {
@@ -71,7 +77,7 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
     });
 
     $scope.$on('PushNotify:pollPushStatusCompleted', function(event, data) {
-      if ($scope.consumer !== null) {
+      if ($scope.isRegistered()) {
         updatePushStatus(data.receivePush);
       }
     });
@@ -84,7 +90,22 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
       teardown();
     });
 
+    if (!settingUp) {
+      setup();
+    }
+
   });
+
+  /**
+   * Check if the Consumer is registered
+   *
+   * @return {Boolean} Is the Consumer registered?
+   * @access private
+   *
+   */
+  $scope.isRegistered = function() {
+    return (($scope.consumer !== null) && ($scope.consumer.apiKey !== ''));
+  };
 
   /**
    * Toggle the passage
@@ -122,15 +143,23 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @access private
    */
   function setup() {
+    settingUp = true;
+
     ConsumerService.getCurrent().then(function(consumer) {
       $scope.consumer = consumer;
       RuminationService.today(consumer.apiKey).then(function(rumination) {
         $scope.rumination = rumination;
-        BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
-          $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
-        });
+        if (rumination) {
+          BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
+            $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
+            checkPushStatus();
+          });
+        } else {
+          checkPushStatus();
+        }
       }, function() {
         $scope.rumination = null;
+        checkPushStatus();
       });
       if (savingInterval === null) {
         savingInterval = $interval(function() {
@@ -146,11 +175,32 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @access private
    */
   function teardown() {
+    settingUp = false;
     $interval.cancel(savingInterval);
     savingInterval = null;
     saveAllNotes();
   }
 
+  /**
+   * Check the user's current push status
+   *
+   * @return {Void}
+   * @access public
+   */
+  function checkPushStatus() {
+    var pushNotify = new PushNotify();
+    if (($scope.consumer.push.token === '') || ($scope.consumer.push.token === 'pending')) {
+      pushNotify.request().then(function(pushToken) {
+        if ((pushToken) && (pushToken !== '')) {
+          /**
+           * Save the new token
+           */
+          $scope.consumer.push.token = pushToken;
+          $scope.consumer.save(true);
+        }
+      });
+    }
+  }
   /**
    * Update the consumer's push settings if it changed
    *
@@ -158,8 +208,8 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    * @access private
    */
   function updatePushStatus(receivePush) {
-    if ((receivePush !== null) && ($scope.consumer.receive_push !== receivePush)) {
-      $scope.consumer.receive_push = receivePush;
+    if ((receivePush !== null) && ($scope.consumer.push.receive !== receivePush)) {
+      $scope.consumer.push.receive = receivePush;
       $scope.consumer.save(true);
     }
   }

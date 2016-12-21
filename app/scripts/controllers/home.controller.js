@@ -73,6 +73,7 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
     });
 
     $scope.$on('$ionicView.enter', function() {
+      console.log('$ionicView.enter');
       setup();
     });
 
@@ -89,10 +90,6 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
     $scope.$on('$destroy', function() {
       teardown();
     });
-
-    if (!settingUp) {
-      setup();
-    }
 
   });
 
@@ -144,7 +141,7 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    */
   function setup() {
     settingUp = true;
-
+    console.log('here');
     ConsumerService.getCurrent().then(function(consumer) {
       $scope.consumer = consumer;
       RuminationService.today(consumer.apiKey).then(function(rumination) {

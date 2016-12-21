@@ -73,7 +73,6 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
     });
 
     $scope.$on('$ionicView.enter', function() {
-      console.log('$ionicView.enter');
       setup();
     });
 

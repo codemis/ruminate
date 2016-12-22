@@ -143,7 +143,7 @@ appModels.service('RuminationService', ['$q', '$log', '$http', 'ENV', 'Ruminatio
   this.today = function(apiKey) {
     var today = new Date();
     var deferred = $q.defer();
-    this.all(apiKey, 'createdAt|Desc').then(function(ruminations) {
+    this.all(apiKey, 'createdAt|desc', 'createdAt|desc').then(function(ruminations) {
       if (ruminations) {
         var rumination = null;
         for (var i = 0; i < ruminations.length; i++) {

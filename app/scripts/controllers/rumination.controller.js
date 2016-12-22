@@ -3,8 +3,22 @@
 var appControllers = angular.module('app.controllers');
 
 /*jshint camelcase: false */
-appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlatform', '$ionicModal', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', 'PushNotify', function($scope, $log, $ionicPlatform, $ionicModal, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor, PushNotify) {
+appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlatform', '$ionicModal', '$location', '$interval', '$cordovaNetwork', '$stateParams', '$filter', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', 'PushNotify', function($scope, $log, $ionicPlatform, $ionicModal, $location, $interval, $cordovaNetwork, $stateParams, $filter, onDeviceService, ConsumerService, RuminationService, BibleAccessor, PushNotify) {
 
+  /**
+   * The title for the view
+   *
+   * @type {String}
+   * @access public
+   */
+  $scope.viewTitle = 'Ruminate';
+  /**
+   * An id for a specific Rumination.
+   *
+   * @type {Integer}
+   * @access public
+   */
+  $scope.id = null;
   /**
    * Is the API accessible
    *
@@ -177,6 +191,8 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access private
    */
   function setup() {
+    $scope.id = $stateParams.ruminationId;
+    console.log($scope.id);
     settingUp = true;
     $ionicModal.fromTemplateUrl('templates/response-modal.html', {
       scope: $scope,
@@ -186,7 +202,16 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
     });
     ConsumerService.getCurrent().then(function(consumer) {
       $scope.consumer = consumer;
-      RuminationService.today(consumer.apiKey).then(function(rumination) {
+      var promise = null;
+      if ($scope.id) {
+        promise = RuminationService.findById(consumer.apiKey, $scope.id, 'createdAt|desc');
+      } else {
+        promise = RuminationService.today(consumer.apiKey);
+      }
+      promise.then(function(rumination) {
+        if ($scope.id) {
+          $scope.viewTitle = $filter('date')(rumination.createdAt, 'MMM. dd, yyyy');
+        }
         $scope.rumination = rumination;
         if (rumination) {
           BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {

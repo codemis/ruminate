@@ -18,8 +18,12 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   });
 }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
+  /**
+   * Hide the text on the back button
+   */
+  $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
@@ -57,9 +61,9 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   })
 
   .state('app.rumination', {
-    url: '/app/rumination/:ruminationId',
+    url: '/rumination/:ruminationId',
     views: {
-      'app-rumination': {
+      'app-history': {
         templateUrl: 'templates/rumination.html',
         controller: 'RuminationController'
       }

@@ -13,6 +13,13 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    */
   $scope.apiAccessible = true;
   /**
+   * Should we trigger a focus on the answer input.
+   *
+   * @type {Boolean}
+   * @access public
+   */
+  $scope.focusOnAnswer = false;
+  /**
    * The current Consumer
    *
    * @type {Object}
@@ -136,7 +143,9 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    */
   $scope.openResponse = function(response) {
     $scope.currentResponse = response;
-    $scope.responseModal.show();
+    $scope.responseModal.show().then(function() {
+      $scope.focusOnAnswer = true;
+    });
   };
   /**
    * Save the current response content.
@@ -146,7 +155,9 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
   $scope.saveResponseEdit = function() {
     $scope.currentResponse.save($scope.consumer.apiKey, $scope.rumination.id);
     $scope.currentResponse = null;
-    $scope.responseModal.hide();
+    $scope.responseModal.hide().then(function() {
+      $scope.focusOnAnswer = false;
+    });
   };
   /**
    * Cancel the Request to edit the response.
@@ -155,7 +166,9 @@ appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform',
    */
   $scope.cancelResponseEdit = function() {
     $scope.currentResponse = null;
-    $scope.responseModal.hide();
+    $scope.responseModal.hide().then(function() {
+      $scope.focusOnAnswer = false;
+    });
   };
 
   /**

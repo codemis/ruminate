@@ -21,11 +21,11 @@
       </div>
     </div>
     <div class="card">
-      <div class="item item-divider">
+      <div class="item item-divider item-text-wrap">
         <p>{{currentResponse.question.content}}</p>
       </div>
       <div class="item item-text-wrap">
-        <p><textarea class="answer-input msd-elastic" ng-model="currentResponse.answer" placeholder="Answer">{{currentResponse.answer}}</textarea></p>
+        <p><textarea class="answer-input msd-elastic" ng-model="currentResponse.answer" placeholder="Answer" input-focus="{{focusOnAnswer}}">{{currentResponse.answer}}</textarea></p>
       </div>
       <div class="item item-divider">
         <button class="button button-positive button-block" ng-click="saveResponseEdit()">

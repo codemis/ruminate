@@ -5,7 +5,7 @@
          {{rumination.getTitle()}}
          <div class="item-note">{{rumination.createdAt | date:'MM/dd/yyyy'}}</div>
      </ion-item>
-     <ion-item href="#/tab/history/passage/{{rumination.id}}" class="item-text-wrap item-icon-right" ng-repeat-end>
+     <ion-item href="#/app/rumination/{{rumination.id}}" class="item-text-wrap item-icon-right" ng-repeat-end>
        <p class="history-snippet">{{rumination.passage.snippet}}</p>
        <i class="icon ion-chevron-right icon-accessory"></i>
      </ion-item>

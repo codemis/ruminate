@@ -132,7 +132,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access public
    */
   $scope.selectPassage = function() {
-    $location.path('/tab/home/chapter-select');
+    $location.path('/app/home/chapter-select');
   };
 
   /**

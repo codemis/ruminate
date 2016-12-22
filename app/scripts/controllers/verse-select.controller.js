@@ -147,7 +147,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
-      $location.path('/tab/home');
+      $location.path('/app/home');
     });
   };
 

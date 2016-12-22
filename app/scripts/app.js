@@ -40,8 +40,8 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
     url: '/home',
     views: {
       'tab-home': {
-        templateUrl: 'templates/tab-home.html',
-        controller: 'HomeController'
+        templateUrl: 'templates/rumination.html',
+        controller: 'RuminationController'
       }
     }
   })

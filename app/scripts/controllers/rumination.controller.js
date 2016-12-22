@@ -3,7 +3,7 @@
 var appControllers = angular.module('app.controllers');
 
 /*jshint camelcase: false */
-appControllers.controller('HomeController', ['$scope', '$log', '$ionicPlatform', '$ionicModal', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', 'PushNotify', function($scope, $log, $ionicPlatform, $ionicModal, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor, PushNotify) {
+appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlatform', '$ionicModal', '$location', '$interval', '$cordovaNetwork', 'onDeviceService', 'ConsumerService', 'RuminationService', 'BibleAccessor', 'PushNotify', function($scope, $log, $ionicPlatform, $ionicModal, $location, $interval, $cordovaNetwork, onDeviceService, ConsumerService, RuminationService, BibleAccessor, PushNotify) {
 
   /**
    * Is the API accessible

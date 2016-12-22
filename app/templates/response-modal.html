@@ -1,0 +1,37 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-stable">
+    <h1 class="title"></h1>
+    <button class="button button-clear" ng-click="cancelResponseEdit()"><i class="icon ion-close-round"></i></button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="card">
+      <div class="item item-divider">
+        <h2>{{rumination.getTitle()}}</h2>
+      </div>
+      <div class="item item-text-wrap" ng-click="togglePassage()" ng-class="{active: passageShowing}">
+        <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}</p>
+        <p class="click-for-more-less" ng-hide="passageShowing">Click for More...</p>
+        <p ng-show="passageShowing">
+          <span class="verse" ng-repeat="verse in passage">
+          <span class="verse-number">{{verse.number}}.</span>
+          <span class="verse-content">{{verse.content}}</span>
+        </span>
+        </p>
+        <p class="click-for-more-less" ng-show="passageShowing">Click for Less...</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider">
+        <p>{{currentResponse.question.content}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        <p><textarea class="answer-input msd-elastic" ng-model="currentResponse.answer" placeholder="Answer">{{currentResponse.answer}}</textarea></p>
+      </div>
+      <div class="item item-divider">
+        <button class="button button-positive button-block" ng-click="saveResponseEdit()">
+          <span>Save Response</span>
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -27,6 +27,12 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   $scope.apiAccessible = true;
   /**
+   * Are we setting up the controller?
+   *
+   * @type {Boolean}
+   */
+  $scope.isSettingUp = false;
+  /**
    * Should we trigger a focus on the answer input.
    *
    * @type {Boolean}
@@ -91,7 +97,10 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
      */
     $scope.$on('$cordovaNetwork:online', function() {
       $scope.apiAccessible = true;
-      setup();
+      if (!$scope.isSettingUp) {
+        $scope.isSettingUp = true;
+        setup();
+      }
     });
 
     $scope.$on('$cordovaNetwork:offline', function() {
@@ -100,7 +109,10 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
     });
 
     $scope.$on('$ionicView.enter', function() {
-      setup();
+      if (!$scope.isSettingUp) {
+        $scope.isSettingUp = true;
+        setup();
+      }
     });
 
     $scope.$on('PushNotify:pollPushStatusCompleted', function(event, data) {
@@ -116,6 +128,11 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
     $scope.$on('$destroy', function() {
       teardown();
     });
+
+    if (!$scope.isSettingUp) {
+      $scope.isSettingUp = true;
+      setup();
+    }
 
   });
 
@@ -215,13 +232,16 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
         if (rumination) {
           BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
             $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
+            $scope.isSettingUp = false;
             checkPushStatus();
           });
         } else {
+          $scope.isSettingUp = false;
           checkPushStatus();
         }
       }, function() {
         $scope.rumination = null;
+        $scope.isSettingUp = false;
         checkPushStatus();
       });
     });

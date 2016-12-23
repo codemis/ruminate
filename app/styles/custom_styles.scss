@@ -1,3 +1,4 @@
+@import '_theme_variables';
 /**
  * Logo
  */
@@ -223,4 +224,10 @@ $y-padding: 2px;
 .list .item.item-accordion.ng-hide-add,
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
+}
+.click-for-more-less {
+  text-align: center;
+  font-style: italic;
+  margin-top: 10px;
+  font-size: ($font-size-base)-5px !important;
 }

@@ -18,8 +18,12 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   });
 }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
+  /**
+   * Hide the text on the back button
+   */
+  $ionicConfigProvider.backButton.text('').icon('ion-chevron-left').previousTitleText(false);
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
@@ -28,85 +32,67 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   $stateProvider
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
+  .state('app', {
+    url: '/app',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
 
   // Each tab has its own nav history stack:
 
-  .state('tab.home', {
+  .state('app.home', {
     url: '/home',
     views: {
-      'tab-home': {
-        templateUrl: 'templates/tab-home.html',
-        controller: 'HomeController'
-      }
-    }
-  })
-  .state('tab.reflection', {
-    url: '/home/reflection/:objId',
-    views: {
-      'tab-home': {
-        templateUrl: 'templates/tab-home.html',
-        controller: 'HomeController'
+      'app-home': {
+        templateUrl: 'templates/rumination.html',
+        controller: 'RuminationController'
       }
     }
   })
 
-  .state('tab.history', {
+  .state('app.history', {
     url: '/history',
     views: {
-      'tab-history': {
+      'app-history': {
         templateUrl: 'templates/tab-history.html',
         controller: 'HistoryController'
       }
     }
   })
 
-  .state('tab.history-passage', {
-    url: '/history/passage/:ruminationId',
+  .state('app.rumination', {
+    url: '/rumination/:ruminationId',
     views: {
-      'tab-history': {
-        templateUrl: 'templates/tab-passage.html',
-        controller: 'PassageController'
+      'app-history': {
+        templateUrl: 'templates/rumination.html',
+        controller: 'RuminationController'
       }
     }
   })
 
-  .state('tab.home-passage', {
-    url: '/home/passage/:ruminationId',
-    views: {
-      'tab-home':{
-        templateUrl: 'templates/tab-passage.html',
-        controller: 'PassageController'
-      }
-    }
-  })
-  .state('tab.chapter-select', {
+  .state('app.chapter-select', {
     url: '/home/chapter-select',
     views: {
-      'tab-home':{
+      'app-home':{
         templateUrl: 'templates/view-chapter-select.html',
         controller: 'ChapterSelectController'
       }
     }
   })
-  .state('tab.verse-select', {
+  .state('app.verse-select', {
     url: '/home/verse-select/:damId/:bookId/:chapter',
     views: {
-      'tab-home':{
+      'app-home':{
         templateUrl: 'templates/view-verse-select.html',
         controller: 'VerseSelectController'
       }
     }
   })
 
-  .state('tab.settings', {
+  .state('app.settings', {
     url: '/settings',
     views: {
-      'tab-settings': {
+      'app-settings': {
         templateUrl: 'templates/tab-settings.html',
         controller: 'SettingsController'
       }
@@ -114,6 +100,6 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/home');
+  $urlRouterProvider.otherwise('/app/home');
 
 });

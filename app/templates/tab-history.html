@@ -1,6 +1,9 @@
 <ion-view view-title="History">
   <ion-content>
    <ion-list>
+     <ion-item ng-hide="ruminations.length > 0">
+       <p>Sorry, you have no ruminations.</p>
+     </ion-item>
      <ion-item class="item-divider item-calm" ng-repeat-start="rumination in ruminations">
          {{rumination.getTitle()}}
          <div class="item-note">{{rumination.createdAt | date:'MM/dd/yyyy'}}</div>

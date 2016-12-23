@@ -15,8 +15,8 @@
       </div>
       </div>
       <div class="card" ng-show="rumination !== '' && rumination !== null" class="ng-hide">
-        <div class="item item-divider">
-          <h2>{{rumination.getTitle()}}</h2>
+        <div class="item item-divider item-dark">
+          {{rumination.getTitle()}}
         </div>
         <div class="item item-text-wrap" ng-click="togglePassage()" ng-class="{active: passageShowing}">
           <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}</p>
@@ -31,11 +31,11 @@
         </div>
       </div>
       <div class="card" ng-repeat="response in rumination.responses">
-        <div class="item item-divider item-text-wrap">
-          <p>{{response.question.content}}</p>
+        <div class="item item-divider item-calm item-text-wrap">
+          {{response.question.content}}
         </div>
         <div class="item item-text-wrap" ng-click="openResponse(response)">
-          {{response.answer}}
+          <p>{{response.answer}}</p>
           <p class="click-for-more-less">Click for Answer...</p>
         </div>
       </div>

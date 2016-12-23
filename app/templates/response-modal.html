@@ -5,8 +5,8 @@
   </ion-header-bar>
   <ion-content>
     <div class="card">
-      <div class="item item-divider">
-        <h2>{{rumination.getTitle()}}</h2>
+      <div class="item item-divider item-dark">
+        {{rumination.getTitle()}}
       </div>
       <div class="item item-text-wrap" ng-click="togglePassage()" ng-class="{active: passageShowing}">
         <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}</p>
@@ -21,8 +21,8 @@
       </div>
     </div>
     <div class="card">
-      <div class="item item-divider item-text-wrap">
-        <p>{{currentResponse.question.content}}</p>
+      <div class="item item-divider item-text-wrap item-calm">
+        {{currentResponse.question.content}}
       </div>
       <div class="item item-text-wrap">
         <p><textarea class="answer-input msd-elastic" ng-model="currentResponse.answer" placeholder="Answer" input-focus="{{focusOnAnswer}}">{{currentResponse.answer}}</textarea></p>

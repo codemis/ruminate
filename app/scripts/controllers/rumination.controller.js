@@ -192,7 +192,6 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   function setup() {
     $scope.id = $stateParams.ruminationId;
-    console.log($scope.id);
     settingUp = true;
     $ionicModal.fromTemplateUrl('templates/response-modal.html', {
       scope: $scope,

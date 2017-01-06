@@ -29,7 +29,7 @@ var appLibraries = angular.module('app.libraries');
  * PushNotify:pollPushStatusCompleted - includes object with key receivePush set to an integer if they will receive push (0 = No, 1 = Yes).
  */
 /*jshint camelcase: false */
-appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q', '$interval', '$ionicHistory', '$location', 'onDeviceService', 'ENV', function($rootScope, $cordovaPushV5, $log, $q, $interval, $ionicHistory, $location, onDeviceService, ENV) {
+appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q', '$interval', '$ionicHistory', '$location', '$state', 'onDeviceService', 'ENV', function($rootScope, $cordovaPushV5, $log, $q, $interval, $ionicHistory, $location, $state, onDeviceService, ENV) {
 
   var PushNotify = function() {
     /**
@@ -82,7 +82,7 @@ appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q'
             disableAnimate: true,
             historyRoot: true
           });
-          $location.path('/app/home');
+          $state.go('app.home', {receivedNotification: true});
         });
         $log.log('Push Notification initialized.');
       }

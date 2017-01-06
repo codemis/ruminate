@@ -78,6 +78,12 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   $scope.currentResponse = null;
   /**
+   * Did we receive this request from a notification.
+   *
+   * @type {Boolean}
+   */
+  $scope.receivedNotification = false;
+  /**
    * Keep track if the tool is setting up
    *
    * @type {Boolean}
@@ -209,6 +215,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   function setup() {
     $scope.id = $stateParams.ruminationId;
+    $scope.receivedNotification = $stateParams.receivedNotification;
     settingUp = true;
     $ionicModal.fromTemplateUrl('templates/response-modal.html', {
       scope: $scope,
@@ -232,6 +239,12 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
         if (rumination) {
           BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
             $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
+            if ($scope.receivedNotification) {
+              /**
+               * Open the latest response.
+               */
+              $scope.openResponse($scope.rumination.responses[0]);
+            }
             $scope.isSettingUp = false;
             checkPushStatus();
           });

@@ -19,7 +19,7 @@
           {{rumination.getTitle()}}
         </div>
         <div class="item item-text-wrap" ng-click="togglePassage()" ng-class="{active: passageShowing}">
-          <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}</p>
+          <p class="history-snippet" ng-hide="passageShowing">{{rumination.passage.snippet}}...</p>
           <p class="click-for-more-less" ng-hide="passageShowing">Click for More...</p>
           <p ng-show="passageShowing">
             <span class="verse" ng-repeat="verse in passage">

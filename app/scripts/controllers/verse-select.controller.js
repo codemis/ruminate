@@ -123,10 +123,11 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
     if ($scope.lastVerse > -1 && $scope.firstVerse === -1) {
         $scope.firstVerse = $scope.lastVerse;
     }
+    var snippet = getSnippet();
     var rumination = {
       'passage': {
         'version': "ESV",
-        'snippet': $scope.verses[0].content,
+        'snippet': snippet,
         'first': {
           'book': capitalize($scope.bookName),
           'abbreviation': $scope.book,
@@ -174,6 +175,23 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
   }
 
   /**
+   * Get the snippet based on the selected passage
+   *
+   * @return {String} The truncated string
+   */
+  function getSnippet() {
+    var snippet = $scope.verses[$scope.firstVerse - 1].content;
+    /**
+     * trim the string to the maximum length
+     */
+     var trimmedString = snippet.substr(0, 150);
+    /**
+     * re-trim if we are in the middle of a word
+     */
+    return trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
+  }
+
+  /**
    * Capitalize the first letter of the word.
    *
    * @param  {String} string The string to modify
@@ -181,6 +199,10 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
    * @access public
    */
   function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    if (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    } else {
+      return string;
+    }
   }
 }]);

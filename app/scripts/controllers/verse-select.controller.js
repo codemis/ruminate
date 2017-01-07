@@ -6,10 +6,8 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
   function($scope, $stateParams, $location, $ionicHistory, $ionicPlatform, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
 
   // These contain the information that will be added to the database
-  $scope.chapter = $stateParams.chapter;
-  $scope.book = $stateParams.bookId;
-  $scope.bookName = BibleAccessor.bookNames[$scope.book];
-  $scope.damId = $stateParams.damId;
+  $scope.chapter = 1;
+  $scope.book = {};
   $scope.firstVerse=-1;
   $scope.lastVerse=-1;
   /**
@@ -129,14 +127,14 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
         'version': "ESV",
         'snippet': snippet,
         'first': {
-          'book': capitalize($scope.bookName),
-          'abbreviation': $scope.book,
+          'book': capitalize($scope.book.name),
+          'abbreviation': $scope.book.id,
           'chapter': parseInt($scope.chapter, 10),
           'verse': $scope.firstVerse
         },
         'last': {
-          'book': capitalize($scope.bookName),
-          'abbreviation': $scope.book,
+          'book': capitalize($scope.book.name),
+          'abbreviation': $scope.book.id,
           'chapter': parseInt($scope.chapter, 10),
           'verse': $scope.lastVerse
         }
@@ -158,7 +156,12 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
    * @access private
    */
   function setup() {
-    BibleAccessor.getVerses($scope.damId, $scope.book, $scope.chapter, function(verses) {
+    var id = $stateParams.bookId;
+    $scope.chapter = $stateParams.chapter;
+    BibleAccessor.findBook(id).then(function(book) {
+      $scope.book = book;
+    });
+    BibleAccessor.getVerses(id, $scope.chapter).then(function(verses) {
       $scope.verses = verses;
     });
     ConsumerService.getCurrent().then(function(consumer) {

@@ -3,17 +3,51 @@
 var appControllers = angular.module('app.controllers');
 
 appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
+  /**
+   * The books of the Bible
+   *
+   * @type {Array}
+   */
   $scope.books = [];
-  BibleAccessor.getBookList(function(list) { $scope.books = list; });
-  var cur = null;
-  $scope.isShown = function(book) {
-    return book === cur;
+  /**
+   * The current selected book.
+   *
+   * @type {[type]}
+   */
+  var current = null;
+  /**
+   * Setup the controller.
+   *
+   * @return {Void}
+   */
+  function setup() {
+    BibleAccessor.getBooks().then(function(books) {
+      $scope.books = books;
+    });
+  }
+
+  /**
+   * Is the book showing?
+   *
+   * @param  {String}  id   The book id you want to check.
+   * @return {Boolean}      Is it showing?
+   */
+  $scope.isShown = function(id) {
+    return id === current;
   };
-  $scope.toggleShown = function(book) {
-    if($scope.isShown(book)) {
-      cur = null;
+  /**
+   * Toggle the shown book.
+   *
+   * @param  {String} id    The id of the book to toggle
+   * @return {Void}
+   */
+  $scope.toggleShown = function(id) {
+    if($scope.isShown(id)) {
+      current = null;
     } else {
-      cur = book;
+      current = id;
     }
   };
+
+  setup();
 }]);

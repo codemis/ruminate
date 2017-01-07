@@ -237,7 +237,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
         }
         $scope.rumination = rumination;
         if (rumination) {
-          BibleAccessor.getVerses(BibleAccessor.bookDamMap[rumination.passage.first.abbreviation], rumination.passage.first.abbreviation, rumination.passage.first.chapter, function(verses) {
+          BibleAccessor.getVerses(rumination.passage.first.abbreviation, rumination.passage.first.chapter).then(function(verses) {
             $scope.passage = verses.slice($scope.rumination.passage.first.verse - 1, $scope.rumination.passage.last.verse);
             if ($scope.receivedNotification) {
               /**

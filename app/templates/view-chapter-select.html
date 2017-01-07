@@ -3,7 +3,7 @@
 		<ion-list>
 
 		<div ng-repeat="book in books">
-			<ion-item class="chapter-title" ng-click="toggleShown(book)">
+			<ion-item class="chapter-title" ng-click="toggleShown(book.id)">
 	      {{book.name}}
 	    </ion-item>
 
@@ -23,7 +23,7 @@
 
 	      <div class="chapter-list-hidden">
 	      	<div class="chapter-box"  ng-click="$event.stopPropagation()">
-						<span class="chapter-item-hiding" ng-show="isShown(book)" ng-repeat="chapter in book.chapters"></span>
+						<span class="chapter-item-hiding" ng-show="isShown(book.id)" ng-repeat="chapter in book.chapters"></span>
 					</div>
 				</div>
 	    </ion-item>

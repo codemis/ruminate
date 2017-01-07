@@ -27,11 +27,11 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   $scope.apiAccessible = true;
   /**
-   * Are we setting up the controller?
+   * Have we set up the controller?
    *
    * @type {Boolean}
    */
-  $scope.isSettingUp = false;
+  $scope.settingUp = false;
   /**
    * Should we trigger a focus on the answer input.
    *
@@ -83,13 +83,6 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @type {Boolean}
    */
   $scope.receivedNotification = false;
-  /**
-   * Keep track if the tool is setting up
-   *
-   * @type {Boolean}
-   */
-  var settingUp = false;
-
 
   $ionicPlatform.ready(function() {
     /**
@@ -103,8 +96,8 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
      */
     $scope.$on('$cordovaNetwork:online', function() {
       $scope.apiAccessible = true;
-      if (!$scope.isSettingUp) {
-        $scope.isSettingUp = true;
+      if (!$scope.settingUp) {
+        $scope.settingUp = true;
         setup();
       }
     });
@@ -115,8 +108,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
     });
 
     $scope.$on('$ionicView.enter', function() {
-      if (!$scope.isSettingUp) {
-        $scope.isSettingUp = true;
+      if (!$scope.settingUp) {
         setup();
       }
     });
@@ -135,8 +127,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
       teardown();
     });
 
-    if (!$scope.isSettingUp) {
-      $scope.isSettingUp = true;
+    if (!$scope.settingUp) {
       setup();
     }
 
@@ -216,7 +207,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
   function setup() {
     $scope.id = $stateParams.ruminationId;
     $scope.receivedNotification = $stateParams.receivedNotification;
-    settingUp = true;
+    $scope.settingUp = true;
     $ionicModal.fromTemplateUrl('templates/response-modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
@@ -245,16 +236,13 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
                */
               $scope.openResponse($scope.rumination.responses[0]);
             }
-            $scope.isSettingUp = false;
             checkPushStatus();
           });
         } else {
-          $scope.isSettingUp = false;
           checkPushStatus();
         }
       }, function() {
         $scope.rumination = null;
-        $scope.isSettingUp = false;
         checkPushStatus();
       });
     });
@@ -266,7 +254,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access private
    */
   function teardown() {
-    settingUp = false;
+    $scope.settingUp = false;
   }
 
   /**

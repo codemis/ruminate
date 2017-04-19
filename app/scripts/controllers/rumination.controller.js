@@ -134,6 +134,27 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
   });
 
   /**
+   * Handle cordova's onResume callback
+   *
+   * @return {Void}
+   */
+  function onResume() {
+    if (!$scope.settingUp) {
+      setup();
+    }
+    document.removeEventListener('resume', onResume);
+  }
+  /**
+   * Handle cordova's onPause callback
+   *
+   * @return {Void}
+   */
+  function onPause() {
+    teardown();
+    document.addEventListener('resume', onResume, false);
+  }
+
+  /**
    * Check if the Consumer is registered
    *
    * @return {Boolean} Is the Consumer registered?
@@ -205,8 +226,10 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access private
    */
   function setup() {
-    $scope.id = $stateParams.ruminationId;
+    console.log('receivedNotification', $stateParams.receivedNotification);
     $scope.receivedNotification = $stateParams.receivedNotification;
+    document.addEventListener('pause', onPause, false);
+    $scope.id = $stateParams.ruminationId;
     $scope.settingUp = true;
     $ionicModal.fromTemplateUrl('templates/response-modal.html', {
       scope: $scope,
@@ -234,6 +257,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
               /**
                * Open the latest response.
                */
+              $scope.receivedNotification = false;
               $scope.openResponse($scope.rumination.responses[0]);
             }
             checkPushStatus();
@@ -254,6 +278,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access private
    */
   function teardown() {
+    document.removeEventListener('pause', onPause);
     $scope.settingUp = false;
   }
 

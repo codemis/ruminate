@@ -6,16 +6,18 @@
  * @link https://forum.ionicframework.com/t/auto-focus-textbox-while-template-loads/6851/14
  */
 var appLibraries = angular.module('app.libraries');
-appLibraries.directive('inputFocus', function() {
+appLibraries.directive('inputFocus', ['$timeout', function($timeout) {
   return {
     restrict: 'A',
     scope: { inputFocus: '@'},
     link: function(scope, element, attrs) {
       attrs.$observe('inputFocus', function(value) {
         if (value === 'true') {
-          element[0].focus();
+          $timeout(function() {
+            element[0].focus();
+          }, 150);
         }
       });
     }
   };
-});
+}]);

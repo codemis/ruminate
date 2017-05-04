@@ -62,7 +62,9 @@ appLibraries.factory('PushNotify', ['$rootScope', '$cordovaPushV5', '$log', '$q'
             disableAnimate: true,
             historyRoot: true
           });
-          $state.go('app.home', {receivedNotification: true});
+          $state.go('app.home', { receivedNotification: true }).then(function() {
+            $rootScope.$broadcast('PushNotify:notificationReceived', {});
+          });
         });
         $log.log('Push Notification initialized.');
       }

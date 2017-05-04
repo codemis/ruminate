@@ -6,17 +6,17 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-stable">
 
   <!-- Dashboard Tab -->
-  <ion-tab title="Home" icon-off="ion-android-home" icon-on="ion-android-home" href="#/app/home">
+  <ion-tab title="Home" icon-off="ion-android-home" icon-on="ion-android-home" ng-click="changeTab('app.home')">
     <ion-nav-view name="app-home"></ion-nav-view>
   </ion-tab>
 
   <!-- Chats Tab -->
-  <ion-tab title="History" icon-off="ion-ios-calendar" icon-on="ion-ios-calendar" href="#/app/history">
+  <ion-tab title="History" icon-off="ion-ios-calendar" icon-on="ion-ios-calendar" ng-click="changeTab('app.history')">
     <ion-nav-view name="app-history"></ion-nav-view>
   </ion-tab>
 
   <!-- Account Tab -->
-  <ion-tab title="Settings" icon-off="ion-ios-gear" icon-on="ion-ios-gear" href="#/app/settings">
+  <ion-tab title="Settings" icon-off="ion-ios-gear" icon-on="ion-ios-gear" ng-click="changeTab('app.settings')">
     <ion-nav-view name="app-settings"></ion-nav-view>
   </ion-tab>
 

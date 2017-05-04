@@ -35,13 +35,17 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    controller: 'tabController'
   })
 
   // Each tab has its own nav history stack:
 
   .state('app.home', {
-    url: '/home?receivedNotification',
+    url: '/home',
+    params: {
+      receivedNotification: false
+    },
     views: {
       'app-home': {
         templateUrl: 'templates/rumination.html',

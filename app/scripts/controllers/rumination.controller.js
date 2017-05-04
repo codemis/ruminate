@@ -78,6 +78,12 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   $scope.currentResponse = null;
   /**
+   * The original answer for response that was opened
+   *
+   * @type {String}
+   */
+  $scope.responseOriginalAnswer = '';
+  /**
    * Did we receive this request from a notification.
    *
    * @type {Boolean}
@@ -192,6 +198,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    */
   $scope.openResponse = function(response) {
     $scope.currentResponse = response;
+    $scope.responseOriginalAnswer = response.answer;
     $scope.responseModal.show().then(function() {
       $scope.focusOnAnswer = true;
     });
@@ -206,6 +213,7 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
     $scope.currentResponse = null;
     $scope.responseModal.hide().then(function() {
       $scope.focusOnAnswer = false;
+      $scope.responseOriginalAnswer = '';
     });
   };
   /**
@@ -214,9 +222,11 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @return {Void}
    */
   $scope.cancelResponseEdit = function() {
+    $scope.currentResponse.answer = $scope.responseOriginalAnswer;
     $scope.currentResponse = null;
     $scope.responseModal.hide().then(function() {
       $scope.focusOnAnswer = false;
+      $scope.responseOriginalAnswer = '';
     });
   };
 

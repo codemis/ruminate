@@ -1,7 +1,8 @@
 <ion-modal-view>
   <ion-header-bar class="bar-stable">
+    <button class="button button-clear response-button" ng-click="cancelResponseEdit()">Cancel</button>
     <h1 class="title"></h1>
-    <button class="button button-clear" ng-click="cancelResponseEdit()"><i class="icon ion-close-round"></i></button>
+    <button class="button button-clear response-button" ng-click="saveResponseEdit()">Save</button>
   </ion-header-bar>
   <ion-content>
     <div class="card">
@@ -26,11 +27,6 @@
       </div>
       <div class="item item-text-wrap">
         <p><textarea class="answer-input msd-elastic" ng-model="currentResponse.answer" placeholder="Answer" input-focus="{{focusOnAnswer}}">{{currentResponse.answer}}</textarea></p>
-      </div>
-      <div class="item item-divider">
-        <button class="button button-positive button-block" ng-click="saveResponseEdit()">
-          <span>Save Response</span>
-        </button>
       </div>
     </div>
   </ion-content>

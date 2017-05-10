@@ -2,8 +2,8 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$location', '$ionicHistory', '$ionicPlatform', '$cordovaNetwork', 'BibleAccessor', 'onDeviceService', 'ConsumerService', 'RuminationService',
-  function($scope, $stateParams, $location, $ionicHistory, $ionicPlatform, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
+appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stateParams', '$location', '$ionicHistory', '$ionicPlatform', '$ionicLoading', '$cordovaNetwork', 'BibleAccessor', 'onDeviceService', 'ConsumerService', 'RuminationService',
+  function($scope, $timeout, $stateParams, $location, $ionicHistory, $ionicPlatform, $ionicLoading, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
 
   // These contain the information that will be added to the database
   $scope.chapter = 1;
@@ -115,6 +115,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
   };
 
   $scope.updateOrCreateReflection = function() {
+    $ionicLoading.show({ template: '<p>Loading...</p><ion-spinner icon="ios"></ion-spinner>' });
     //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
     //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
     //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
@@ -142,11 +143,20 @@ appControllers.controller('VerseSelectController', ['$scope', '$stateParams', '$
     };
 
     RuminationService.new($scope.consumer.apiKey, rumination).then(function() {
+      console.error('saved');
       $ionicHistory.clearCache();
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
-      $location.path('/app/home');
+      /**
+       * Delay because the API is not ready.
+       *
+       * @todo remove this delay.
+       */
+      $timeout(function() {
+        $ionicLoading.hide();
+        $location.path('/app/home');
+      }, 1000);
     });
   };
 

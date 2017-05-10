@@ -236,7 +236,6 @@ appControllers.controller('RuminationController', ['$scope', '$log', '$ionicPlat
    * @access private
    */
   function setup() {
-    console.log('receivedNotification', $stateParams.receivedNotification);
     $scope.receivedNotification = $stateParams.receivedNotification;
     document.addEventListener('pause', onPause, false);
     $scope.id = $stateParams.ruminationId;

@@ -115,10 +115,10 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
   };
 
   $scope.updateOrCreateReflection = function() {
-    $ionicLoading.show({ template: '<p>Loading...</p><ion-spinner icon="ios"></ion-spinner>' });
     //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
     //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
     //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
+    showLoading();
     if ($scope.lastVerse > -1 && $scope.firstVerse === -1) {
         $scope.firstVerse = $scope.lastVerse;
     }
@@ -143,7 +143,6 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
     };
 
     RuminationService.new($scope.consumer.apiKey, rumination).then(function() {
-      console.error('saved');
       $ionicHistory.clearCache();
       $ionicHistory.nextViewOptions({
         disableBack: true
@@ -154,7 +153,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
        * @todo remove this delay.
        */
       $timeout(function() {
-        $ionicLoading.hide();
+        hideLoading();
         $location.path('/app/home');
       }, 1000);
     });
@@ -168,14 +167,16 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
   function setup() {
     var id = $stateParams.bookId;
     $scope.chapter = $stateParams.chapter;
+    showLoading();
     BibleAccessor.findBook(id).then(function(book) {
       $scope.book = book;
-    });
-    BibleAccessor.getVerses(id, $scope.chapter).then(function(verses) {
+      return BibleAccessor.getVerses(id, $scope.chapter);
+    }).then(function(verses) {
       $scope.verses = verses;
-    });
-    ConsumerService.getCurrent().then(function(consumer) {
+      return ConsumerService.getCurrent();
+    }).then(function(consumer) {
       $scope.consumer = consumer;
+      hideLoading();
     });
   }
 
@@ -187,6 +188,25 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
   function teardown() {
   }
 
+  /**
+   * Show the loading screen
+   *
+   * @return {Void}
+   * @access private
+   */
+  function showLoading() {
+    $ionicLoading.show({ template: '<p>Loading...</p><ion-spinner icon="ios"></ion-spinner>' });
+  }
+
+  /**
+   * Hide the Loading
+   *
+   * @return {Void}
+   * @access private
+   */
+  function hideLoading() {
+    $ionicLoading.hide();
+  }
   /**
    * Get the snippet based on the selected passage
    *

@@ -2,8 +2,8 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stateParams', '$location', '$ionicHistory', '$ionicPlatform', '$ionicLoading', '$cordovaNetwork', 'BibleAccessor', 'onDeviceService', 'ConsumerService', 'RuminationService',
-  function($scope, $timeout, $stateParams, $location, $ionicHistory, $ionicPlatform, $ionicLoading, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
+appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stateParams', '$location', '$ionicHistory', '$ionicPlatform', '$ionicLoading', '$ionicPopup', '$cordovaNetwork', 'BibleAccessor', 'onDeviceService', 'ConsumerService', 'RuminationService',
+  function($scope, $timeout, $stateParams, $location, $ionicHistory, $ionicPlatform, $ionicLoading, $ionicPopup, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
 
   // These contain the information that will be added to the database
   $scope.chapter = 1;
@@ -118,6 +118,13 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
     //If a person selects highlights only one verse...the $scope.firstVerse variable needs adjustment
     //At the time of commenting, if only one verse is selected the $scope.lastVerse variable
     //is assigned, while the $scope.firstVerse remains unset (i.e. it is equal to -1)
+    if ($scope.firstVerse === -1 && $scope.lastVerse === -1) {
+      $ionicPopup.alert({
+        title: 'Select Verses',
+        template: 'Please tap the first and then the last verse to ruminate on.  The selected verses should be highlighted.'
+      });
+      return;
+    }
     showLoading();
     if ($scope.lastVerse > -1 && $scope.firstVerse === -1) {
         $scope.firstVerse = $scope.lastVerse;

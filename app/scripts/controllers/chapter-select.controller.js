@@ -2,7 +2,7 @@
 
 var appControllers = angular.module('app.controllers');
 
-appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor', function($scope, BibleAccessor) {
+appControllers.controller('ChapterSelectController', ['$scope', '$ionicLoading', 'BibleAccessor', function($scope, $ionicLoading, BibleAccessor) {
   /**
    * The books of the Bible
    *
@@ -21,8 +21,10 @@ appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor',
    * @return {Void}
    */
   function setup() {
+    showLoading();
     BibleAccessor.getBooks().then(function(books) {
       $scope.books = books;
+      hideLoading();
     });
   }
 
@@ -48,6 +50,26 @@ appControllers.controller('ChapterSelectController', ['$scope', 'BibleAccessor',
       current = id;
     }
   };
+
+  /**
+   * Show the loading screen
+   *
+   * @return {Void}
+   * @access private
+   */
+  function showLoading() {
+    $ionicLoading.show({ template: '<p>Loading...</p><ion-spinner icon="ios"></ion-spinner>' });
+  }
+
+  /**
+   * Hide the Loading
+   *
+   * @return {Void}
+   * @access private
+   */
+  function hideLoading() {
+    $ionicLoading.hide();
+  }
 
   setup();
 }]);

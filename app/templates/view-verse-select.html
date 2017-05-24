@@ -1,5 +1,7 @@
-<ion-view view-title="{{book.name}} {{chapter}}">
-
+<ion-view>
+  <ion-nav-title>
+      <span  ng-hide="chapter === null">{{book.name}} {{chapter}}</span>
+  </ion-nav-title>
   <ion-nav-buttons side="secondary">
     <button class="button icon button-icon ion-checkmark" ng-click="updateOrCreateReflection()"></button>
   </ion-nav-buttons>

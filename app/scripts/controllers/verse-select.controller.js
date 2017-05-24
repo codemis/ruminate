@@ -6,7 +6,7 @@ appControllers.controller('VerseSelectController', ['$scope', '$timeout', '$stat
   function($scope, $timeout, $stateParams, $location, $ionicHistory, $ionicPlatform, $ionicLoading, $ionicPopup, $cordovaNetwork, BibleAccessor, onDeviceService, ConsumerService, RuminationService) {
 
   // These contain the information that will be added to the database
-  $scope.chapter = 1;
+  $scope.chapter = null;
   $scope.book = {};
   $scope.firstVerse=-1;
   $scope.lastVerse=-1;

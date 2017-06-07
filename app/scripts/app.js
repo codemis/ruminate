@@ -18,8 +18,11 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   });
 }])
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-
+.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  /**
+   * Fix Android tabs issue
+   */
+  $ionicConfigProvider.tabs.style('standard');
   /**
    * Hide the text on the back button
    */
@@ -106,4 +109,4 @@ angular.module('ruminate', ['ionic', 'ngCordova', 'app.controllers', 'app.models
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 
-});
+}]);

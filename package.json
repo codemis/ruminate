@@ -3,8 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "cordova-android": "~5.2.1",
-        "cordova-ios": "~4.2.0"
+        "cordova-android": "^6.2.2",
+        "cordova-ios": "~4.2.0",
+        "phonegap-plugin-push": "~1.8.4"
     },
     "devDependencies": {
         "cordova": "^6.3.1",
@@ -66,6 +67,11 @@
         "platforms": [
             "android",
             "ios"
-        ]
+        ],
+        "plugins": {
+            "phonegap-plugin-push": {
+                "SENDER_ID": "649333316538"
+            }
+        }
     }
 }
